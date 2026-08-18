@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陈芷锐 · Resume</title>
+<meta name="description" content="陈芷锐 · Artificial Intelligence Trainer · 达摩院人工智能高级训练师">
+<meta name="keywords" content="陈芷锐, AI训练师, 达摩院, 简历, Resume">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+      },
+      colors: {
+        zinc: {
+          50: '#fafafa',
+          100: '#f4f4f5',
+          200: '#e4e4e7',
+          300: '#d4d4d8',
+          400: '#a1a1aa',
+          500: '#71717a',
+          600: '#52525b',
+          700: '#3f3f46',
+          800: '#27272a',
+          900: '#18181b',
+          950: '#09090b',
+        }
+      },
+      animation: {
+        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'fade-up': 'fadeUp 0.6s ease-out forwards',
+      },
+      keyframes: {
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+  ::selection { background: #18181b; color: #fff; }
+  .copy-toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: #18181b; color: #fff; padding: 10px 20px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none;
+    transition: all 0.3s ease; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .nav-link {
+    position: relative; display: inline-flex; align-items: center; gap: 4px;
+    font-size: 13px; font-weight: 500; color: #52525b;
+    transition: color 0.2s ease;
+  }
+  .nav-link::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 0; height: 1px; background: #18181b;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-link:hover { color: #18181b; }
+  .nav-link:hover::after { width: 100%; }
+  .timeline-dot {
+    position: absolute; left: -3px; top: 6px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #18181b;
+  }
+  .card-hover {
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .card-hover:hover { border-color: #a1a1aa; }
+  .pill-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 9999px;
+    background: #f4f4f5; border: 1px solid #e4e4e7;
+    font-size: 11px; font-weight: 500; color: #52525b;
+  }
+  .pill-badge .dot {
+    width: 4px; height: 4px; border-radius: 50%; background: #22c55e;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    animation: greenPulse 2s ease-in-out infinite;
+  }
+  @keyframes greenPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
+  }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #71717a;
+  }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .cert-card img { transition: transform 0.4s ease; }
+  .cert-card:hover img { transform: scale(1.03); }
+  .game-modal {
+    display: none; position: fixed; inset: 0;
+    background: rgba(9,9,11,0.92); backdrop-filter: blur(8px);
+    z-index: 9999; align-items: center; justify-content: center; padding: 20px;
+  }
+  .game-modal.active { display: flex; }
+  .game-modal-content {
+    position: relative; width: 100%; max-width: 1280px; height: 90vh;
+    background: #09090b; border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; border: 1px solid #27272a;
+  }
+  .game-modal-frame { flex: 1; border: none; width: 100%; }
+  .toast-anim { animation: toastIn 0.3s ease forwards; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  .badge-neutral {
+    display: inline-block; padding: 2px 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; color: #71717a;
+    background: #f4f4f5; border-radius: 4px;
+  }
+</style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 antialiased">
+
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-200">
+  <div class="max-w-3xl mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-6 h-6 bg-zinc-900 rounded-md flex items-center justify-center">
+        <span class="text-white text-xs font-bold">陈</span>
+      </div>
+      <span class="font-semibold text-sm text-zinc-900">陈芷锐</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#about" class="nav-link">关于</a>
+      <a href="#education" class="nav-link">教育</a>
+      <a href="#skills" class="nav-link">技能</a>
+      <a href="#experience" class="nav-link">经历</a>
+      <a href="#certs" class="nav-link">证书</a>
+      <a href="#contact" class="nav-link">联系</a>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="window.print()" class="p-2 hover:bg-zinc-100 rounded-md transition-colors" title="打印 / 导出PDF">
+        <i data-lucide="printer" class="w-4 h-4 text-zinc-600"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero / About -->
+<section id="about" class="max-w-3xl mx-auto px-6 pt-28 pb-16">
+  <div class="reveal">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="pill-badge"><span class="dot"></span>寻求机会</span>
+        <span class="badge-neutral">立即进行任务</span>
+      </div>
+      <div class="flex items-center gap-4 mb-5">
+        <div class="flex-shrink-0">
+          <div class="w-14 h-14 rounded-xl bg-white border border-zinc-200 overflow-hidden">
+            <img src="assets/avatar.jpg" alt="陈芷锐" class="w-full h-full object-cover">
+          </div>
+        </div>
+        <div class="flex items-baseline gap-3">
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 leading-none">
+            陈芷锐
+          </h1>
+          <span class="text-xs text-zinc-400 font-mono hidden sm:block">/</span>
+          <p class="text-sm text-zinc-500 font-medium hidden sm:block">
+            AI Trainer
+          </p>
+        </div>
+      </div>
+      <p class="text-lg text-zinc-500 mb-5 font-medium sm:hidden">
+        Artificial Intelligence Trainer · 达摩院高级训练师
+      </p>
+      <p class="text-sm text-zinc-500 leading-relaxed max-w-xl mb-6">
+        专注于 AI 模型训练与数据标注，持有达摩院人工智能高级训练师认证。
+        拥有学生会管理经验，擅长团队协作与项目推进。
+        热爱科技、追求卓越。
+      </p>
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="copyText('18990430280')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
+          <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+          189 9043 0280
+        </button>
+        <button onclick="copyText('3041867249@qq.com')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
+          <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+          3041867249@qq.com
+        </button>
+        <a href="tel:18990430280" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          电话联系
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Education -->
+<section id="education" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Education</span>
+    </div>
+    <div class="space-y-5">
+
+      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <h3 class="font-semibold text-zinc-900">对外经济贸易大学</h3>
+              <span class="badge-neutral">本科</span>
+            </div>
+            <p class="text-sm text-zinc-500">综合类院校 · 高考录取</p>
+          </div>
+          <span class="pill-badge">
+            <span class="dot" style="background: #3b82f6; animation: none;"></span>
+            在读
+          </span>
+        </div>
+      </div>
+
+      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 class="font-semibold text-zinc-900 mb-1">绵阳中学</h3>
+            <p class="text-sm text-zinc-500 mb-3">高中 · 以 <span class="font-mono text-zinc-900 font-semibold">849 / 900</span> 分成绩考入</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">三好学生</span>
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">优秀学生会干部</span>
+            </div>
+          </div>
+          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">HIGH SCHOOL</span>
+        </div>
+      </div>
+
+      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 class="font-semibold text-zinc-900 mb-1">绵阳外国语实验学校</h3>
+            <p class="text-sm text-zinc-500 mb-3">初中 · 学习标兵</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">优秀共青团员</span>
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">特优生</span>
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">学习明星</span>
+              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">进步明星</span>
+            </div>
+          </div>
+          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">MIDDLE SCHOOL</span>
+        </div>
+      </div>
+
+      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h3 class="font-semibold text-zinc-900 mb-1">阿坝州本地小学 → 绵阳</h3>
+            <p class="text-sm text-zinc-500">小学 · 五年级转入绵阳继续学业</p>
+          </div>
+          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">PRIMARY</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Skills -->
+<section id="skills" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="code-2" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Skills</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
+        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="cpu" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900">AI 模型训练</h4>
+          <p class="text-xs text-zinc-500 mt-0.5">数据标注 · 模型调优 · 算法实现</p>
+        </div>
+      </div>
+
+      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
+        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="presentation" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900">PPT 演示设计</h4>
+          <p class="text-xs text-zinc-500 mt-0.5">商业演示 · 数据可视化 · 排版</p>
+        </div>
+      </div>
+
+      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
+        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="users" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900">团队协作管理</h4>
+          <p class="text-xs text-zinc-500 mt-0.5">学生会管理 · 活动组织 · 跨部门协调</p>
+        </div>
+      </div>
+
+      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
+        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="target" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900">项目执行推进</h4>
+          <p class="text-xs text-zinc-500 mt-0.5">目标导向 · 高效执行 · 结果思维</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Experience -->
+<section id="experience" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="briefcase" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Experience</span>
+    </div>
+    <div class="relative pl-5 space-y-6">
+      <div class="absolute left-[2px] top-2 bottom-2 w-px bg-zinc-200"></div>
+
+      <div class="relative">
+        <div class="timeline-dot"></div>
+        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-zinc-900">校级学生会干部</h3>
+              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 校级</p>
+              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
+                参与校级学生会日常运营，负责跨部门协调与项目推进，锻炼组织管理与沟通能力。
+              </p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-dot"></div>
+        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-zinc-900">生活部部长</h3>
+              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 生活部</p>
+              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
+                统筹生活部工作，策划并执行系列校园生活活动，关注学生日常需求，管理团队推进项目落地。
+              </p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-dot"></div>
+        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-zinc-900">体育委员</h3>
+              <p class="text-xs text-zinc-500 mt-0.5">Class Committee</p>
+              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
+                组织班级体育活动，协调运动会参赛事宜，营造积极向上的班级氛围。
+              </p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="timeline-dot"></div>
+        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-zinc-900">组织部部员</h3>
+              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 组织部</p>
+              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
+                参与学生会组织建设、成员招募与培训工作，协助活动筹备与执行。
+              </p>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Certificates -->
+<section id="certs" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="award" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Certificates &amp; Honors</span>
+    </div>
+
+    <div class="card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden mb-4">
+      <div class="flex items-center gap-3 p-4 bg-zinc-50 border-b border-zinc-200">
+        <div class="w-10 h-10 rounded-md bg-white border border-zinc-200 flex items-center justify-center">
+          <i data-lucide="bot" class="w-5 h-5 text-orange-500"></i>
+        </div>
+        <div class="flex-1">
+          <h3 class="text-sm font-semibold text-zinc-900">达摩院人工智能高级训练师</h3>
+          <p class="text-xs text-zinc-500">DAMO Academy · 2026年8月10日颁发</p>
+        </div>
+        <span class="pill-badge">
+          <span class="dot" style="background: #f59e0b; animation: none;"></span>
+          高级认证
+        </span>
+      </div>
+      <div class="p-4">
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="flex justify-between py-1.5 border-b border-zinc-100">
+            <span class="text-zinc-500">证书编号</span>
+            <span class="font-mono text-zinc-700">AIT260810000555000105</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-zinc-100">
+            <span class="text-zinc-500">有效期至</span>
+            <span class="font-mono text-zinc-700">2027-08-10</span>
+          </div>
+          <div class="col-span-2 flex justify-between py-1.5 border-b border-zinc-100">
+            <span class="text-zinc-500">颁证机构</span>
+            <span class="text-zinc-700">达摩院·机器智能技术事业部 (Intelligent DAMO)</span>
+          </div>
+          <div class="col-span-2 flex justify-between py-1.5">
+            <span class="text-zinc-500">认证内容</span>
+            <span class="text-zinc-700">人工智能训练师高级培训课程 · 认证合格</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 证书原图画廊 -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/cert-ai-senior.jpg')">
+        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
+          <img src="assets/cert-ai-senior.jpg" alt="人工智能训练师高级证书" class="w-full h-full object-contain">
+        </div>
+        <div class="px-3 py-2">
+          <p class="text-xs font-medium text-zinc-700">人工智能训练师（高级）</p>
+          <p class="text-[10px] text-zinc-400">陈芷锐 · 20260810</p>
+        </div>
+      </div>
+      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/cert-ai-junior.png')">
+        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
+          <img src="assets/cert-ai-junior.png" alt="人工智能训练师初级证书" class="w-full h-full object-contain">
+        </div>
+        <div class="px-3 py-2">
+          <p class="text-xs font-medium text-zinc-700">人工智能训练师（初级）</p>
+          <p class="text-[10px] text-zinc-400">基础认证</p>
+        </div>
+      </div>
+      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/photo-extra-2.jpg')">
+        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
+          <img src="assets/photo-extra-2.jpg" alt="佐证图片" class="w-full h-full object-contain">
+        </div>
+        <div class="px-3 py-2">
+          <p class="text-xs font-medium text-zinc-700">佐证图片</p>
+          <p class="text-[10px] text-zinc-400">点击查看大图</p>
+        </div>
+      </div>
+      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/photo-extra-3.jpg')">
+        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
+          <img src="assets/photo-extra-3.jpg" alt="佐证图片" class="w-full h-full object-contain">
+        </div>
+        <div class="px-3 py-2">
+          <p class="text-xs font-medium text-zinc-700">佐证图片</p>
+          <p class="text-[10px] text-zinc-400">点击查看大图</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="star" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀志愿者</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="medal" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">高中三好学生</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀学生会干部</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="book-open" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">初中学习标兵</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="award" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀共青团员</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="flame" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">特优生</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="trending-up" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">进步明星</p>
+      </div>
+      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
+        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
+          <i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-600"></i>
+        </div>
+        <p class="text-[11px] font-medium text-zinc-700 leading-tight">学习明星</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Play / Game Section -->
+<section id="play" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="gamepad-2" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Play</span>
+    </div>
+    <div class="card-hover bg-white border border-zinc-200 rounded-lg p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-lg bg-zinc-900 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="target" class="w-6 h-6 text-white"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="badge-neutral">Cyber · Pixel</span>
+          </div>
+          <h3 class="text-base font-semibold text-zinc-900 mb-2">赛博坦克大战</h3>
+          <p class="text-sm text-zinc-500 leading-relaxed mb-3">
+            欢迎来到我的数字作品集隐藏关卡。由我参与开发的纯前端 HTML 游戏，支持多地图、多难度、本地双人与联机对战。
+          </p>
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">4张地图</span>
+            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">4档难度</span>
+            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">本地双人</span>
+            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">联机对战</span>
+          </div>
+          <button onclick="openGame()" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-700 transition-colors">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            进入游戏
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
+  <div class="reveal">
+    <div class="flex items-center gap-2 mb-8">
+      <i data-lucide="mail" class="w-4 h-4 text-zinc-500"></i>
+      <span class="section-label">Contact</span>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+      <button onclick="copyText('18990430280')" class="card-hover flex items-center gap-3 p-4 bg-white border border-zinc-200 rounded-lg text-left w-full">
+        <div class="w-10 h-10 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="phone" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div class="flex-1">
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Phone</p>
+          <p class="text-sm font-medium text-zinc-900">189 9043 0280</p>
+        </div>
+        <i data-lucide="copy" class="w-4 h-4 text-zinc-300"></i>
+      </button>
+
+      <button onclick="copyText('3041867249@qq.com')" class="card-hover flex items-center gap-3 p-4 bg-white border border-zinc-200 rounded-lg text-left w-full">
+        <div class="w-10 h-10 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="mail" class="w-4 h-4 text-zinc-700"></i>
+        </div>
+        <div class="flex-1">
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Email</p>
+          <p class="text-sm font-medium text-zinc-900">3041867249@qq.com</p>
+        </div>
+        <i data-lucide="copy" class="w-4 h-4 text-zinc-300"></i>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="max-w-3xl mx-auto px-6 py-8 border-t border-zinc-200">
+  <div class="flex items-center justify-between text-xs text-zinc-400">
+    <span>© 2026 陈芷锐</span>
+    <span class="font-mono">Portfolio · v2.0</span>
+  </div>
+</footer>
+
+<!-- Game Modal -->
+<div class="game-modal" id="gameModal" onclick="if(event.target.id==='gameModal') window.closeGame()">
+  <div class="game-modal-content">
+    <div class="flex items-center justify-between px-5 py-3 bg-zinc-900 border-b border-zinc-800">
+      <div class="flex items-center gap-2">
+        <i data-lucide="gamepad-2" class="w-4 h-4 text-white"></i>
+        <span class="text-sm font-medium text-white">赛博坦克大战</span>
+      </div>
+      <button onclick="window.closeGame()" class="p-1.5 hover:bg-zinc-800 rounded-md transition-colors">
+        <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
+      </button>
+    </div>
+    <iframe class="game-modal-frame" id="gameFrame" src=""></iframe>
+  </div>
+</div>
+
+<!-- Certificate Viewer Modal -->
+<div class="game-modal" id="certModal" onclick="if(event.target.id==='certModal') window.closeCertViewer()">
+  <div class="game-modal-content" style="max-width:900px;height:auto;max-height:90vh;">
+    <div class="flex items-center justify-between px-5 py-3 bg-white border-b border-zinc-200">
+      <div class="flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4 text-zinc-700"></i>
+        <span class="text-sm font-medium text-zinc-900">证书查看</span>
+      </div>
+      <button onclick="window.closeCertViewer()" class="p-1.5 hover:bg-zinc-100 rounded-md transition-colors">
+        <i data-lucide="x" class="w-4 h-4 text-zinc-500"></i>
+      </button>
+    </div>
+    <div class="flex-1 overflow-auto bg-zinc-50 flex items-center justify-center p-4">
+      <img id="certViewerImg" src="" alt="证书大图" class="max-w-full max-h-[80vh] object-contain rounded">
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="copy-toast"></div>
+
+<script>
+  // Lucide icons
+  lucide.createIcons();
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Copy to clipboard
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('✓ 已复制到剪贴板');
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('✓ 已复制到剪贴板');
+    });
+  }
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    lucide.createIcons();
+    setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // Game modal
+  window.openGame = function() {
+    document.getElementById('gameFrame').src = 'tank-battle.html';
+    document.getElementById('gameModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  window.closeGame = function() {
+    document.getElementById('gameFrame').src = '';
+    document.getElementById('gameModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  // Certificate viewer
+  window.openCertViewer = function(src) {
+    document.getElementById('certViewerImg').src = src;
+    document.getElementById('certModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  window.closeCertViewer = function() {
+    document.getElementById('certViewerImg').src = '';
+    document.getElementById('certModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { window.closeGame(); window.closeCertViewer(); }
+  });
+</script>
+
+<style media="print">
+  body { background: white !important; color: #000 !important; }
+  nav, footer, .game-modal, #play section, button[onclick], .copy-toast { display: none !important; }
+  section { border-top: 1px solid #ccc !important; page-break-inside: avoid; }
+  .card-hover { border-color: #bbb !important; break-inside: avoid; box-shadow: none !important; }
+  .pill-badge .dot { display: none !important; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  @page { margin: 1.8cm; size: A4; }
+</style>
+
+</body>
+</html>
+
