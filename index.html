@@ -3,734 +3,982 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>陈芷锐 · Resume</title>
-<meta name="description" content="陈芷锐 · Artificial Intelligence Trainer · 达摩院人工智能高级训练师">
-<meta name="keywords" content="陈芷锐, AI训练师, 达摩院, 简历, Resume">
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Portfolio</title>
+<meta name="description" content="Personal Portfolio">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
-      },
-      colors: {
-        zinc: {
-          50: '#fafafa',
-          100: '#f4f4f5',
-          200: '#e4e4e7',
-          300: '#d4d4d8',
-          400: '#a1a1aa',
-          500: '#71717a',
-          600: '#52525b',
-          700: '#3f3f46',
-          800: '#27272a',
-          900: '#18181b',
-          950: '#09090b',
-        }
-      },
-      animation: {
-        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
-        'fade-up': 'fadeUp 0.6s ease-out forwards',
-      },
-      keyframes: {
-        fadeUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
-      }
-    }
-  }
-}
-</script>
+<style id="theme-style"></style>
 <style>
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  }
-  ::selection { background: #18181b; color: #fff; }
-  .copy-toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: #18181b; color: #fff; padding: 10px 20px; border-radius: 8px;
-    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none;
-    transition: all 0.3s ease; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-  .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .nav-link {
-    position: relative; display: inline-flex; align-items: center; gap: 4px;
-    font-size: 13px; font-weight: 500; color: #52525b;
-    transition: color 0.2s ease;
-  }
-  .nav-link::after {
-    content: ''; position: absolute; bottom: -2px; left: 0;
-    width: 0; height: 1px; background: #18181b;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .nav-link:hover { color: #18181b; }
-  .nav-link:hover::after { width: 100%; }
-  .timeline-dot {
-    position: absolute; left: -3px; top: 6px;
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #18181b;
-  }
-  .card-hover {
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-  }
-  .card-hover:hover { border-color: #a1a1aa; }
-  .pill-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 3px 10px; border-radius: 9999px;
-    background: #f4f4f5; border: 1px solid #e4e4e7;
-    font-size: 11px; font-weight: 500; color: #52525b;
-  }
-  .pill-badge .dot {
-    width: 4px; height: 4px; border-radius: 50%; background: #22c55e;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
-    animation: greenPulse 2s ease-in-out infinite;
-  }
-  @keyframes greenPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-    50% { box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
-  }
-  .section-label {
-    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; color: #71717a;
-  }
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .cert-card img { transition: transform 0.4s ease; }
-  .cert-card:hover img { transform: scale(1.03); }
-  .game-modal {
-    display: none; position: fixed; inset: 0;
-    background: rgba(9,9,11,0.92); backdrop-filter: blur(8px);
-    z-index: 9999; align-items: center; justify-content: center; padding: 20px;
-  }
-  .game-modal.active { display: flex; }
-  .game-modal-content {
-    position: relative; width: 100%; max-width: 1280px; height: 90vh;
-    background: #09090b; border-radius: 12px; overflow: hidden;
-    display: flex; flex-direction: column; border: 1px solid #27272a;
-  }
-  .game-modal-frame { flex: 1; border: none; width: 100%; }
-  .toast-anim { animation: toastIn 0.3s ease forwards; }
-  @keyframes toastIn {
-    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
-  }
-  .badge-neutral {
-    display: inline-block; padding: 2px 8px;
-    font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
-    text-transform: uppercase; color: #71717a;
-    background: #f4f4f5; border-radius: 4px;
-  }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Inter',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; cursor:none; }
+::selection { background:var(--accent); color:var(--bg); }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+::-webkit-scrollbar-thumb:hover { background:var(--text-dim); }
+.font-display { font-family:'Space Grotesk',sans-serif; }
+.font-mono { font-family:'JetBrains Mono',monospace; }
+
+.cursor-dot{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999;transition:transform .08s ease,width .3s,height .3s,background .3s;transform:translate(-50%,-50%);mix-blend-mode:difference}
+.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--text-dim);border-radius:50%;pointer-events:none;z-index:99998;transition:transform .18s,width .3s,height .3s,border-color .3s,background .3s;transform:translate(-50%,-50%)}
+.cursor-ring.hover{width:60px;height:60px;border-color:var(--accent);background:rgba(180,255,57,.05)}
+.cursor-dot.hover{width:12px;height:12px}
+@media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+
+.mesh-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.mesh-blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:floatBlob 20s ease-in-out infinite}
+.mesh-blob:nth-child(1){width:600px;height:600px;background:#b4ff39;top:-100px;left:-150px}
+.mesh-blob:nth-child(2){width:500px;height:500px;background:#ff5e3a;top:30%;right:-100px;animation-delay:-5s}
+.mesh-blob:nth-child(3){width:400px;height:400px;background:#3b82f6;bottom:-100px;left:30%;animation-delay:-10s}
+.mesh-blob:nth-child(4){width:350px;height:350px;background:#a855f7;bottom:20%;right:20%;animation-delay:-15s}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-60px) scale(1.1)}50%{transform:translate(-50px,80px) scale(.95)}75%{transform:translate(60px,40px) scale(1.05)}}
+
+.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.clip-reveal{display:inline-block;clip-path:inset(0 100% 0 0);transition:clip-path 1s cubic-bezier(.77,0,.175,1)}
+.clip-reveal.visible{clip-path:inset(0 0 0 0)}
+
+.stagger>*{opacity:0;transform:translateY(30px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.stagger.visible>*{opacity:1;transform:translateY(0)}
+.stagger.visible>*:nth-child(1){transition-delay:.05s}
+.stagger.visible>*:nth-child(2){transition-delay:.12s}
+.stagger.visible>*:nth-child(3){transition-delay:.19s}
+.stagger.visible>*:nth-child(4){transition-delay:.26s}
+.stagger.visible>*:nth-child(5){transition-delay:.33s}
+.stagger.visible>*:nth-child(6){transition-delay:.40s}
+.stagger.visible>*:nth-child(7){transition-delay:.47s}
+.stagger.visible>*:nth-child(8){transition-delay:.54s}
+
+.marquee{display:flex;overflow:hidden;border-block:1px solid var(--border);background:var(--bg-2);padding:22px 0;white-space:nowrap;position:relative;z-index:2}
+.marquee-track{display:flex;gap:3rem;animation:marqueeScroll 30s linear infinite;flex-shrink:0}
+.marquee-item{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,4vw,3rem);font-weight:600;color:var(--text);display:inline-flex;align-items:center;gap:2rem;flex-shrink:0}
+.marquee-item .dot-sep{width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.marquee-item .outline-text{-webkit-text-stroke:1.5px var(--text);color:transparent}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.nav-bar{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(16px);background:rgba(10,10,11,.65);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav-bar.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,.85)}
+.nav-link{position:relative;font-size:13px;font-weight:500;color:var(--text-dim);transition:color .2s;padding:4px 0}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--accent);transition:width .3s cubic-bezier(.4,0,.2,1)}
+.nav-link:hover{color:var(--text)}
+.nav-link:hover::after{width:100%}
+.nav-link.active{color:var(--text)}
+.nav-link.active::after{width:100%}
+
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;font-weight:600;background:var(--accent);color:var(--bg);border-radius:8px;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;font-weight:600;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:8px;transition:all .3s}
+.btn-secondary:hover{border-color:var(--text-mid);background:var(--surface)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(180,255,57,.06),transparent 40%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover{border-color:rgba(180,255,57,.3);transform:translateY(-3px)}
+.card:hover::before{opacity:1}
+
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:500;background:rgba(180,255,57,.08);border:1px solid rgba(180,255,57,.2);color:var(--accent)}
+.pill .live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 5px transparent}}
+
+.s-label{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim)}
+
+.timeline-line{position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--accent),var(--border),transparent)}
+.timeline-dot{position:absolute;left:4px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(180,255,57,.15);transition:all .3s}
+.timeline-dot::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:1px solid var(--accent);animation:ringExpand 2.5s ease-out infinite;opacity:0}
+@keyframes ringExpand{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.5);opacity:0}}
+
+.skill-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;transform:translateX(-100%);transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
+.skill-fill.fill{transform:translateX(0)}
+
+.hero-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(4rem,18vw,16rem);line-height:.85;letter-spacing:-.04em}
+
+.cert-img{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.cert-card:hover .cert-img{transform:scale(1.08)}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);z-index:9999;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-box{position:relative;width:100%;max-width:1280px;height:90vh;background:var(--bg-2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--border)}
+.modal-frame{flex:1;border:none;width:100%}
+
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:var(--bg);padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.22,1,.36,1);z-index:99999;box-shadow:0 8px 30px var(--accent-glow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-dim);font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--text-dim),transparent);position:relative;overflow:hidden}
+.scroll-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:var(--accent);animation:scrollDown 2s ease-in-out infinite}
+@keyframes scrollDown{0%{transform:translateY(-100%)}100%{transform:translateY(200%)}}
+
+.badge{display:inline-block;padding:2px 8px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);background:var(--surface);border:1px solid var(--border);border-radius:4px}
+
+/* Mobile Nav */
+.mobile-menu-btn{display:none}
+.mobile-menu{display:none;position:fixed;top:57px;left:0;right:0;background:rgba(10,10,11,.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;padding:16px 24px;flex-direction:column;gap:4px}
+.mobile-menu.active{display:flex}
+.mobile-menu a{display:block;padding:12px 0;font-size:16px;font-weight:500;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);transition:color .2s}
+.mobile-menu a:hover{color:var(--text)}
+.mobile-menu a:last-child{border-bottom:none}
+
+/* Mobile Responsive */
+@media(max-width:768px){
+  .hero-name{font-size:clamp(3.5rem,22vw,7rem);line-height:.9}
+  .scroll-indicator{display:none}
+  .nav-bar .max-w-5xl{padding-left:16px;padding-right:16px}
+  .mobile-menu-btn{display:flex}
+  section{padding-left:16px!important;padding-right:16px!important}
+  #hero{padding-top:80px;padding-bottom:40px;min-height:auto}
+  #hero .mb-10{margin-bottom:2rem}
+  .grid-cols-2{grid-template-columns:1fr}
+  .sm\:grid-cols-2{grid-template-columns:1fr}
+  .sm\:grid-cols-4{grid-template-columns:repeat(2,1fr)}
+  .md\:grid-cols-2{grid-template-columns:1fr}
+  .md\:grid-cols-3{grid-template-columns:1fr}
+  .sm\:flex-row{flex-direction:column}
+  .sm\:items-end{align-items:flex-start}
+  .sm\:gap-8{gap:1rem}
+  .text-lg{font-size:.95rem}
+  .sm\:text-xl{font-size:.95rem}
+  .sm\:text-3xl{font-size:1.5rem}
+  .sm\:text-5xl{font-size:2rem}
+  .gap-8{gap:1rem}
+  .h-12{height:2.5rem}
+  .px-6{padding-left:16px;padding-right:16px}
+  .py-24{padding-top:3rem;padding-bottom:3rem}
+  .py-20{padding-top:2.5rem;padding-bottom:2.5rem}
+  .mb-10{margin-bottom:1.5rem}
+  .mb-8{margin-bottom:1rem}
+  .p-5{padding:14px}
+  .p-6{padding:16px}
+  .marquee-item{font-size:1.3rem}
+  .marquee{padding:14px 0}
+  .btn-secondary{padding:8px 14px;font-size:12px}
+  .modal-box{height:95vh}
+}
+
+@media print{
+  body{background:#fff!important;color:#000!important;cursor:auto!important}
+  .mesh-bg,.noise,.cursor-dot,.cursor-ring,.nav-bar,.marquee,.modal-overlay,.toast,.scroll-indicator{display:none!important}
+  .card{background:#fff!important;border-color:#ccc!important}
+  .reveal,.stagger>*{opacity:1!important;transform:none!important}
+  .clip-reveal{clip-path:inset(0 0 0 0)!important}
+  section{page-break-inside:avoid}
+  @page{margin:1.8cm;size:A4}
+}
 </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 antialiased">
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mesh Background -->
+<div class="mesh-bg">
+  <div class="mesh-blob"></div>
+  <div class="mesh-blob"></div>
+  <div class="mesh-blob"></div>
+  <div class="mesh-blob"></div>
+</div>
+<div class="noise"></div>
 
 <!-- Navigation -->
-<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-200">
-  <div class="max-w-3xl mx-auto px-6 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <div class="w-6 h-6 bg-zinc-900 rounded-md flex items-center justify-center">
-        <span class="text-white text-xs font-bold">陈</span>
-      </div>
-      <span class="font-semibold text-sm text-zinc-900">陈芷锐</span>
-    </div>
-    <div class="hidden md:flex items-center gap-6">
-      <a href="#about" class="nav-link">关于</a>
-      <a href="#education" class="nav-link">教育</a>
-      <a href="#skills" class="nav-link">技能</a>
-      <a href="#experience" class="nav-link">经历</a>
-      <a href="#certs" class="nav-link">证书</a>
-      <a href="#contact" class="nav-link">联系</a>
-    </div>
-    <div class="flex items-center gap-2">
-      <button onclick="window.print()" class="p-2 hover:bg-zinc-100 rounded-md transition-colors" title="打印 / 导出PDF">
-        <i data-lucide="printer" class="w-4 h-4 text-zinc-600"></i>
+<nav class="nav-bar" id="navBar">
+  <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#hero" class="flex items-center gap-2.5" id="navLogo"></a>
+    <div class="hidden md:flex items-center gap-7" id="navLinks"></div>
+    <div class="flex items-center gap-1">
+      <button onclick="window.print()" class="p-2 rounded-lg hover:bg-white/5 transition-colors" title="打印 / 导出PDF">
+        <i data-lucide="printer" class="w-4 h-4 text-zinc-400"></i>
+      </button>
+      <button class="mobile-menu-btn p-2 rounded-lg hover:bg-white/5 transition-colors" onclick="toggleMobileMenu()" title="菜单">
+        <i data-lucide="menu" class="w-5 h-5 text-zinc-300" id="menuIcon"></i>
       </button>
     </div>
   </div>
 </nav>
+<nav class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="toggleMobileMenu()">关于</a>
+  <a href="#education" onclick="toggleMobileMenu()">教育</a>
+  <a href="#skills" onclick="toggleMobileMenu()">技能</a>
+  <a href="#experience" onclick="toggleMobileMenu()">经历</a>
+  <a href="#certs" onclick="toggleMobileMenu()">证书</a>
+  <a href="#contact" onclick="toggleMobileMenu()">联系</a>
+</nav>
 
-<!-- Hero / About -->
-<section id="about" class="max-w-3xl mx-auto px-6 pt-28 pb-16">
-  <div class="reveal">
-    <div class="flex flex-col">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="pill-badge"><span class="dot"></span>寻求机会</span>
-        <span class="badge-neutral">立即进行任务</span>
-      </div>
-      <div class="flex items-center gap-4 mb-5">
-        <div class="flex-shrink-0">
-          <div class="w-14 h-14 rounded-xl bg-white border border-zinc-200 overflow-hidden">
-            <img src="assets/avatar.jpg" alt="陈芷锐" class="w-full h-full object-cover">
-          </div>
-        </div>
-        <div class="flex items-baseline gap-3">
-          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 leading-none">
-            陈芷锐
-          </h1>
-          <span class="text-xs text-zinc-400 font-mono hidden sm:block">/</span>
-          <p class="text-sm text-zinc-500 font-medium hidden sm:block">
-            AI Trainer
-          </p>
-        </div>
-      </div>
-      <p class="text-lg text-zinc-500 mb-5 font-medium sm:hidden">
-        Artificial Intelligence Trainer · 达摩院高级训练师
-      </p>
-      <p class="text-sm text-zinc-500 leading-relaxed max-w-xl mb-6">
-        专注于 AI 模型训练与数据标注，持有达摩院人工智能高级训练师认证。
-        拥有学生会管理经验，擅长团队协作与项目推进。
-        热爱科技、追求卓越。
-      </p>
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="copyText('18990430280')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
-          <i data-lucide="phone" class="w-3.5 h-3.5"></i>
-          189 9043 0280
-        </button>
-        <button onclick="copyText('3041867249@qq.com')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
-          <i data-lucide="mail" class="w-3.5 h-3.5"></i>
-          3041867249@qq.com
-        </button>
-        <a href="tel:18990430280" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-600 bg-white border border-zinc-200 rounded-md hover:border-zinc-400 transition-colors">
-          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-          电话联系
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Education -->
-<section id="education" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Education</span>
-    </div>
-    <div class="space-y-5">
-
-      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2 mb-1">
-              <h3 class="font-semibold text-zinc-900">对外经济贸易大学</h3>
-              <span class="badge-neutral">本科</span>
-            </div>
-            <p class="text-sm text-zinc-500">综合类院校 · 高考录取</p>
-          </div>
-          <span class="pill-badge">
-            <span class="dot" style="background: #3b82f6; animation: none;"></span>
-            在读
-          </span>
-        </div>
-      </div>
-
-      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h3 class="font-semibold text-zinc-900 mb-1">绵阳中学</h3>
-            <p class="text-sm text-zinc-500 mb-3">高中 · 以 <span class="font-mono text-zinc-900 font-semibold">849 / 900</span> 分成绩考入</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">三好学生</span>
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">优秀学生会干部</span>
-            </div>
-          </div>
-          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">HIGH SCHOOL</span>
-        </div>
-      </div>
-
-      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h3 class="font-semibold text-zinc-900 mb-1">绵阳外国语实验学校</h3>
-            <p class="text-sm text-zinc-500 mb-3">初中 · 学习标兵</p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">优秀共青团员</span>
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">特优生</span>
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">学习明星</span>
-              <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">进步明星</span>
-            </div>
-          </div>
-          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">MIDDLE SCHOOL</span>
-        </div>
-      </div>
-
-      <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <h3 class="font-semibold text-zinc-900 mb-1">阿坝州本地小学 → 绵阳</h3>
-            <p class="text-sm text-zinc-500">小学 · 五年级转入绵阳继续学业</p>
-          </div>
-          <span class="text-xs font-mono text-zinc-400 whitespace-nowrap">PRIMARY</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Skills -->
-<section id="skills" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="code-2" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Skills</span>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
-        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="cpu" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-zinc-900">AI 模型训练</h4>
-          <p class="text-xs text-zinc-500 mt-0.5">数据标注 · 模型调优 · 算法实现</p>
-        </div>
-      </div>
-
-      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
-        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="presentation" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-zinc-900">PPT 演示设计</h4>
-          <p class="text-xs text-zinc-500 mt-0.5">商业演示 · 数据可视化 · 排版</p>
-        </div>
-      </div>
-
-      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
-        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="users" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-zinc-900">团队协作管理</h4>
-          <p class="text-xs text-zinc-500 mt-0.5">学生会管理 · 活动组织 · 跨部门协调</p>
-        </div>
-      </div>
-
-      <div class="card-hover flex items-start gap-3 p-4 bg-white border border-zinc-200 rounded-lg">
-        <div class="w-9 h-9 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="target" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-zinc-900">项目执行推进</h4>
-          <p class="text-xs text-zinc-500 mt-0.5">目标导向 · 高效执行 · 结果思维</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Experience -->
-<section id="experience" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="briefcase" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Experience</span>
-    </div>
-    <div class="relative pl-5 space-y-6">
-      <div class="absolute left-[2px] top-2 bottom-2 w-px bg-zinc-200"></div>
-
-      <div class="relative">
-        <div class="timeline-dot"></div>
-        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h3 class="text-sm font-semibold text-zinc-900">校级学生会干部</h3>
-              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 校级</p>
-              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
-                参与校级学生会日常运营，负责跨部门协调与项目推进，锻炼组织管理与沟通能力。
-              </p>
-            </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="timeline-dot"></div>
-        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h3 class="text-sm font-semibold text-zinc-900">生活部部长</h3>
-              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 生活部</p>
-              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
-                统筹生活部工作，策划并执行系列校园生活活动，关注学生日常需求，管理团队推进项目落地。
-              </p>
-            </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="timeline-dot"></div>
-        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h3 class="text-sm font-semibold text-zinc-900">体育委员</h3>
-              <p class="text-xs text-zinc-500 mt-0.5">Class Committee</p>
-              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
-                组织班级体育活动，协调运动会参赛事宜，营造积极向上的班级氛围。
-              </p>
-            </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="timeline-dot"></div>
-        <div class="card-hover bg-white border border-zinc-200 rounded-lg p-5">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <h3 class="text-sm font-semibold text-zinc-900">组织部部员</h3>
-              <p class="text-xs text-zinc-500 mt-0.5">Student Union · 组织部</p>
-              <p class="text-sm text-zinc-600 mt-2 leading-relaxed">
-                参与学生会组织建设、成员招募与培训工作，协助活动筹备与执行。
-              </p>
-            </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-300 flex-shrink-0 mt-1"></i>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Certificates -->
-<section id="certs" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="award" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Certificates &amp; Honors</span>
-    </div>
-
-    <div class="card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden mb-4">
-      <div class="flex items-center gap-3 p-4 bg-zinc-50 border-b border-zinc-200">
-        <div class="w-10 h-10 rounded-md bg-white border border-zinc-200 flex items-center justify-center">
-          <i data-lucide="bot" class="w-5 h-5 text-orange-500"></i>
-        </div>
-        <div class="flex-1">
-          <h3 class="text-sm font-semibold text-zinc-900">达摩院人工智能高级训练师</h3>
-          <p class="text-xs text-zinc-500">DAMO Academy · 2026年8月10日颁发</p>
-        </div>
-        <span class="pill-badge">
-          <span class="dot" style="background: #f59e0b; animation: none;"></span>
-          高级认证
-        </span>
-      </div>
-      <div class="p-4">
-        <div class="grid grid-cols-2 gap-3 text-xs">
-          <div class="flex justify-between py-1.5 border-b border-zinc-100">
-            <span class="text-zinc-500">证书编号</span>
-            <span class="font-mono text-zinc-700">AIT260810000555000105</span>
-          </div>
-          <div class="flex justify-between py-1.5 border-b border-zinc-100">
-            <span class="text-zinc-500">有效期至</span>
-            <span class="font-mono text-zinc-700">2027-08-10</span>
-          </div>
-          <div class="col-span-2 flex justify-between py-1.5 border-b border-zinc-100">
-            <span class="text-zinc-500">颁证机构</span>
-            <span class="text-zinc-700">达摩院·机器智能技术事业部 (Intelligent DAMO)</span>
-          </div>
-          <div class="col-span-2 flex justify-between py-1.5">
-            <span class="text-zinc-500">认证内容</span>
-            <span class="text-zinc-700">人工智能训练师高级培训课程 · 认证合格</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 证书原图画廊 -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/cert-ai-senior.jpg')">
-        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
-          <img src="assets/cert-ai-senior.jpg" alt="人工智能训练师高级证书" class="w-full h-full object-contain">
-        </div>
-        <div class="px-3 py-2">
-          <p class="text-xs font-medium text-zinc-700">人工智能训练师（高级）</p>
-          <p class="text-[10px] text-zinc-400">陈芷锐 · 20260810</p>
-        </div>
-      </div>
-      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/cert-ai-junior.png')">
-        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
-          <img src="assets/cert-ai-junior.png" alt="人工智能训练师初级证书" class="w-full h-full object-contain">
-        </div>
-        <div class="px-3 py-2">
-          <p class="text-xs font-medium text-zinc-700">人工智能训练师（初级）</p>
-          <p class="text-[10px] text-zinc-400">基础认证</p>
-        </div>
-      </div>
-      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/photo-extra-2.jpg')">
-        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
-          <img src="assets/photo-extra-2.jpg" alt="佐证图片" class="w-full h-full object-contain">
-        </div>
-        <div class="px-3 py-2">
-          <p class="text-xs font-medium text-zinc-700">佐证图片</p>
-          <p class="text-[10px] text-zinc-400">点击查看大图</p>
-        </div>
-      </div>
-      <div class="cert-card card-hover bg-white border border-zinc-200 rounded-lg overflow-hidden cursor-pointer" onclick="openCertViewer('assets/photo-extra-3.jpg')">
-        <div class="aspect-[4/3] overflow-hidden bg-zinc-50">
-          <img src="assets/photo-extra-3.jpg" alt="佐证图片" class="w-full h-full object-contain">
-        </div>
-        <div class="px-3 py-2">
-          <p class="text-xs font-medium text-zinc-700">佐证图片</p>
-          <p class="text-[10px] text-zinc-400">点击查看大图</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="star" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀志愿者</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="medal" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">高中三好学生</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="shield-check" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀学生会干部</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="book-open" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">初中学习标兵</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="award" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">优秀共青团员</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="flame" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">特优生</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="trending-up" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">进步明星</p>
-      </div>
-      <div class="card-hover p-3 bg-white border border-zinc-200 rounded-lg text-center">
-        <div class="w-8 h-8 mx-auto mb-2 rounded-md bg-zinc-100 flex items-center justify-center">
-          <i data-lucide="graduation-cap" class="w-4 h-4 text-zinc-600"></i>
-        </div>
-        <p class="text-[11px] font-medium text-zinc-700 leading-tight">学习明星</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Play / Game Section -->
-<section id="play" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="gamepad-2" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Play</span>
-    </div>
-    <div class="card-hover bg-white border border-zinc-200 rounded-lg p-6">
-      <div class="flex items-start gap-4">
-        <div class="w-12 h-12 rounded-lg bg-zinc-900 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="target" class="w-6 h-6 text-white"></i>
-        </div>
-        <div class="flex-1">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="badge-neutral">Cyber · Pixel</span>
-          </div>
-          <h3 class="text-base font-semibold text-zinc-900 mb-2">赛博坦克大战</h3>
-          <p class="text-sm text-zinc-500 leading-relaxed mb-3">
-            欢迎来到我的数字作品集隐藏关卡。由我参与开发的纯前端 HTML 游戏，支持多地图、多难度、本地双人与联机对战。
-          </p>
-          <div class="flex flex-wrap gap-1.5 mb-4">
-            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">4张地图</span>
-            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">4档难度</span>
-            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">本地双人</span>
-            <span class="px-2 py-0.5 text-xs text-zinc-600 bg-zinc-100 rounded">联机对战</span>
-          </div>
-          <button onclick="openGame()" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-zinc-900 rounded-md hover:bg-zinc-700 transition-colors">
-            <i data-lucide="play" class="w-4 h-4"></i>
-            进入游戏
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Contact -->
-<section id="contact" class="max-w-3xl mx-auto px-6 py-12 border-t border-zinc-200">
-  <div class="reveal">
-    <div class="flex items-center gap-2 mb-8">
-      <i data-lucide="mail" class="w-4 h-4 text-zinc-500"></i>
-      <span class="section-label">Contact</span>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-      <button onclick="copyText('18990430280')" class="card-hover flex items-center gap-3 p-4 bg-white border border-zinc-200 rounded-lg text-left w-full">
-        <div class="w-10 h-10 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="phone" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div class="flex-1">
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Phone</p>
-          <p class="text-sm font-medium text-zinc-900">189 9043 0280</p>
-        </div>
-        <i data-lucide="copy" class="w-4 h-4 text-zinc-300"></i>
-      </button>
-
-      <button onclick="copyText('3041867249@qq.com')" class="card-hover flex items-center gap-3 p-4 bg-white border border-zinc-200 rounded-lg text-left w-full">
-        <div class="w-10 h-10 rounded-md bg-zinc-100 flex items-center justify-center flex-shrink-0">
-          <i data-lucide="mail" class="w-4 h-4 text-zinc-700"></i>
-        </div>
-        <div class="flex-1">
-          <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 mb-0.5">Email</p>
-          <p class="text-sm font-medium text-zinc-900">3041867249@qq.com</p>
-        </div>
-        <i data-lucide="copy" class="w-4 h-4 text-zinc-300"></i>
-      </button>
-
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="max-w-3xl mx-auto px-6 py-8 border-t border-zinc-200">
-  <div class="flex items-center justify-between text-xs text-zinc-400">
-    <span>© 2026 陈芷锐</span>
-    <span class="font-mono">Portfolio · v2.0</span>
-  </div>
-</footer>
+<!-- Content container -->
+<div id="app"></div>
 
 <!-- Game Modal -->
-<div class="game-modal" id="gameModal" onclick="if(event.target.id==='gameModal') window.closeGame()">
-  <div class="game-modal-content">
-    <div class="flex items-center justify-between px-5 py-3 bg-zinc-900 border-b border-zinc-800">
-      <div class="flex items-center gap-2">
-        <i data-lucide="gamepad-2" class="w-4 h-4 text-white"></i>
-        <span class="text-sm font-medium text-white">赛博坦克大战</span>
-      </div>
-      <button onclick="window.closeGame()" class="p-1.5 hover:bg-zinc-800 rounded-md transition-colors">
+<div class="modal-overlay" id="gameModal" onclick="if(event.target.id==='gameModal') closeGame()">
+  <div class="modal-box">
+    <div class="flex items-center justify-between px-5 py-3 border-b border-zinc-800" style="background:var(--bg-2);">
+      <div class="flex items-center gap-2" id="gameModalTitle"></div>
+      <button onclick="closeGame()" class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors">
         <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
       </button>
     </div>
-    <iframe class="game-modal-frame" id="gameFrame" src=""></iframe>
+    <iframe class="modal-frame" id="gameFrame" src=""></iframe>
   </div>
 </div>
 
-<!-- Certificate Viewer Modal -->
-<div class="game-modal" id="certModal" onclick="if(event.target.id==='certModal') window.closeCertViewer()">
-  <div class="game-modal-content" style="max-width:900px;height:auto;max-height:90vh;">
-    <div class="flex items-center justify-between px-5 py-3 bg-white border-b border-zinc-200">
+<!-- Cert Viewer Modal -->
+<div class="modal-overlay" id="certModal" onclick="if(event.target.id==='certModal') closeCertViewer()">
+  <div class="modal-box" style="max-width:900px;height:auto;max-height:90vh;">
+    <div class="flex items-center justify-between px-5 py-3 border-b border-zinc-800" style="background:var(--bg-2);">
       <div class="flex items-center gap-2">
-        <i data-lucide="award" class="w-4 h-4 text-zinc-700"></i>
-        <span class="text-sm font-medium text-zinc-900">证书查看</span>
+        <i data-lucide="award" class="w-4 h-4" style="color:var(--accent);"></i>
+        <span class="text-sm font-medium text-zinc-100">证书查看</span>
       </div>
-      <button onclick="window.closeCertViewer()" class="p-1.5 hover:bg-zinc-100 rounded-md transition-colors">
-        <i data-lucide="x" class="w-4 h-4 text-zinc-500"></i>
+      <button onclick="closeCertViewer()" class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors">
+        <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
       </button>
     </div>
-    <div class="flex-1 overflow-auto bg-zinc-50 flex items-center justify-center p-4">
-      <img id="certViewerImg" src="" alt="证书大图" class="max-w-full max-h-[80vh] object-contain rounded">
+    <div class="flex-1 overflow-auto flex items-center justify-center p-4" style="background:var(--bg);">
+      <img id="certViewerImg" src="" alt="证书大图" class="max-w-full max-h-[80vh] object-contain rounded-lg">
     </div>
   </div>
 </div>
 
 <!-- Toast -->
-<div id="toast" class="copy-toast"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-  // Lucide icons
-  lucide.createIcons();
+let CONFIG = null;
 
-  // Reveal on scroll
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+async function init() {
+  try {
+    const res = await fetch('config.json');
+    CONFIG = await res.json();
+  } catch(e) {
+    console.error('Failed to load config.json:', e);
+    return;
+  }
+
+  applyTheme(CONFIG.theme);
+  document.title = CONFIG.site.title;
+  document.querySelector('meta[name="description"]').setAttribute('content', CONFIG.site.description);
+  renderNav(CONFIG);
+  renderHero(CONFIG);
+  renderMarquee(CONFIG.marquee);
+  renderAbout(CONFIG.about);
+  renderEducation(CONFIG.education);
+  renderSkills(CONFIG.skills, CONFIG.skillTags);
+  renderExperience(CONFIG.experience);
+  renderCertificates(CONFIG.certificates);
+  renderGame(CONFIG.game);
+  renderContact(CONFIG.profile);
+  renderFooter(CONFIG.footer);
+
+  lucide.createIcons();
+  initCursor();
+  initReveal();
+  initSkillBars();
+  initCounters();
+  initNavScroll();
+}
+
+function applyTheme(t) {
+  const style = document.getElementById('theme-style');
+  style.textContent = `:root{--bg:${t.bg};--bg-2:${t.bg2};--surface:${t.surface};--border:${t.border};--text:${t.text};--text-dim:${t.textDim};--text-mid:#a1a1aa;--accent:${t.accent};--accent-glow:${t.accent}66;--accent-2:${t.accent2}}body{background:var(--bg);color:var(--text)}`;
+}
+
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function renderNav(cfg) {
+  const logo = document.getElementById('navLogo');
+  logo.innerHTML = `
+    <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:var(--accent);">
+      <span style="color:var(--bg);font-size:12px;font-weight:800;" class="font-display">${cfg.profile.name[0]}</span>
+    </div>
+    <span class="font-semibold text-sm text-zinc-100">${cfg.profile.name}</span>
+  `;
+
+  const links = document.getElementById('navLinks');
+  const sections = [
+    {id:'about',label:'关于'},{id:'education',label:'教育'},{id:'skills',label:'技能'},
+    {id:'experience',label:'经历'},{id:'certs',label:'证书'},{id:'contact',label:'联系'}
+  ];
+  sections.forEach(s => {
+    const a = el('a','nav-link',s.label);
+    a.href = '#' + s.id;
+    a.dataset.section = s.id;
+    links.appendChild(a);
+  });
+}
+
+function renderHero(cfg) {
+  const p = cfg.profile;
+  const app = document.getElementById('app');
+
+  const section = el('section');
+  section.id = 'hero';
+  section.className = 'relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto w-full');
+
+  // Badges
+  const badges = el('div','flex items-center gap-3 mb-8 reveal');
+  badges.appendChild(makePill(p.status, true));
+  p.badges.forEach(b => badges.appendChild(makeBadge(b)));
+  inner.appendChild(badges);
+
+  // Name
+  const h1 = el('h1','hero-name font-display mb-6');
+  const span = el('span','clip-reveal block',p.name);
+  h1.appendChild(span);
+  inner.appendChild(h1);
+
+  // Bio + buttons
+  const bioRow = el('div','flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8 mb-10 reveal');
+  const bio = el('p','text-lg sm:text-xl text-zinc-400 font-medium max-w-md leading-relaxed', p.bio);
+  bioRow.appendChild(bio);
+  const btns = el('div','flex flex-wrap gap-2 shrink-0');
+  const phoneBtn = makeBtn('phone', p.phone, () => copyText(p.phone));
+  const emailBtn = makeBtn('mail', 'Email', () => copyText(p.email));
+  btns.appendChild(phoneBtn);
+  btns.appendChild(emailBtn);
+  bioRow.appendChild(btns);
+  inner.appendChild(bioRow);
+
+  // Stats
+  const stats = el('div','flex items-center gap-8 reveal');
+  cfg.stats.forEach((s, i) => {
+    if (i > 0) stats.appendChild(el('div','w-px h-12 bg-zinc-800'));
+    const wrap = el('div');
+    const num = el('div', 'text-3xl sm:text-4xl font-bold font-display' + (s.highlight ? '' : ' counter'),
+      s.highlight ? s.value : '0');
+    if (s.highlight) num.style.color = 'var(--accent)';
+    if (!s.highlight) { num.dataset.target = s.value; num.dataset.suffix = s.suffix || ''; }
+    wrap.appendChild(num);
+    wrap.appendChild(el('p','text-xs text-zinc-500 mt-1',s.label));
+    stats.appendChild(wrap);
+  });
+  inner.appendChild(stats);
+
+  section.appendChild(inner);
+
+  // Scroll indicator
+  const scrollInd = el('div','scroll-indicator');
+  scrollInd.innerHTML = '<span>Scroll</span><div class="scroll-line"></div>';
+  section.appendChild(scrollInd);
+
+  app.appendChild(section);
+}
+
+function renderMarquee(items) {
+  const app = document.getElementById('app');
+  const marquee = el('div','marquee');
+  const track = el('div','marquee-track');
+
+  // Duplicate for seamless loop
+  for (let r = 0; r < 2; r++) {
+    const group = el('span','marquee-item');
+    items.forEach((item, i) => {
+      if (i > 0 || r > 0) group.appendChild(el('span','dot-sep'));
+      if (item.outline) {
+        const s = el('span','outline-text',item.text);
+        group.appendChild(s);
+      } else {
+        group.appendChild(document.createTextNode(item.text));
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Copy to clipboard
-  function copyText(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      showToast('✓ 已复制到剪贴板');
-    }).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta);
-      ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-      showToast('✓ 已复制到剪贴板');
-    });
-  }
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    lucide.createIcons();
-    setTimeout(() => toast.classList.remove('show'), 1800);
+    track.appendChild(group);
   }
 
-  // Game modal
-  window.openGame = function() {
-    document.getElementById('gameFrame').src = 'tank-battle.html';
-    document.getElementById('gameModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  window.closeGame = function() {
-    document.getElementById('gameFrame').src = '';
-    document.getElementById('gameModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  // Certificate viewer
-  window.openCertViewer = function(src) {
-    document.getElementById('certViewerImg').src = src;
-    document.getElementById('certModal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  window.closeCertViewer = function() {
-    document.getElementById('certViewerImg').src = '';
-    document.getElementById('certModal').classList.remove('active');
-    document.body.style.overflow = '';
-  }
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { window.closeGame(); window.closeCertViewer(); }
+  marquee.appendChild(track);
+  app.appendChild(marquee);
+}
+
+function renderAbout(cfg) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'about';
+  section.className = 'relative px-6 py-24';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('user','About'));
+
+  const grid = el('div','grid grid-cols-1 md:grid-cols-3 gap-6 stagger');
+
+  const main = el('div','md:col-span-2');
+  main.innerHTML = `
+    <h2 class="text-2xl sm:text-3xl font-bold font-display leading-tight mb-4">
+      ${cfg.heading}<br><span style="color:var(--accent);">${cfg.headingHighlight}</span>，${cfg.headingSuffix}
+    </h2>
+    <p class="text-zinc-400 leading-relaxed text-sm">${cfg.description}</p>
+  `;
+  grid.appendChild(main);
+
+  // Card
+  const card = el('div','card p-5');
+  const c = cfg.card;
+  card.innerHTML = `
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-11 h-11 rounded-lg overflow-hidden border border-zinc-700 shrink-0">
+        <img src="${c.avatar}" alt="${c.name}" class="w-full h-full object-cover">
+      </div>
+      <div>
+        <p class="font-semibold text-sm text-zinc-100">${c.name}</p>
+        <p class="text-xs text-zinc-500">${c.role}</p>
+      </div>
+    </div>
+    <div class="space-y-2 text-xs">
+      ${c.info.map(i => `<div class="flex justify-between items-center"><span class="text-zinc-500">${i.label}</span><span ${i.highlight?'style="color:var(--accent);"':''}class="${i.highlight?'font-medium':'text-zinc-300'}">${i.value}</span></div>`).join('')}
+    </div>
+  `;
+  grid.appendChild(card);
+
+  inner.appendChild(grid);
+  section.appendChild(inner);
+  app.appendChild(section);
+}
+
+function renderEducation(items) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'education';
+  section.className = 'relative px-6 py-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('graduation-cap','Education'));
+
+  const grid = el('div','grid grid-cols-1 md:grid-cols-2 gap-4 stagger');
+
+  items.forEach(item => {
+    const card = el('div','card p-5');
+    const top = el('div','flex items-start justify-between mb-2');
+    top.appendChild(el('h3','font-semibold text-zinc-100',item.school));
+
+    if (item.pill) {
+      top.appendChild(makePill(item.pill.label, false, item.pill.color));
+    } else if (item.badge) {
+      top.appendChild(el('span','text-xs font-mono text-zinc-500',item.badge));
+    }
+
+    card.appendChild(top);
+
+    if (item.score) {
+      const scoreText = (item.scoreLabel || '{score}').replace('{score}', `<span class="font-mono font-bold" style="color:var(--accent);">${item.score}</span>`);
+      card.appendChild(el('p','text-sm text-zinc-500 mb-3',scoreText));
+    } else if (item.level) {
+      card.appendChild(el('p','text-sm text-zinc-500 mb-3',item.level));
+    }
+
+    if (item.tags && item.tags.length) {
+      const tagWrap = el('div','flex flex-wrap gap-1.5');
+      item.tags.forEach(t => tagWrap.appendChild(makeBadge(t)));
+      card.appendChild(tagWrap);
+    }
+
+    grid.appendChild(card);
   });
-</script>
 
-<style media="print">
-  body { background: white !important; color: #000 !important; }
-  nav, footer, .game-modal, #play section, button[onclick], .copy-toast { display: none !important; }
-  section { border-top: 1px solid #ccc !important; page-break-inside: avoid; }
-  .card-hover { border-color: #bbb !important; break-inside: avoid; box-shadow: none !important; }
-  .pill-badge .dot { display: none !important; }
-  .reveal { opacity: 1 !important; transform: none !important; }
-  @page { margin: 1.8cm; size: A4; }
-</style>
+  inner.appendChild(grid);
+  section.appendChild(inner);
+  app.appendChild(section);
+}
+
+function renderSkills(skills, tags) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'skills';
+  section.className = 'relative px-6 py-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('zap','Skills'));
+
+  const grid = el('div','grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10 stagger');
+
+  skills.forEach(s => {
+    const wrap = el('div');
+    wrap.innerHTML = `
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <i data-lucide="${s.icon}" class="w-4 h-4 text-zinc-400"></i>
+          <span class="text-sm font-medium text-zinc-200">${s.name}</span>
+        </div>
+        <span class="text-xs font-mono text-zinc-500">${s.level}</span>
+      </div>
+      <div class="skill-bar"><div class="skill-fill" data-width="${s.width}"></div></div>
+      <p class="text-xs text-zinc-600 mt-1.5">${s.desc}</p>
+    `;
+    grid.appendChild(wrap);
+  });
+
+  inner.appendChild(grid);
+
+  const tagWrap = el('div','flex flex-wrap gap-2 reveal');
+  tags.forEach(t => {
+    const b = makeBadge(t);
+    b.style.padding = '6px 14px';
+    b.style.fontSize = '11px';
+    tagWrap.appendChild(b);
+  });
+  inner.appendChild(tagWrap);
+
+  section.appendChild(inner);
+  app.appendChild(section);
+}
+
+function renderExperience(items) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'experience';
+  section.className = 'relative px-6 py-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('briefcase','Experience'));
+
+  const timeline = el('div','relative pl-6 space-y-5');
+  timeline.appendChild(el('div','timeline-line'));
+
+  items.forEach(item => {
+    const wrap = el('div','relative reveal');
+    wrap.appendChild(el('div','timeline-dot'));
+
+    const card = el('div','card p-5');
+    const top = el('div','flex items-start justify-between gap-3 mb-2');
+
+    const info = el('div');
+    const titleRow = el('div','flex items-center gap-2 mb-1');
+    titleRow.appendChild(el('h3','text-sm font-bold text-zinc-100',item.title));
+    if (item.pill) {
+      titleRow.appendChild(makePill(item.pill.label, true, item.pill.color));
+    }
+    info.appendChild(titleRow);
+    info.appendChild(el('p','text-xs text-zinc-500',item.org));
+    top.appendChild(info);
+
+    if (item.date) {
+      top.appendChild(el('span','text-xs font-mono text-zinc-600 whitespace-nowrap shrink-0',item.date));
+    } else {
+      top.appendChild(el('i','',''));
+      const icon = el('i','w-4 h-4 text-zinc-600 shrink-0 mt-1');
+      icon.setAttribute('data-lucide','chevron-right');
+      top.appendChild(icon);
+    }
+    card.appendChild(top);
+
+    // Description with highlight
+    let descText = item.description;
+    if (item.highlight) {
+      descText = descText.replace(item.highlight, `<span style="color:var(--accent);font-weight:500;">${item.highlight}</span>`);
+    }
+    card.appendChild(el('p','text-sm text-zinc-400 mt-2 leading-relaxed',descText));
+
+    if (item.tags && item.tags.length) {
+      const tagWrap = el('div','flex flex-wrap gap-1.5 mt-3');
+      item.tags.forEach(t => tagWrap.appendChild(makeBadge(t)));
+      card.appendChild(tagWrap);
+    }
+
+    wrap.appendChild(card);
+    timeline.appendChild(wrap);
+  });
+
+  inner.appendChild(timeline);
+  section.appendChild(inner);
+  app.appendChild(section);
+}
+
+function renderCertificates(cfg) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'certs';
+  section.className = 'relative px-6 py-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('award','Certificates &amp; Honors'));
+
+  // Main cert
+  const main = cfg.main;
+  const mainCard = el('div','card p-0 overflow-hidden mb-6 reveal');
+  const header = el('div','flex items-center gap-3 p-4 border-b border-zinc-800');
+  header.style.background = 'rgba(255,255,255,0.02)';
+  const iconBox = el('div','w-10 h-10 rounded-lg flex items-center justify-center shrink-0');
+  iconBox.style.background = 'rgba(180,255,57,0.08)';
+  iconBox.style.border = '1px solid rgba(180,255,57,0.2)';
+  const iconI = el('i','','');
+  iconI.setAttribute('data-lucide', main.icon);
+  iconI.style.color = 'var(--accent)';
+  iconI.className = 'w-5 h-5';
+  iconBox.appendChild(iconI);
+  header.appendChild(iconBox);
+  const titleDiv = el('div','flex-1');
+  titleDiv.innerHTML = `<h3 class="text-sm font-bold text-zinc-100">${main.title}</h3><p class="text-xs text-zinc-500">${main.issuer}</p>`;
+  header.appendChild(titleDiv);
+  if (main.pill) header.appendChild(makePill(main.pill.label, false, main.pill.color));
+  mainCard.appendChild(header);
+
+  const details = el('div','p-4');
+  const detailGrid = el('div','grid grid-cols-2 gap-3 text-xs');
+  main.details.forEach(d => {
+    const row = el('div','flex justify-between py-1.5 border-b border-zinc-800');
+    if (d.span === 2) row.className = 'col-span-2 flex justify-between py-1.5 border-b border-zinc-800';
+    row.appendChild(el('span','text-zinc-500',d.label));
+    row.appendChild(el('span', d.mono ? 'font-mono text-zinc-300' : 'text-zinc-300', d.value));
+    detailGrid.appendChild(row);
+  });
+  details.appendChild(detailGrid);
+  mainCard.appendChild(details);
+  inner.appendChild(mainCard);
+
+  // Gallery
+  const gallery = el('div','grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 stagger');
+  cfg.gallery.forEach(g => {
+    const card = el('div','cert-card card overflow-hidden cursor-pointer');
+    card.onclick = () => openCertViewer(g.img);
+    card.innerHTML = `
+      <div class="aspect-[4/3] overflow-hidden bg-zinc-900">
+        <img src="${g.img}" alt="${g.title}" class="cert-img w-full h-full object-contain">
+      </div>
+      <div class="px-3 py-2">
+        <p class="text-xs font-medium text-zinc-200">${g.title}</p>
+        <p class="text-[10px] text-zinc-600">${g.sub}</p>
+      </div>
+    `;
+    gallery.appendChild(card);
+  });
+  inner.appendChild(gallery);
+
+  // Honors
+  app.appendChild(section);
+  section.appendChild(inner);
+
+  // We need honors data - render from CONFIG
+  if (CONFIG.honors) {
+    const honorsGrid = el('div','grid grid-cols-2 sm:grid-cols-4 gap-2 stagger');
+    CONFIG.honors.forEach(h => {
+      const card = el('div','card p-3 text-center');
+      const iconWrap = el('div','w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center');
+      iconWrap.style.background = 'rgba(180,255,57,0.06)';
+      const iconI = el('i','w-4 h-4');
+      iconI.setAttribute('data-lucide', h.icon);
+      iconI.style.color = 'var(--accent)';
+      iconWrap.appendChild(iconI);
+      card.appendChild(iconWrap);
+      card.appendChild(el('p','text-[11px] font-medium text-zinc-300',h.title));
+      honorsGrid.appendChild(card);
+    });
+    inner.appendChild(honorsGrid);
+  }
+}
+
+function renderGame(cfg) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'play';
+  section.className = 'relative px-6 py-20';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('gamepad-2','Play'));
+
+  const card = el('div','card p-6 reveal');
+  card.innerHTML = `
+    <div class="flex items-start gap-4">
+      <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style="background:var(--accent);">
+        <i data-lucide="target" class="w-7 h-7" style="color:var(--bg);"></i>
+      </div>
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-2"><span class="badge">${cfg.badge}</span></div>
+        <h3 class="text-lg font-bold font-display text-zinc-100 mb-2">${cfg.title}</h3>
+        <p class="text-sm text-zinc-400 leading-relaxed mb-4">${cfg.description}</p>
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          ${cfg.tags.map(t => `<span class="badge">${t}</span>`).join('')}
+        </div>
+        <button onclick="openGame()" class="btn-primary">
+          <i data-lucide="play" class="w-4 h-4"></i>${cfg.button}
+        </button>
+      </div>
+    </div>
+  `;
+  inner.appendChild(card);
+  section.appendChild(inner);
+
+  // Set game modal title
+  document.getElementById('gameModalTitle').innerHTML = `<i data-lucide="gamepad-2" class="w-4 h-4" style="color:var(--accent);"></i><span class="text-sm font-medium text-zinc-100">${cfg.title}</span>`;
+
+  app.appendChild(section);
+}
+
+function renderContact(p) {
+  const app = document.getElementById('app');
+  const section = el('section');
+  section.id = 'contact';
+  section.className = 'relative px-6 py-24';
+  section.style.zIndex = '2';
+
+  const inner = el('div','max-w-5xl mx-auto');
+  inner.appendChild(makeSectionLabel('mail','Contact'));
+
+  const heading = el('h2','text-3xl sm:text-5xl font-bold font-display leading-tight mb-8 reveal');
+  heading.innerHTML = `Let's <span style="color:var(--accent);">talk</span>.`;
+  inner.appendChild(heading);
+
+  const grid = el('div','grid grid-cols-1 sm:grid-cols-2 gap-4 stagger');
+
+  const phoneBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
+  phoneBtn.onclick = () => copyText(p.phone);
+  phoneBtn.innerHTML = `
+    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
+      <i data-lucide="phone" class="w-4 h-4" style="color:var(--accent);"></i>
+    </div>
+    <div class="flex-1">
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-600 mb-0.5">Phone</p>
+      <p class="text-sm font-medium text-zinc-100">${p.phone}</p>
+    </div>
+    <i data-lucide="copy" class="w-4 h-4 text-zinc-600"></i>
+  `;
+  grid.appendChild(phoneBtn);
+
+  const emailBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
+  emailBtn.onclick = () => copyText(p.email);
+  emailBtn.innerHTML = `
+    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
+      <i data-lucide="mail" class="w-4 h-4" style="color:var(--accent);"></i>
+    </div>
+    <div class="flex-1">
+      <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-600 mb-0.5">Email</p>
+      <p class="text-sm font-medium text-zinc-100">${p.email}</p>
+    </div>
+    <i data-lucide="copy" class="w-4 h-4 text-zinc-600"></i>
+  `;
+  grid.appendChild(emailBtn);
+
+  inner.appendChild(grid);
+  section.appendChild(inner);
+  app.appendChild(section);
+}
+
+function renderFooter(cfg) {
+  const app = document.getElementById('app');
+  const footer = el('footer','relative px-6 py-10 border-t border-zinc-800');
+  footer.style.zIndex = '2';
+  footer.innerHTML = `
+    <div class="max-w-5xl mx-auto flex items-center justify-between text-xs text-zinc-600">
+      <span>${cfg.copyright}</span>
+      <div class="flex items-center gap-4">
+        <a href="admin.html" class="hover:text-zinc-400 transition-colors">Admin</a>
+        <span class="font-mono">${cfg.note}</span>
+      </div>
+    </div>
+  `;
+  app.appendChild(footer);
+}
+
+// Helpers
+function makeSectionLabel(icon, label) {
+  const wrap = el('div','flex items-center gap-2 mb-10 reveal');
+  const i = el('i','w-4 h-4 text-zinc-500');
+  i.setAttribute('data-lucide', icon);
+  wrap.appendChild(i);
+  wrap.appendChild(el('span','s-label',label));
+  return wrap;
+}
+
+function makePill(label, live, color) {
+  const pill = el('span','pill');
+  if (color) {
+    pill.style.background = `${color}14`;
+    pill.style.borderColor = `${color}40`;
+    pill.style.color = color;
+  }
+  if (live) {
+    const dot = el('span','live-dot');
+    if (color) dot.style.background = color;
+    pill.appendChild(dot);
+  }
+  pill.appendChild(document.createTextNode(label));
+  return pill;
+}
+
+function makeBadge(text) {
+  return el('span','badge',text);
+}
+
+function makeBtn(icon, label, onclick) {
+  const btn = el('button','btn-secondary');
+  btn.onclick = onclick;
+  const i = el('i','w-3.5 h-3.5');
+  i.setAttribute('data-lucide', icon);
+  btn.appendChild(i);
+  btn.appendChild(document.createTextNode(label));
+  return btn;
+}
+
+// Cursor
+function initCursor() {
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+  });
+
+  function anim() {
+    rx += (mx-rx)*0.18;
+    ry += (my-ry)*0.18;
+    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(anim);
+  }
+  anim();
+
+  document.querySelectorAll('a,button,.card,.cert-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { dot.classList.add('hover'); ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { dot.classList.remove('hover'); ring.classList.remove('hover'); });
+  });
+
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+}
+
+// Reveal on scroll
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:0.1, rootMargin:'0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal,.stagger,.clip-reveal').forEach(el => obs.observe(el));
+}
+
+// Skill bars
+function initSkillBars() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const fill = e.target;
+        fill.style.transform = `translateX(-${100 - parseInt(fill.dataset.width)}%)`;
+        fill.classList.add('fill');
+      }
+    });
+  }, { threshold:0.3 });
+  document.querySelectorAll('.skill-fill').forEach(el => obs.observe(el));
+}
+
+// Counters
+function initCounters() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        let cur = 0;
+        const step = Math.ceil(target/30);
+        const interval = setInterval(() => {
+          cur += step;
+          if (cur >= target) { cur = target; clearInterval(interval); }
+          el.textContent = cur + suffix;
+        }, 40);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold:0.5 });
+  document.querySelectorAll('.counter').forEach(el => obs.observe(el));
+}
+
+// Nav scroll
+function initNavScroll() {
+  const navBar = document.getElementById('navBar');
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) navBar.classList.add('scrolled');
+    else navBar.classList.remove('scrolled');
+
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(l => {
+      l.classList.remove('active');
+      if (l.dataset.section === current) l.classList.add('active');
+    });
+  });
+}
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const icon = document.getElementById('menuIcon');
+  menu.classList.toggle('active');
+  if (menu.classList.contains('active')) {
+    icon.setAttribute('data-lucide', 'x');
+  } else {
+    icon.setAttribute('data-lucide', 'menu');
+  }
+  lucide.createIcons();
+}
+
+// Copy
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'))
+    .catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      showToast('已复制到剪贴板');
+    });
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// Game modal
+function openGame() {
+  document.getElementById('gameFrame').src = CONFIG.game.src;
+  document.getElementById('gameModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeGame() {
+  document.getElementById('gameFrame').src = '';
+  document.getElementById('gameModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Cert viewer
+function openCertViewer(src) {
+  document.getElementById('certViewerImg').src = src;
+  document.getElementById('certModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeCertViewer() {
+  document.getElementById('certViewerImg').src = '';
+  document.getElementById('certModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeGame(); closeCertViewer(); }
+});
+
+init();
+</script>
 
 </body>
 </html>
-
