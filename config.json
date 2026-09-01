@@ -1,0 +1,172 @@
+{
+  "site": {
+    "title": "陈芷锐 · Portfolio",
+    "description": "陈芷锐 · AI训练师 · 达摩院人工智能高级训练师",
+    "version": "3.0"
+  },
+  "theme": {
+    "bg": "#0a0a0b",
+    "bg2": "#131316",
+    "surface": "#1a1a1f",
+    "border": "#2a2a30",
+    "text": "#f4f4f5",
+    "textDim": "#71717a",
+    "accent": "#b4ff39",
+    "accent2": "#ff5e3a"
+  },
+  "profile": {
+    "name": "陈芷锐",
+    "title": "AI Trainer",
+    "avatar": "assets/avatar.jpg",
+    "status": "寻求机会",
+    "badges": ["AI Trainer", "达摩院认证"],
+    "bio": "专注于 AI 模型训练与数据标注，持有达摩院人工智能高级训练师认证。拥有学生会管理与省赛组织经验，擅长团队协作与项目推进。",
+    "phone": "18990430280",
+    "email": "3041867249@qq.com"
+  },
+  "stats": [
+    { "value": 8, "suffix": "+", "label": "荣誉奖项" },
+    { "value": 5, "suffix": "", "label": "经历板块" },
+    { "value": "849", "label": "中考分数 / 900", "highlight": true }
+  ],
+  "marquee": [
+    { "text": "AI Trainer", "outline": false },
+    { "text": "达摩院认证", "outline": true },
+    { "text": "学生会管理", "outline": false },
+    { "text": "省赛组织", "outline": true },
+    { "text": "数据标注", "outline": false },
+    { "text": "PPT设计", "outline": true },
+    { "text": "团队协作", "outline": false }
+  ],
+  "about": {
+    "heading": "热爱科技，追求卓越。",
+    "headingHighlight": "用数据驱动智能",
+    "headingSuffix": "用行动证明价值。",
+    "description": "就读于对外经济贸易大学，持有达摩院人工智能高级训练师认证。从初中学习标兵到中考 849 分，从学生会生活部部长到省赛组织小组长 —— 每一步都在积累组织管理与技术能力，期待在 AI 领域持续深耕。",
+    "card": {
+      "avatar": "assets/avatar.jpg",
+      "name": "陈芷锐",
+      "role": "AI Trainer · 北京",
+      "info": [
+        { "label": "状态", "value": "寻找机会", "highlight": true },
+        { "label": "认证", "value": "AIT-高级" },
+        { "label": "教育", "value": "对外经贸大学" }
+      ]
+    }
+  },
+  "education": [
+    {
+      "school": "对外经济贸易大学",
+      "level": "本科 · 综合类院校",
+      "tags": ["高考录取"],
+      "pill": { "label": "在读", "color": "#3b82f6" }
+    },
+    {
+      "school": "绵阳中学",
+      "level": "高中",
+      "score": "849 / 900",
+      "scoreLabel": "以 {score} 分成绩考入",
+      "tags": ["三好学生", "优秀学生会干部"],
+      "badge": "HIGH SCHOOL"
+    },
+    {
+      "school": "绵阳外国语实验学校",
+      "level": "初中 · 学习标兵",
+      "tags": ["优秀共青团员", "特优生", "学习明星", "进步明星"],
+      "badge": "MIDDLE SCHOOL"
+    },
+    {
+      "school": "阿坝州 → 绵阳",
+      "level": "小学 · 五年级转入绵阳继续学业",
+      "tags": [],
+      "badge": "PRIMARY"
+    }
+  ],
+  "skills": [
+    { "icon": "cpu", "name": "AI 模型训练", "level": "Expert", "width": 90, "desc": "数据标注 · 模型调优 · 算法实现" },
+    { "icon": "users", "name": "团队协作管理", "level": "Advanced", "width": 85, "desc": "学生会管理 · 活动组织 · 跨部门协调" },
+    { "icon": "presentation", "name": "PPT 演示设计", "level": "Advanced", "width": 82, "desc": "商业演示 · 数据可视化 · 排版" },
+    { "icon": "target", "name": "项目执行推进", "level": "Advanced", "width": 80, "desc": "目标导向 · 高效执行 · 结果思维" }
+  ],
+  "skillTags": [
+    "数据标注", "模型调优", "学生会管理", "省赛组织",
+    "活动策划", "跨部门协调", "PPT设计", "数据可视化", "团队培训"
+  ],
+  "experience": [
+    {
+      "title": "省赛组织小组长",
+      "org": "Provincial Competition · 组织组",
+      "date": "2026.10",
+      "description": "担任省级赛事组织团队小组长，负责统筹赛事策划、人员分工与执行推进。项目预计国庆节开展，目前处于前期筹备阶段，包括方案设计、团队组建与物资协调。",
+      "highlight": "项目预计国庆节开展",
+      "pill": { "label": "即将开展", "color": "#ff5e3a" },
+      "tags": ["赛事策划", "团队管理", "项目筹备"]
+    },
+    {
+      "title": "校级学生会干部",
+      "org": "Student Union · 校级",
+      "description": "参与校级学生会日常运营，负责跨部门协调与项目推进，锻炼组织管理与沟通能力。",
+      "tags": []
+    },
+    {
+      "title": "生活部部长",
+      "org": "Student Union · 生活部",
+      "description": "统筹生活部工作，策划并执行系列校园生活活动，关注学生日常需求，管理团队推进项目落地。",
+      "tags": []
+    },
+    {
+      "title": "体育委员",
+      "org": "Class Committee",
+      "description": "组织班级体育活动，协调运动会参赛事宜，营造积极向上的班级氛围。",
+      "tags": []
+    },
+    {
+      "title": "组织部部员",
+      "org": "Student Union · 组织部",
+      "description": "参与学生会组织建设、成员招募与培训工作，协助活动筹备与执行。",
+      "tags": []
+    }
+  ],
+  "certificates": {
+    "main": {
+      "title": "达摩院人工智能高级训练师",
+      "issuer": "DAMO Academy · 2026年8月10日颁发",
+      "icon": "bot",
+      "pill": { "label": "高级认证", "color": "#f59e0b" },
+      "details": [
+        { "label": "证书编号", "value": "AIT260810000555000105", "mono": true },
+        { "label": "有效期至", "value": "2027-08-10", "mono": true },
+        { "label": "颁证机构", "value": "达摩院·机器智能技术事业部", "span": 2 },
+        { "label": "认证内容", "value": "人工智能训练师高级培训课程 · 认证合格", "span": 2 }
+      ]
+    },
+    "gallery": [
+      { "img": "assets/cert-ai-senior.jpg", "title": "人工智能训练师（高级）", "sub": "20260810" },
+      { "img": "assets/cert-ai-junior.png", "title": "人工智能训练师（初级）", "sub": "基础认证" },
+      { "img": "assets/photo-extra-2.jpg", "title": "佐证图片", "sub": "点击查看" },
+      { "img": "assets/photo-extra-3.jpg", "title": "佐证图片", "sub": "点击查看" }
+    ]
+  },
+  "honors": [
+    { "icon": "star", "title": "优秀志愿者" },
+    { "icon": "medal", "title": "高中三好学生" },
+    { "icon": "shield-check", "title": "优秀学生会干部" },
+    { "icon": "book-open", "title": "初中学习标兵" },
+    { "icon": "award", "title": "优秀共青团员" },
+    { "icon": "flame", "title": "特优生" },
+    { "icon": "trending-up", "title": "进步明星" },
+    { "icon": "graduation-cap", "title": "学习明星" }
+  ],
+  "game": {
+    "badge": "Cyber · Pixel",
+    "title": "赛博坦克大战",
+    "description": "欢迎来到我的数字作品集隐藏关卡。由我参与开发的纯前端 HTML 游戏，支持多地图、多难度、本地双人与联机对战。",
+    "tags": ["4张地图", "4档难度", "本地双人", "联机对战"],
+    "button": "进入游戏",
+    "src": "tank-battle.html"
+  },
+  "footer": {
+    "copyright": "© 2026 陈芷锐 · All Rights Reserved",
+    "note": "Portfolio v3.0 · Built with vibe"
+  }
+}
