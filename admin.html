@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Admin · 内容管理面板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0b;
+  --bg-2: #131316;
+  --surface: #1a1a1f;
+  --surface-2: #222228;
+  --border: #2a2a30;
+  --border-hi: #3a3a42;
+  --text: #f4f4f5;
+  --text-dim: #71717a;
+  --text-mid: #a1a1aa;
+  --accent: #b4ff39;
+  --accent-glow: rgba(180,255,57,0.15);
+  --danger: #ff5e3a;
+  --warning: #f59e0b;
+  --success: #22c55e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Top bar */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,11,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar h1 { font-size: 16px; font-weight: 700; }
+.topbar .badge {
+  padding: 3px 8px; font-size: 10px; font-weight: 600;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; color: var(--text-dim);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+/* Layout */
+.layout { display: flex; min-height: calc(100vh - 57px); }
+.sidebar {
+  width: 240px; border-right: 1px solid var(--border);
+  padding: 16px 0; flex-shrink: 0; position: sticky; top: 57px;
+  height: calc(100vh - 57px); overflow-y: auto;
+}
+.sidebar a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; font-size: 14px; font-weight: 500;
+  color: var(--text-dim); transition: all 0.2s;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+}
+.sidebar a:hover { color: var(--text); background: var(--surface); }
+.sidebar a.active {
+  color: var(--accent); border-left-color: var(--accent);
+  background: var(--accent-glow);
+}
+.main { flex: 1; padding: 32px; max-width: 900px; }
+
+/* Auth screen */
+.auth-screen {
+  display: flex; align-items: center; justify-content: center;
+  min-height: calc(100vh - 57px); padding: 24px;
+}
+.auth-card {
+  width: 100%; max-width: 480px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 32px;
+}
+.auth-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.auth-card p { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; line-height: 1.6; }
+.auth-card .field { margin-bottom: 16px; }
+.auth-card label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-mid); }
+.auth-card input {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: border-color 0.2s;
+}
+.auth-card input:focus { outline: none; border-color: var(--accent); }
+.auth-card .hint { font-size: 12px; color: var(--text-dim); margin-top: 6px; line-height: 1.5; }
+.auth-card .hint a { color: var(--accent); text-decoration: underline; }
+.auth-card .save-settings {
+  width: 100%; padding: 12px; margin-top: 8px;
+  background: var(--accent); color: var(--bg);
+  border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s;
+}
+.auth-card .save-settings:hover { box-shadow: 0 4px 20px var(--accent-glow); }
+.auth-card .save-settings:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-error {
+  margin-top: 12px; padding: 10px 14px;
+  background: rgba(255,94,58,0.1); border: 1px solid rgba(255,94,58,0.3);
+  border-radius: 8px; font-size: 13px; color: var(--danger);
+  display: none;
+}
+.auth-error.show { display: block; }
+
+/* Form elements */
+.field-group { margin-bottom: 20px; }
+.field-group > label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--text); margin-bottom: 8px;
+}
+.field-group .sub-label {
+  font-size: 12px; color: var(--text-dim); margin-bottom: 6px;
+}
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], textarea, select {
+  width: 100%; padding: 10px 14px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 14px;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+textarea { resize: vertical; min-height: 80px; }
+input[type="color"] {
+  width: 100%; height: 40px; padding: 4px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 8px; cursor: pointer;
+}
+
+/* Array items */
+.array-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-bottom: 12px;
+  position: relative;
+}
+.array-item-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.array-item-title {
+  font-size: 13px; font-weight: 600; color: var(--text-mid);
+}
+.array-item-remove {
+  padding: 4px 10px; font-size: 12px; font-weight: 500;
+  background: rgba(255,94,58,0.1); border: 1px solid rgba(255,94,58,0.3);
+  border-radius: 6px; color: var(--danger); cursor: pointer;
+  transition: all 0.2s;
+}
+.array-item-remove:hover { background: rgba(255,94,58,0.2); }
+.add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; font-size: 13px; font-weight: 500;
+  background: var(--surface); border: 1px dashed var(--border-hi);
+  border-radius: 8px; color: var(--text-mid); cursor: pointer;
+  transition: all 0.2s;
+}
+.add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Tags editor */
+.tags-editor {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 8px; min-height: 44px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.tag-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; font-size: 12px; font-weight: 500;
+  background: var(--surface-2); border: 1px solid var(--border-hi);
+  border-radius: 6px; color: var(--text-mid);
+}
+.tag-chip .remove {
+  cursor: pointer; color: var(--danger); opacity: 0.6;
+  font-size: 14px; line-height: 1;
+}
+.tag-chip .remove:hover { opacity: 1; }
+.tag-input {
+  flex: 1; min-width: 100px; border: none; background: none;
+  color: var(--text); font-size: 13px; padding: 4px;
+}
+.tag-input:focus { outline: none; }
+
+/* Section */
+.section { display: none; }
+.section.active { display: block; }
+.section-header { margin-bottom: 24px; }
+.section-header h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.section-header p { font-size: 14px; color: var(--text-dim); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; font-size: 14px; font-weight: 600;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-save {
+  background: var(--accent); color: var(--bg);
+}
+.btn-save:hover { box-shadow: 0 4px 20px var(--accent-glow); transform: translateY(-1px); }
+.btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-preview {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border-hi);
+}
+.btn-preview:hover { border-color: var(--text-mid); }
+.btn-link {
+  background: none; color: var(--text-dim); font-size: 13px;
+}
+.btn-link:hover { color: var(--text); }
+
+/* Status */
+.status-bar {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 200;
+}
+.status-toast {
+  padding: 12px 20px; border-radius: 10px;
+  font-size: 14px; font-weight: 500;
+  display: none; align-items: center; gap: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  margin-bottom: 8px;
+  animation: toastSlide 0.3s ease;
+}
+@keyframes toastSlide {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.status-toast.show { display: flex; }
+.status-toast.success { background: var(--success); color: #fff; }
+.status-toast.error { background: var(--danger); color: #fff; }
+.status-toast.loading { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+
+/* JSON preview modal */
+.json-modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  z-index: 9999; align-items: center; justify-content: center; padding: 20px;
+}
+.json-modal.active { display: flex; }
+.json-modal-box {
+  width: 100%; max-width: 800px; max-height: 80vh;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.json-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.json-modal-header h3 { font-size: 16px; font-weight: 600; }
+.json-modal-close {
+  padding: 6px; border: none; background: none;
+  color: var(--text-dim); cursor: pointer; font-size: 20px;
+}
+.json-modal-body {
+  flex: 1; overflow: auto; padding: 20px;
+}
+.json-modal-body pre {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--text-mid); white-space: pre-wrap; word-break: break-all;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .main { padding: 20px 16px; }
+  .topbar { padding: 12px 16px; }
+  .topbar h1 { font-size: 14px; }
+}
+
+/* Two-column fields */
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) {
+  .row-2, .row-3 { grid-template-columns: 1fr; }
+}
+
+/* Inline field */
+.inline-field { margin-bottom: 10px; }
+.inline-field label { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; display: block; }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div style="width:28px;height:28px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;">
+      <span style="color:var(--bg);font-size:14px;font-weight:800;">A</span>
+    </div>
+    <h1>Resume Admin</h1>
+    <span class="badge" id="repoBadge">未连接</span>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-preview" onclick="previewJSON()" style="padding:8px 14px;font-size:13px;">预览 JSON</button>
+    <button class="btn btn-save" onclick="saveToGitHub()" id="saveBtn" style="padding:8px 16px;font-size:13px;">
+      <span id="saveBtnText">保存并部署</span>
+    </button>
+    <a href="index.html" class="btn btn-link" style="padding:8px;">← 返回网站</a>
+  </div>
+</div>
+
+<!-- Auth screen -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <h2>连接 GitHub 仓库</h2>
+    <p>输入你的 GitHub Personal Access Token 和仓库信息，即可在浏览器中直接编辑简历内容并自动部署。</p>
+    <div class="field">
+      <label>GitHub 用户名</label>
+      <input type="text" id="ghOwner" placeholder="your-username">
+    </div>
+    <div class="field">
+      <label>仓库名</label>
+      <input type="text" id="ghRepo" placeholder="your-resume-repo">
+    </div>
+    <div class="field">
+      <label>分支名</label>
+      <input type="text" id="ghBranch" placeholder="main" value="main">
+    </div>
+    <div class="field">
+      <label>Personal Access Token</label>
+      <input type="text" id="ghToken" placeholder="ghp_xxxxxxxxxxxx">
+      <div class="hint">
+        需要 <code>repo</code> 权限。
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=ResumeAdmin" target="_blank">点击创建 Token →</a>
+        Token 仅保存在你的浏览器本地，不会上传到任何服务器。
+      </div>
+    </div>
+    <button class="save-settings" onclick="connectGitHub()" id="connectBtn">连接并加载内容</button>
+    <div class="auth-error" id="authError"></div>
+  </div>
+</div>
+
+<!-- Editor layout -->
+<div class="layout" id="editorLayout" style="display:none;">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a data-tab="profile" class="active" onclick="switchTab('profile')">个人资料</a>
+    <a data-tab="stats" onclick="switchTab('stats')">首页统计</a>
+    <a data-tab="marquee" onclick="switchTab('marquee')">跑马灯</a>
+    <a data-tab="about" onclick="switchTab('about')">关于</a>
+    <a data-tab="education" onclick="switchTab('education')">教育经历</a>
+    <a data-tab="skills" onclick="switchTab('skills')">技能</a>
+    <a data-tab="experience" onclick="switchTab('experience')">经历</a>
+    <a data-tab="certificates" onclick="switchTab('certificates')">证书</a>
+    <a data-tab="honors" onclick="switchTab('honors')">荣誉</a>
+    <a data-tab="game" onclick="switchTab('game')">游戏</a>
+    <a data-tab="theme" onclick="switchTab('theme')">主题颜色</a>
+    <a data-tab="footer" onclick="switchTab('footer')">页脚</a>
+  </div>
+
+  <!-- Main editor -->
+  <div class="main">
+    <!-- Profile -->
+    <div class="section active" id="tab-profile">
+      <div class="section-header">
+        <h2>个人资料</h2>
+        <p>首页展示的姓名、头像、联系方式等基本信息</p>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>姓名</label>
+          <input type="text" id="p-name" data-path="profile.name">
+        </div>
+        <div class="field-group">
+          <label>头衔</label>
+          <input type="text" id="p-title" data-path="profile.title">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>头像路径</label>
+        <input type="text" id="p-avatar" data-path="profile.avatar">
+      </div>
+      <div class="field-group">
+        <label>状态标签</label>
+        <input type="text" id="p-status" data-path="profile.status">
+      </div>
+      <div class="field-group">
+        <label>个人简介</label>
+        <textarea id="p-bio" data-path="profile.bio"></textarea>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>电话</label>
+          <input type="tel" id="p-phone" data-path="profile.phone">
+        </div>
+        <div class="field-group">
+          <label>邮箱</label>
+          <input type="email" id="p-email" data-path="profile.email">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>徽章标签（逗号分隔）</label>
+        <input type="text" id="p-badges" data-path="profile.badges" placeholder="AI Trainer, 达摩院认证">
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="section" id="tab-stats">
+      <div class="section-header">
+        <h2>首页统计</h2>
+        <p>首页展示的数字统计卡片</p>
+      </div>
+      <div id="statsContainer"></div>
+      <button class="add-btn" onclick="addStat()">+ 添加统计</button>
+    </div>
+
+    <!-- Marquee -->
+    <div class="section" id="tab-marquee">
+      <div class="section-header">
+        <h2>跑马灯</h2>
+        <p>首页滚动的文字条目</p>
+      </div>
+      <div id="marqueeContainer"></div>
+      <button class="add-btn" onclick="addMarquee()">+ 添加条目</button>
+    </div>
+
+    <!-- About -->
+    <div class="section" id="tab-about">
+      <div class="section-header">
+        <h2>关于</h2>
+        <p>关于区域的标题和描述文案</p>
+      </div>
+      <div class="field-group">
+        <label>主标题</label>
+        <input type="text" id="a-heading" data-path="about.heading">
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>高亮文字</label>
+          <input type="text" id="a-highlight" data-path="about.headingHighlight">
+        </div>
+        <div class="field-group">
+          <label>后缀文字</label>
+          <input type="text" id="a-suffix" data-path="about.headingSuffix">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>描述文案</label>
+        <textarea id="a-desc" data-path="about.description"></textarea>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>卡片-姓名</label>
+          <input type="text" id="a-card-name" data-path="about.card.name">
+        </div>
+        <div class="field-group">
+          <label>卡片-角色</label>
+          <input type="text" id="a-card-role" data-path="about.card.role">
+        </div>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="section" id="tab-education">
+      <div class="section-header">
+        <h2>教育经历</h2>
+        <p>从大学到小学的教育记录</p>
+      </div>
+      <div id="educationContainer"></div>
+      <button class="add-btn" onclick="addEducation()">+ 添加教育</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="section" id="tab-skills">
+      <div class="section-header">
+        <h2>技能</h2>
+        <p>技能条和标签</p>
+      </div>
+      <h3 style="font-size:15px;margin-bottom:12px;">技能条</h3>
+      <div id="skillsContainer"></div>
+      <button class="add-btn" onclick="addSkill()" style="margin-bottom:24px;">+ 添加技能</button>
+      <h3 style="font-size:15px;margin-bottom:12px;">技能标签</h3>
+      <div class="field-group">
+        <label>标签（逗号分隔）</label>
+        <input type="text" id="skillTags" data-path="skillTags" placeholder="数据标注, 模型调优, ...">
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="section" id="tab-experience">
+      <div class="section-header">
+        <h2>经历</h2>
+        <p>时间线展示的经历条目</p>
+      </div>
+      <div id="experienceContainer"></div>
+      <button class="add-btn" onclick="addExperience()">+ 添加经历</button>
+    </div>
+
+    <!-- Certificates -->
+    <div class="section" id="tab-certificates">
+      <div class="section-header">
+        <h2>证书</h2>
+        <p>主要证书信息和图片画廊</p>
+      </div>
+      <h3 style="font-size:15px;margin-bottom:12px;">主证书</h3>
+      <div class="row-2">
+        <div class="field-group">
+          <label>证书标题</label>
+          <input type="text" id="c-main-title" data-path="certificates.main.title">
+        </div>
+        <div class="field-group">
+          <label>颁发机构</label>
+          <input type="text" id="c-main-issuer" data-path="certificates.main.issuer">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>图标名（lucide）</label>
+        <input type="text" id="c-main-icon" data-path="certificates.main.icon">
+      </div>
+      <h3 style="font-size:15px;margin:24px 0 12px;">证书图片画廊</h3>
+      <div id="galleryContainer"></div>
+      <button class="add-btn" onclick="addGalleryItem()">+ 添加图片</button>
+    </div>
+
+    <!-- Honors -->
+    <div class="section" id="tab-honors">
+      <div class="section-header">
+        <h2>荣誉</h2>
+        <p>荣誉奖项图标网格</p>
+      </div>
+      <div id="honorsContainer"></div>
+      <button class="add-btn" onclick="addHonor()">+ 添加荣誉</button>
+    </div>
+
+    <!-- Game -->
+    <div class="section" id="tab-game">
+      <div class="section-header">
+        <h2>游戏</h2>
+        <p>游戏模块信息</p>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>徽章</label>
+          <input type="text" id="g-badge" data-path="game.badge">
+        </div>
+        <div class="field-group">
+          <label>标题</label>
+          <input type="text" id="g-title" data-path="game.title">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>描述</label>
+        <textarea id="g-desc" data-path="game.description"></textarea>
+      </div>
+      <div class="field-group">
+        <label>标签（逗号分隔）</label>
+        <input type="text" id="g-tags" data-path="game.tags">
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>按钮文字</label>
+          <input type="text" id="g-button" data-path="game.button">
+        </div>
+        <div class="field-group">
+          <label>游戏文件路径</label>
+          <input type="text" id="g-src" data-path="game.src">
+        </div>
+      </div>
+    </div>
+
+    <!-- Theme -->
+    <div class="section" id="tab-theme">
+      <div class="section-header">
+        <h2>主题颜色</h2>
+        <p>自定义网站配色方案</p>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>背景色</label>
+          <input type="color" id="t-bg" data-path="theme.bg">
+        </div>
+        <div class="field-group">
+          <label>次背景色</label>
+          <input type="color" id="t-bg2" data-path="theme.bg2">
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>卡片背景</label>
+          <input type="color" id="t-surface" data-path="theme.surface">
+        </div>
+        <div class="field-group">
+          <label>边框色</label>
+          <input type="color" id="t-border" data-path="theme.border">
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>主文字色</label>
+          <input type="color" id="t-text" data-path="theme.text">
+        </div>
+        <div class="field-group">
+          <label>次要文字色</label>
+          <input type="color" id="t-textDim" data-path="theme.textDim">
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>强调色</label>
+          <input type="color" id="t-accent" data-path="theme.accent">
+        </div>
+        <div class="field-group">
+          <label>次强调色</label>
+          <input type="color" id="t-accent2" data-path="theme.accent2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="section" id="tab-footer">
+      <div class="section-header">
+        <h2>页脚</h2>
+        <p>页脚版权信息</p>
+      </div>
+      <div class="field-group">
+        <label>版权文字</label>
+        <input type="text" id="f-copyright" data-path="footer.copyright">
+      </div>
+      <div class="field-group">
+        <label>备注</label>
+        <input type="text" id="f-note" data-path="footer.note">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JSON preview modal -->
+<div class="json-modal" id="jsonModal">
+  <div class="json-modal-box">
+    <div class="json-modal-header">
+      <h3>config.json 预览</h3>
+      <button class="json-modal-close" onclick="document.getElementById('jsonModal').classList.remove('active')">×</button>
+    </div>
+    <div class="json-modal-body">
+      <pre id="jsonPreview"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- Status toast -->
+<div class="status-bar" id="statusBar"></div>
+
+<script>
+let CONFIG = null;
+let SETTINGS = { owner: '', repo: '', branch: 'main', token: '', fileSha: '' };
+
+// Load settings from localStorage
+function loadSettings() {
+  const saved = localStorage.getItem('resumeAdminSettings');
+  if (saved) {
+    const s = JSON.parse(saved);
+    document.getElementById('ghOwner').value = s.owner || '';
+    document.getElementById('ghRepo').value = s.repo || '';
+    document.getElementById('ghBranch').value = s.branch || 'main';
+    document.getElementById('ghToken').value = s.token || '';
+  }
+}
+
+// Connect to GitHub
+async function connectGitHub() {
+  const owner = document.getElementById('ghOwner').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const branch = document.getElementById('ghBranch').value.trim() || 'main';
+  const token = document.getElementById('ghToken').value.trim();
+
+  if (!owner || !repo || !token) {
+    showAuthError('请填写所有字段');
+    return;
+  }
+
+  const btn = document.getElementById('connectBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> 连接中...';
+  hideAuthError();
+
+  try {
+    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/config.json?ref=${branch}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+    });
+
+    if (!res.ok) {
+      if (res.status === 404) throw new Error('找不到 config.json 文件，请确认仓库和分支正确');
+      if (res.status === 401) throw new Error('Token 无效或已过期');
+      if (res.status === 403) throw new Error('Token 权限不足，需要 repo 权限');
+      throw new Error(`GitHub API 错误 (${res.status})`);
+    }
+
+    const data = await res.json();
+    SETTINGS = { owner, repo, branch, token, fileSha: data.sha };
+    localStorage.setItem('resumeAdminSettings', JSON.stringify(SETTINGS));
+
+    CONFIG = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
+
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('editorLayout').style.display = 'flex';
+    document.getElementById('repoBadge').textContent = `${owner}/${repo}`;
+
+    loadFormFromConfig();
+    showToast('连接成功，内容已加载', 'success');
+  } catch(e) {
+    showAuthError(e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '连接并加载内容';
+  }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('authError');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function hideAuthError() {
+  document.getElementById('authError').classList.remove('show');
+}
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelector(`.sidebar a[data-tab="${tab}"]`).classList.add('active');
+}
+
+// Load form from config
+function loadFormFromConfig() {
+  // Simple fields with data-path
+  document.querySelectorAll('[data-path]').forEach(el => {
+    const path = el.dataset.path.split('.');
+    let val = CONFIG;
+    for (const p of path) val = val?.[p];
+    if (val === undefined) val = '';
+    if (Array.isArray(val)) val = val.join(', ');
+    el.value = val;
+  });
+
+  // Stats
+  renderStats();
+  renderMarquee();
+  renderEducation();
+  renderSkills();
+  renderExperience();
+  renderGallery();
+  renderHonors();
+}
+
+// Collect form to config
+function collectForm() {
+  document.querySelectorAll('[data-path]').forEach(el => {
+    const path = el.dataset.path.split('.');
+    let val = el.value;
+    // Parse arrays from comma-separated
+    if (path[path.length-1] === 'badges' || path[path.length-1] === 'tags' || path[path.length-1] === 'skillTags') {
+      val = val.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    // Parse numbers
+    if (path[path.length-1] === 'width' || path[path.length-1] === 'value') {
+      const n = parseInt(val);
+      if (!isNaN(n)) val = n;
+    }
+    let obj = CONFIG;
+    for (let i = 0; i < path.length - 1; i++) {
+      if (!obj[path[i]]) obj[path[i]] = {};
+      obj = obj[path[i]];
+    }
+    obj[path[path.length-1]] = val;
+  });
+
+  collectStats();
+  collectMarquee();
+  collectEducation();
+  collectSkills();
+  collectExperience();
+  collectGallery();
+  collectHonors();
+}
+
+// === Stats ===
+function renderStats() {
+  const c = document.getElementById('statsContainer');
+  c.innerHTML = '';
+  CONFIG.stats.forEach((s, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">统计 #${i+1}</span>
+        <button class="array-item-remove" onclick="removeItem('stats', ${i})">删除</button>
+      </div>
+      <div class="row-3">
+        <div class="inline-field"><label>数值</label><input type="text" value="${s.value}" data-stat="value" data-idx="${i}"></div>
+        <div class="inline-field"><label>后缀</label><input type="text" value="${s.suffix || ''}" data-stat="suffix" data-idx="${i}"></div>
+        <div class="inline-field"><label>标签</label><input type="text" value="${s.label}" data-stat="label" data-idx="${i}"></div>
+      </div>
+      <div class="inline-field"><label><input type="checkbox" ${s.highlight ? 'checked' : ''} data-stat="highlight" data-idx="${i}"> 高亮显示</label></div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addStat() {
+  CONFIG.stats.push({ value: 0, suffix: '', label: '新统计' });
+  renderStats();
+}
+function collectStats() {
+  document.querySelectorAll('[data-stat]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    const key = el.dataset.stat;
+    if (el.type === 'checkbox') {
+      CONFIG.stats[i][key] = el.checked;
+    } else {
+      CONFIG.stats[i][key] = el.value;
+    }
+  });
+}
+
+// === Marquee ===
+function renderMarquee() {
+  const c = document.getElementById('marqueeContainer');
+  c.innerHTML = '';
+  CONFIG.marquee.forEach((m, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">条目 #${i+1}</span>
+        <button class="array-item-remove" onclick="removeItem('marquee', ${i})">删除</button>
+      </div>
+      <div class="row-2">
+        <div class="inline-field"><label>文字</label><input type="text" value="${m.text}" data-marquee="text" data-idx="${i}"></div>
+        <div class="inline-field"><label>描边样式</label><select data-marquee="outline" data-idx="${i}"><option value="false" ${!m.outline?'selected':''}>实心</option><option value="true" ${m.outline?'selected':''}>描边</option></select></div>
+      </div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addMarquee() {
+  CONFIG.marquee.push({ text: '新条目', outline: false });
+  renderMarquee();
+}
+function collectMarquee() {
+  document.querySelectorAll('[data-marquee]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    CONFIG.marquee[i][el.dataset.marquee] = el.value === 'true';
+  });
+}
+
+// === Education ===
+function renderEducation() {
+  const c = document.getElementById('educationContainer');
+  c.innerHTML = '';
+  CONFIG.education.forEach((e, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">${e.school || '教育 #'+(i+1)}</span>
+        <button class="array-item-remove" onclick="removeItem('education', ${i})">删除</button>
+      </div>
+      <div class="inline-field"><label>学校名称</label><input type="text" value="${e.school||''}" data-edu="school" data-idx="${i}"></div>
+      <div class="row-2">
+        <div class="inline-field"><label>学历/描述</label><input type="text" value="${e.level||''}" data-edu="level" data-idx="${i}"></div>
+        <div class="inline-field"><label>分数 (可选)</label><input type="text" value="${e.score||''}" data-edu="score" data-idx="${i}"></div>
+      </div>
+      <div class="inline-field"><label>分数标签</label><input type="text" value="${e.scoreLabel||''}" data-edu="scoreLabel" data-idx="${i}" placeholder="以 {score} 分成绩考入"></div>
+      <div class="inline-field"><label>角标 (如 HIGH SCHOOL)</label><input type="text" value="${e.badge||''}" data-edu="badge" data-idx="${i}"></div>
+      <div class="inline-field"><label>标签 (逗号分隔)</label><input type="text" value="${(e.tags||[]).join(', ')}" data-edu="tags" data-idx="${i}"></div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addEducation() {
+  CONFIG.education.push({ school: '新学校', level: '', tags: [] });
+  renderEducation();
+}
+function collectEducation() {
+  document.querySelectorAll('[data-edu]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    const key = el.dataset.edu;
+    if (key === 'tags') {
+      CONFIG.education[i][key] = el.value.split(',').map(s=>s.trim()).filter(Boolean);
+    } else {
+      CONFIG.education[i][key] = el.value;
+    }
+  });
+}
+
+// === Skills ===
+function renderSkills() {
+  const c = document.getElementById('skillsContainer');
+  c.innerHTML = '';
+  CONFIG.skills.forEach((s, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">${s.name || '技能 #'+(i+1)}</span>
+        <button class="array-item-remove" onclick="removeItem('skills', ${i})">删除</button>
+      </div>
+      <div class="row-2">
+        <div class="inline-field"><label>技能名称</label><input type="text" value="${s.name||''}" data-skill="name" data-idx="${i}"></div>
+        <div class="inline-field"><label>等级</label><input type="text" value="${s.level||''}" data-skill="level" data-idx="${i}"></div>
+      </div>
+      <div class="row-2">
+        <div class="inline-field"><label>图标 (lucide)</label><input type="text" value="${s.icon||''}" data-skill="icon" data-idx="${i}"></div>
+        <div class="inline-field"><label>进度 (%)</label><input type="number" value="${s.width||80}" data-skill="width" data-idx="${i}"></div>
+      </div>
+      <div class="inline-field"><label>描述</label><input type="text" value="${s.desc||''}" data-skill="desc" data-idx="${i}"></div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addSkill() {
+  CONFIG.skills.push({ icon: 'zap', name: '新技能', level: 'Intermediate', width: 70, desc: '' });
+  renderSkills();
+}
+function collectSkills() {
+  document.querySelectorAll('[data-skill]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    const key = el.dataset.skill;
+    if (key === 'width') { CONFIG.skills[i][key] = parseInt(el.value)||0; }
+    else { CONFIG.skills[i][key] = el.value; }
+  });
+}
+
+// === Experience ===
+function renderExperience() {
+  const c = document.getElementById('experienceContainer');
+  c.innerHTML = '';
+  CONFIG.experience.forEach((e, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">${e.title || '经历 #'+(i+1)}</span>
+        <button class="array-item-remove" onclick="removeItem('experience', ${i})">删除</button>
+      </div>
+      <div class="row-2">
+        <div class="inline-field"><label>职位标题</label><input type="text" value="${e.title||''}" data-exp="title" data-idx="${i}"></div>
+        <div class="inline-field"><label>组织/部门</label><input type="text" value="${e.org||''}" data-exp="org" data-idx="${i}"></div>
+      </div>
+      <div class="inline-field"><label>日期</label><input type="text" value="${e.date||''}" data-exp="date" data-idx="${i}" placeholder="2026.10"></div>
+      <div class="inline-field"><label>描述</label><textarea data-exp="description" data-idx="${i}">${e.description||''}</textarea></div>
+      <div class="inline-field"><label>高亮文字 (描述中的文字)</label><input type="text" value="${e.highlight||''}" data-exp="highlight" data-idx="${i}"></div>
+      <div class="inline-field"><label>标签 (逗号分隔)</label><input type="text" value="${(e.tags||[]).join(', ')}" data-exp="tags" data-idx="${i}"></div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addExperience() {
+  CONFIG.experience.push({ title: '新经历', org: '', description: '', tags: [] });
+  renderExperience();
+}
+function collectExperience() {
+  document.querySelectorAll('[data-exp]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    const key = el.dataset.exp;
+    if (key === 'tags') {
+      CONFIG.experience[i][key] = el.value.split(',').map(s=>s.trim()).filter(Boolean);
+    } else {
+      CONFIG.experience[i][key] = el.value;
+    }
+  });
+}
+
+// === Gallery ===
+function renderGallery() {
+  const c = document.getElementById('galleryContainer');
+  c.innerHTML = '';
+  CONFIG.certificates.gallery.forEach((g, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">图片 #${i+1}</span>
+        <button class="array-item-remove" onclick="removeGalleryItem(${i})">删除</button>
+      </div>
+      <div class="row-3">
+        <div class="inline-field"><label>图片路径</label><input type="text" value="${g.img||''}" data-gal="img" data-idx="${i}"></div>
+        <div class="inline-field"><label>标题</label><input type="text" value="${g.title||''}" data-gal="title" data-idx="${i}"></div>
+        <div class="inline-field"><label>副标题</label><input type="text" value="${g.sub||''}" data-gal="sub" data-idx="${i}"></div>
+      </div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addGalleryItem() {
+  CONFIG.certificates.gallery.push({ img: 'assets/new.jpg', title: '新图片', sub: '' });
+  renderGallery();
+}
+function removeGalleryItem(i) {
+  CONFIG.certificates.gallery.splice(i, 1);
+  renderGallery();
+}
+function collectGallery() {
+  document.querySelectorAll('[data-gal]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    CONFIG.certificates.gallery[i][el.dataset.gal] = el.value;
+  });
+}
+
+// === Honors ===
+function renderHonors() {
+  const c = document.getElementById('honorsContainer');
+  c.innerHTML = '';
+  CONFIG.honors.forEach((h, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">${h.title || '荣誉 #'+(i+1)}</span>
+        <button class="array-item-remove" onclick="removeItem('honors', ${i})">删除</button>
+      </div>
+      <div class="row-2">
+        <div class="inline-field"><label>图标 (lucide)</label><input type="text" value="${h.icon||''}" data-honor="icon" data-idx="${i}"></div>
+        <div class="inline-field"><label>名称</label><input type="text" value="${h.title||''}" data-honor="title" data-idx="${i}"></div>
+      </div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addHonor() {
+  CONFIG.honors.push({ icon: 'star', title: '新荣誉' });
+  renderHonors();
+}
+function collectHonors() {
+  document.querySelectorAll('[data-honor]').forEach(el => {
+    const i = parseInt(el.dataset.idx);
+    CONFIG.honors[i][el.dataset.honor] = el.value;
+  });
+}
+
+// Remove item (generic)
+function removeItem(type, idx) {
+  CONFIG[type].splice(idx, 1);
+  if (type === 'stats') renderStats();
+  else if (type === 'marquee') renderMarquee();
+  else if (type === 'education') renderEducation();
+  else if (type === 'skills') renderSkills();
+  else if (type === 'experience') renderExperience();
+  else if (type === 'honors') renderHonors();
+}
+
+// Preview JSON
+function previewJSON() {
+  collectForm();
+  document.getElementById('jsonPreview').textContent = JSON.stringify(CONFIG, null, 2);
+  document.getElementById('jsonModal').classList.add('active');
+}
+
+// Save to GitHub
+async function saveToGitHub() {
+  collectForm();
+
+  const btn = document.getElementById('saveBtn');
+  const btnText = document.getElementById('saveBtnText');
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="spinner" style="display:inline-block;vertical-align:middle;margin-right:6px;"></span> 提交中...';
+  showToast('正在提交到 GitHub...', 'loading');
+
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(CONFIG, null, 2))));
+    const res = await fetch(`https://api.github.com/repos/${SETTINGS.owner}/${SETTINGS.repo}/contents/config.json`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${SETTINGS.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: `update: config.json via Resume Admin [${new Date().toLocaleString('zh-CN')}]`,
+        content: content,
+        sha: SETTINGS.fileSha,
+        branch: SETTINGS.branch,
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || `提交失败 (${res.status})`);
+    }
+
+    SETTINGS.fileSha = data.content.sha;
+    localStorage.setItem('resumeAdminSettings', JSON.stringify(SETTINGS));
+
+    showToast('已提交！GitHub Actions 正在自动部署...', 'success');
+    btnText.textContent = '已保存';
+    setTimeout(() => { btnText.textContent = '保存并部署'; }, 3000);
+  } catch(e) {
+    showToast('保存失败: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = '保存并部署';
+  }
+}
+
+// Toast
+function showToast(msg, type) {
+  const bar = document.getElementById('statusBar');
+  const toast = document.createElement('div');
+  toast.className = 'status-toast ' + (type || 'loading');
+  if (type === 'loading') {
+    toast.innerHTML = `<span class="spinner"></span> ${msg}`;
+  } else {
+    toast.textContent = msg;
+  }
+  bar.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+// Init
+loadSettings();
+</script>
+
+</body>
+</html>
