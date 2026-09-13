@@ -130,24 +130,73 @@
     }
   ],
   "certificates": {
-    "main": {
-      "title": "达摩院人工智能高级训练师",
-      "issuer": "DAMO Academy · 2026年8月10日颁发",
-      "icon": "bot",
-      "pill": { "label": "高级认证", "color": "#f59e0b" },
-      "details": [
-        { "label": "证书编号", "value": "AIT260810000555000105", "mono": true },
-        { "label": "有效期至", "value": "2027-08-10", "mono": true },
-        { "label": "颁证机构", "value": "达摩院·机器智能技术事业部", "span": 2 },
-        { "label": "认证内容", "value": "人工智能训练师高级培训课程 · 认证合格", "span": 2 }
-      ]
-    },
+    "cards": [
+      {
+        "title": "达摩院人工智能高级训练师",
+        "issuer": "DAMO Academy · 2026年8月10日颁发",
+        "icon": "bot",
+        "pill": { "label": "高级认证", "color": "#f59e0b" },
+        "img": "assets/cert-ai-senior.jpg",
+        "details": [
+          { "label": "证书编号", "value": "AIT260810000555000105", "mono": true },
+          { "label": "有效期至", "value": "2027-08-10", "mono": true },
+          { "label": "颁证机构", "value": "达摩院·机器智能技术事业部", "span": 2 },
+          { "label": "认证内容", "value": "人工智能训练师高级培训课程 · 认证合格", "span": 2 }
+        ]
+      },
+      {
+        "title": "人工智能训练师（初级）",
+        "issuer": "DAMO Academy · 阿里巴巴橙点同学",
+        "icon": "bot",
+        "pill": { "label": "基础认证", "color": "#3b82f6" },
+        "img": "assets/cert-ai-junior.png",
+        "details": [
+          { "label": "认证级别", "value": "初级", "mono": true },
+          { "label": "颁证机构", "value": "阿里巴巴·橙点同学", "span": 2 },
+          { "label": "认证内容", "value": "人工智能训练师基础培训课程 · 认证合格", "span": 2 }
+        ]
+      },
+      {
+        "title": "智能体工程师认证",
+        "issuer": "科大讯飞 AI大学堂 · 2023年9月13日颁发",
+        "icon": "sparkles",
+        "pill": { "label": "讯飞认证", "color": "#b4ff39" },
+        "img": "assets/cert-iflytek-agent.jpg",
+        "details": [
+          { "label": "证书编号", "value": "XFAGENT465566", "mono": true },
+          { "label": "有效期至", "value": "2028-09-13", "mono": true },
+          { "label": "颁证机构", "value": "科大讯飞·AI大学堂", "span": 2 },
+          { "label": "认证内容", "value": "智能体工程师认证考核 · 认证合格", "span": 2 }
+        ]
+      },
+      {
+        "title": "Prompt工程师认证",
+        "issuer": "科大讯飞 AI大学堂 · 2023年9月13日颁发",
+        "icon": "sparkles",
+        "pill": { "label": "讯飞认证", "color": "#b4ff39" },
+        "img": "assets/cert-iflytek-prompt.jpg",
+        "details": [
+          { "label": "证书编号", "value": "XFPROMPT957206", "mono": true },
+          { "label": "有效期至", "value": "2028-09-13", "mono": true },
+          { "label": "颁证机构", "value": "科大讯飞·AI大学堂", "span": 2 },
+          { "label": "认证内容", "value": "Prompt工程师认证考核 · 认证合格", "span": 2 }
+        ]
+      },
+      {
+        "title": "AI+编程能力认证",
+        "issuer": "Datawhale × 豆包MarsCode · 2026年9月13日颁发",
+        "icon": "terminal",
+        "pill": { "label": "联合认证", "color": "#ff5e3a" },
+        "img": "assets/cert-datawhale-marscode.jpg",
+        "details": [
+          { "label": "证书编号", "value": "AICODING09092", "mono": true },
+          { "label": "颁证日期", "value": "2026-09-13", "mono": true },
+          { "label": "颁证机构", "value": "Datawhale × 字节跳动·豆包MarsCode", "span": 2 },
+          { "label": "认证内容", "value": "AI+编程主题学习 · 理论考试通过 + 实践任务完成", "span": 2 }
+        ]
+      }
+    ],
     "gallery": [
-      { "img": "assets/cert-ai-senior.jpg", "title": "人工智能训练师（高级）", "sub": "达摩院 · 20260810" },
-      { "img": "assets/cert-ai-junior.png", "title": "人工智能训练师（初级）", "sub": "基础认证" },
-      { "img": "assets/cert-iflytek-agent.jpg", "title": "智能体工程师认证", "sub": "科大讯飞 · XFAGENT465566" },
-      { "img": "assets/cert-iflytek-prompt.jpg", "title": "Prompt工程师认证", "sub": "科大讯飞 · XFPROMPT957206" },
-      { "img": "assets/cert-datawhale-marscode.jpg", "title": "AI+编程能力认证", "sub": "Datawhale×MarsCode · AICODING09092" },
       { "img": "assets/photo-extra-2.jpg", "title": "佐证图片", "sub": "点击查看" },
       { "img": "assets/photo-extra-3.jpg", "title": "佐证图片", "sub": "点击查看" }
     ]
