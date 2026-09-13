@@ -630,38 +630,46 @@ function renderCertificates(cfg) {
   const inner = el('div','max-w-5xl mx-auto');
   inner.appendChild(makeSectionLabel('award','Certificates &amp; Honors'));
 
-  // Main cert
-  const main = cfg.main;
-  const mainCard = el('div','card p-0 overflow-hidden mb-6 reveal');
-  const header = el('div','flex items-center gap-3 p-4 border-b border-zinc-800');
-  header.style.background = 'rgba(255,255,255,0.02)';
-  const iconBox = el('div','w-10 h-10 rounded-lg flex items-center justify-center shrink-0');
-  iconBox.style.background = 'rgba(180,255,57,0.08)';
-  iconBox.style.border = '1px solid rgba(180,255,57,0.2)';
-  const iconI = el('i','','');
-  iconI.setAttribute('data-lucide', main.icon);
-  iconI.style.color = 'var(--accent)';
-  iconI.className = 'w-5 h-5';
-  iconBox.appendChild(iconI);
-  header.appendChild(iconBox);
-  const titleDiv = el('div','flex-1');
-  titleDiv.innerHTML = `<h3 class="text-sm font-bold text-zinc-100">${main.title}</h3><p class="text-xs text-zinc-500">${main.issuer}</p>`;
-  header.appendChild(titleDiv);
-  if (main.pill) header.appendChild(makePill(main.pill.label, false, main.pill.color));
-  mainCard.appendChild(header);
+  // Cert cards (all certs as detailed cards)
+  const cards = cfg.cards || (cfg.main ? [cfg.main] : []);
+  cards.forEach(main => {
+    const mainCard = el('div','card p-0 overflow-hidden mb-6 reveal');
+    const header = el('div','flex items-center gap-3 p-4 border-b border-zinc-800');
+    header.style.background = 'rgba(255,255,255,0.02)';
+    const iconBox = el('div','w-10 h-10 rounded-lg flex items-center justify-center shrink-0');
+    iconBox.style.background = 'rgba(180,255,57,0.08)';
+    iconBox.style.border = '1px solid rgba(180,255,57,0.2)';
+    const iconI = el('i','','');
+    iconI.setAttribute('data-lucide', main.icon);
+    iconI.style.color = 'var(--accent)';
+    iconI.className = 'w-5 h-5';
+    iconBox.appendChild(iconI);
+    header.appendChild(iconBox);
+    const titleDiv = el('div','flex-1');
+    titleDiv.innerHTML = `<h3 class="text-sm font-bold text-zinc-100">${main.title}</h3><p class="text-xs text-zinc-500">${main.issuer}</p>`;
+    header.appendChild(titleDiv);
+    if (main.pill) header.appendChild(makePill(main.pill.label, false, main.pill.color));
+    if (main.img) {
+      const thumb = el('img','w-12 h-12 rounded-lg object-contain shrink-0 cursor-pointer');
+      thumb.src = main.img;
+      thumb.onclick = () => openCertViewer(main.img);
+      header.appendChild(thumb);
+    }
+    mainCard.appendChild(header);
 
-  const details = el('div','p-4');
-  const detailGrid = el('div','grid grid-cols-2 gap-3 text-xs');
-  main.details.forEach(d => {
-    const row = el('div','flex justify-between py-1.5 border-b border-zinc-800');
-    if (d.span === 2) row.className = 'col-span-2 flex justify-between py-1.5 border-b border-zinc-800';
-    row.appendChild(el('span','text-zinc-500',d.label));
-    row.appendChild(el('span', d.mono ? 'font-mono text-zinc-300' : 'text-zinc-300', d.value));
-    detailGrid.appendChild(row);
+    const details = el('div','p-4');
+    const detailGrid = el('div','grid grid-cols-2 gap-3 text-xs');
+    main.details.forEach(d => {
+      const row = el('div','flex justify-between py-1.5 border-b border-zinc-800');
+      if (d.span === 2) row.className = 'col-span-2 flex justify-between py-1.5 border-b border-zinc-800';
+      row.appendChild(el('span','text-zinc-500',d.label));
+      row.appendChild(el('span', d.mono ? 'font-mono text-zinc-300' : 'text-zinc-300', d.value));
+      detailGrid.appendChild(row);
+    });
+    details.appendChild(detailGrid);
+    mainCard.appendChild(details);
+    inner.appendChild(mainCard);
   });
-  details.appendChild(detailGrid);
-  mainCard.appendChild(details);
-  inner.appendChild(mainCard);
 
   // Gallery
   const gallery = el('div','grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 stagger');
