@@ -19,8 +19,8 @@
     "title": "AI Trainer",
     "avatar": "assets/avatar.jpg",
     "status": "寻求机会",
-    "badges": ["AI Trainer", "达摩院认证"],
-    "bio": "专注于 AI 模型训练与数据标注，持有达摩院人工智能高级训练师认证。拥有学生会管理与省赛组织经验，擅长团队协作与项目推进。",
+    "badges": ["AI Trainer", "达摩院认证", "讯飞认证", "MarsCode认证"],
+    "bio": "专注于 AI 模型训练与智能体开发，持有达摩院人工智能高级训练师、科大讯飞智能体工程师及 Prompt 工程师认证，Datawhale×MarsCode AI+编程能力认证。拥有学生会管理与省赛组织经验，擅长团队协作与项目推进。",
     "phone": "18990430280",
     "email": "3041867249@qq.com"
   },
@@ -32,6 +32,8 @@
   "marquee": [
     { "text": "AI Trainer", "outline": false },
     { "text": "达摩院认证", "outline": true },
+    { "text": "讯飞智能体工程师", "outline": false },
+    { "text": "Prompt工程师", "outline": true },
     { "text": "学生会管理", "outline": false },
     { "text": "省赛组织", "outline": true },
     { "text": "数据标注", "outline": false },
@@ -141,8 +143,11 @@
       ]
     },
     "gallery": [
-      { "img": "assets/cert-ai-senior.jpg", "title": "人工智能训练师（高级）", "sub": "20260810" },
+      { "img": "assets/cert-ai-senior.jpg", "title": "人工智能训练师（高级）", "sub": "达摩院 · 20260810" },
       { "img": "assets/cert-ai-junior.png", "title": "人工智能训练师（初级）", "sub": "基础认证" },
+      { "img": "assets/cert-iflytek-agent.jpg", "title": "智能体工程师认证", "sub": "科大讯飞 · XFAGENT465566" },
+      { "img": "assets/cert-iflytek-prompt.jpg", "title": "Prompt工程师认证", "sub": "科大讯飞 · XFPROMPT957206" },
+      { "img": "assets/cert-datawhale-marscode.jpg", "title": "AI+编程能力认证", "sub": "Datawhale×MarsCode · AICODING09092" },
       { "img": "assets/photo-extra-2.jpg", "title": "佐证图片", "sub": "点击查看" },
       { "img": "assets/photo-extra-3.jpg", "title": "佐证图片", "sub": "点击查看" }
     ]
