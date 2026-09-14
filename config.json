@@ -194,6 +194,19 @@
           { "label": "颁证机构", "value": "Datawhale × 字节跳动·豆包MarsCode", "span": 2 },
           { "label": "认证内容", "value": "AI+编程主题学习 · 理论考试通过 + 实践任务完成", "span": 2 }
         ]
+      },
+      {
+        "title": "AI时代大数据新势力实训计划",
+        "issuer": "国际人学校 × 阿里云 · 2026年9月9日完成",
+        "icon": "database",
+        "pill": { "label": "实训认证", "color": "#3b82f6" },
+        "img": "assets/cert-aliyun-bigdata.jpg",
+        "details": [
+          { "label": "证书编号", "value": "CDALY2025081401330", "mono": true },
+          { "label": "实训时间", "value": "2026.09.03 - 09.09", "mono": true },
+          { "label": "颁证机构", "value": "国际人学校 × 阿里云高校联合实训计划", "span": 2 },
+          { "label": "认证内容", "value": "AI时代大数据新势力实训 · 独立完成课程，表现优异", "span": 2 }
+        ]
       }
     ],
     "gallery": [
