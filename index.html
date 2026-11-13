@@ -3,40 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <script>
-try { document.documentElement.dataset.theme = localStorage.getItem('showcase-theme') || 'dark'; }
-catch (e) { document.documentElement.dataset.theme = 'dark'; }
+try { document.documentElement.dataset.theme = localStorage.getItem('showcase-theme') || 'light'; }
+catch (e) { document.documentElement.dataset.theme = 'light'; }
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduce');
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5f5f7">
 <title>陈芷锐</title>
 <meta name="description" content="陈芷锐">
 <link rel="icon" href="assets/avatar.jpg">
 <style>
 :root {
-  --bg: #070910;
-  --text: #eef3ff;
-  --muted: #a3adc2;
-  --accent: #5ce1ff;
-  --accent-2: #ffb45c;
-  --glass: rgba(12, 16, 32, 0.62);
-  --line: rgba(255, 255, 255, 0.14);
-  --chip: rgba(92, 225, 255, 0.12);
-  --glow: rgba(92, 225, 255, 0.35);
-  --shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
-  color-scheme: dark;
-}
-[data-theme="light"] {
-  --bg: #f4f6fb;
-  --text: #1f2937;
-  --muted: #5c6678;
-  --accent: #0f766e;
-  --accent-2: #c2410c;
-  --glass: rgba(255, 255, 255, 0.78);
-  --line: rgba(15, 23, 42, 0.1);
-  --chip: rgba(15, 118, 110, 0.1);
-  --glow: rgba(15, 118, 110, 0.28);
-  --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6e6e73;
+  --blue: #0071e3;
+  --line: rgba(0, 0, 0, 0.08);
+  --nav: rgba(255, 255, 255, 0.72);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --feature: #000000;
+  --feature-text: #f5f5f7;
+  --feature-muted: #a1a1a6;
+  --chip: #e8e8ed;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   color-scheme: light;
+}
+[data-theme="dark"] {
+  --bg: #000000;
+  --card: #1d1d1f;
+  --text: #f5f5f7;
+  --muted: #a1a1a6;
+  --blue: #2997ff;
+  --line: rgba(255, 255, 255, 0.12);
+  --nav: rgba(0, 0, 0, 0.72);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --feature: #f5f5f7;
+  --feature-text: #1d1d1f;
+  --feature-muted: #6e6e73;
+  --chip: #2c2c2e;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -44,469 +50,263 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  font-size: 15px;
-  line-height: 1.65;
+  font-family: -apple-system, "SF Pro Display", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+  font-size: 17px;
+  line-height: 1.47;
   -webkit-font-smoothing: antialiased;
 }
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(900px 520px at 10% -10%, rgba(92, 225, 255, 0.16), transparent 55%),
-    radial-gradient(800px 480px at 100% 0%, rgba(255, 180, 92, 0.12), transparent 50%);
-  z-index: 0;
-}
-[data-theme="light"] body::before { opacity: 0.55; }
-a { color: var(--accent); }
-button, input { font-family: inherit; }
+a { color: var(--blue); }
+button { font-family: inherit; }
 img { max-width: 100%; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 
-.aurora, #stars, .progress, .nav, main { position: relative; }
-.aurora, #stars {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-.aurora i {
-  position: absolute;
-  width: 46vw;
-  height: 46vw;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.55;
-  animation: drift 18s ease-in-out infinite;
-  background: radial-gradient(circle, rgba(92, 225, 255, 0.55), transparent 68%);
-  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
-}
-.aurora i:nth-child(2) {
-  right: -8vw; top: 10vh; left: auto;
-  background: radial-gradient(circle, rgba(255, 180, 92, 0.45), transparent 68%);
-  animation-delay: -6s;
-}
-.aurora i:nth-child(3) {
-  left: 30vw; bottom: -18vw; top: auto;
-  width: 36vw; height: 36vw;
-  background: radial-gradient(circle, rgba(120, 90, 255, 0.35), transparent 70%);
-  animation-delay: -12s;
-}
-[data-theme="light"] .aurora i { opacity: 0.28; filter: blur(50px); }
-@keyframes drift {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 24px -18px; }
-}
-
-.progress {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  z-index: 40;
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
 .nav {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 40;
+  height: 48px;
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: 12px 22px;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: blur(16px);
+  padding: 0 22px;
+  background: var(--nav);
+  backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--line);
+  font-size: 12px;
 }
-.brand {
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--text);
-  text-decoration: none;
-  flex: 0 0 auto;
-}
-.nav-links {
-  position: relative;
-  display: flex;
-  gap: 4px;
-  margin-left: auto;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
+.brand { color: var(--text); text-decoration: none; font-weight: 600; letter-spacing: -0.01em; flex: 0 0 auto; }
+.nav-links { display: flex; gap: 4px; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
 .nav-links::-webkit-scrollbar { display: none; }
-.nav-links a {
-  position: relative;
-  z-index: 1;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 13px;
-  padding: 6px 10px;
-  white-space: nowrap;
-}
+.nav-links a { color: var(--muted); text-decoration: none; padding: 6px 8px; white-space: nowrap; }
 .nav-links a.active { color: var(--text); }
-.nav-ind {
-  position: absolute;
-  top: 4px;
-  bottom: 4px;
-  left: 0;
-  width: 0;
-  border-radius: 999px;
-  background: var(--chip);
-  border: 1px solid var(--line);
-  transition: left .28s ease, width .28s ease;
-  pointer-events: none;
-}
-.icon-btn {
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--glass);
-  color: var(--text);
+.theme-btn {
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  font-size: 12px;
   cursor: pointer;
-  display: grid;
-  place-items: center;
+  padding: 6px 0 6px 8px;
+  flex: 0 0 auto;
 }
-.icon-btn svg { width: 16px; height: 16px; }
-.icon-btn .sun { display: none; }
-[data-theme="light"] .icon-btn .moon { display: none; }
-[data-theme="light"] .icon-btn .sun { display: block; }
 
-main {
-  z-index: 1;
-  width: min(1080px, calc(100% - 36px));
-  margin: 0 auto;
-  padding-bottom: 64px;
-}
-.hero {
-  min-height: calc(100svh - 62px);
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 42px;
+.hero-pin { height: 150vh; }
+.hero-sticky {
+  position: sticky;
+  top: 48px;
+  height: calc(100svh - 48px);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 36px 0 28px;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 22px 48px;
+  overflow: hidden;
 }
+.hero-lockup { transform-origin: center center; will-change: transform, opacity; }
+.eyebrow, .kicker { margin: 0 0 8px; color: var(--muted); font-size: 17px; font-weight: 600; }
+h1, .display {
+  margin: 0;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.hero-title { margin: 10px 0 0; font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -0.02em; }
+.tagline { margin: 14px 0 0; font-size: clamp(21px, 2.4vw, 28px); font-weight: 600; letter-spacing: -0.02em; }
+.summary { max-width: 640px; margin: 18px auto 0; color: var(--muted); font-size: 17px; }
+.summary p { margin: 0 0 6px; }
+.meta { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+.contacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 17px; }
+.contacts a { text-decoration: none; }
+.contacts a:hover { text-decoration: underline; }
 .avatar-btn {
-  width: 220px;
-  height: 220px;
+  margin-top: 28px;
   padding: 0;
   border: 0;
-  border-radius: 32px;
-  cursor: pointer;
-  position: relative;
   background: transparent;
+  cursor: pointer;
+  border-radius: 28px;
 }
 .avatar-btn img {
-  width: 100%;
-  height: 100%;
+  width: min(280px, 68vw);
+  height: min(280px, 68vw);
   object-fit: cover;
   border-radius: 28px;
   display: block;
-  position: relative;
-  z-index: 1;
-}
-.avatar-ring {
-  position: absolute;
-  inset: -6px;
-  border-radius: 36px;
-  background: conic-gradient(from 0deg, var(--accent), var(--accent-2), #8b7cff, var(--accent));
-  animation: spin 8s linear infinite;
-  filter: blur(0.2px);
-}
-.avatar-ring::after {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: 30px;
-  background: var(--bg);
-}
-@keyframes spin { to { transform: rotate(1turn); } }
-.egg-hint { margin: 16px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
-.kicker { margin: 0 0 8px; color: var(--accent); font-size: 13px; letter-spacing: 0.14em; }
-.name {
-  margin: 0;
-  font-size: clamp(52px, 7vw, 88px);
-  line-height: 1.05;
-  letter-spacing: 0.06em;
-  font-weight: 760;
-}
-@supports (-webkit-background-clip: text) {
-  .name {
-    background: linear-gradient(105deg, var(--text) 10%, var(--accent) 48%, var(--accent-2) 90%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-}
-.role { margin: 10px 0 0; font-size: 22px; font-weight: 650; }
-.meta { margin: 6px 0 0; color: var(--muted); }
-.summary { margin: 14px 0 0; max-width: 62ch; }
-.contacts { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 14px; }
-.contacts a { color: var(--text); text-decoration: none; border-bottom: 1px solid transparent; }
-.contacts a:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.stats { display: flex; gap: 18px; margin-top: 22px; }
-.stats div {
-  min-width: 88px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: var(--glass);
-  border: 1px solid var(--line);
-  backdrop-filter: blur(12px);
-}
-.stats b { display: block; font-size: 26px; line-height: 1.1; color: var(--accent); }
-.stats span { color: var(--muted); font-size: 12px; }
-
-.block { margin: 18px 0 42px; }
-.block h2 {
-  margin: 0 0 16px;
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  color: var(--accent);
-}
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.card, .tl-card {
-  position: relative;
-  border-radius: 20px;
-  background: var(--glass);
-  border: 1px solid var(--line);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(16px);
-  padding: 18px 18px 16px;
-  transform-style: preserve-3d;
-  transition: box-shadow .3s ease;
+  will-change: transform;
 }
-.card::before, .tl-card::before {
-  content: "";
+.egg-hint { margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+
+.feature { height: 230vh; background: var(--feature); color: var(--feature-text); }
+.feature-sticky { position: sticky; top: 48px; height: calc(100svh - 48px); }
+.feature-slide {
   position: absolute;
   inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(380px circle at var(--gx, 20%) var(--gy, 0%), var(--glow), transparent 42%);
-  opacity: 0;
-  transition: opacity .3s;
-  pointer-events: none;
-}
-.card:hover::before, .tl-card:hover::before { opacity: 1; }
-.card:hover, .cert-card:hover { box-shadow: 0 18px 40px var(--glow); }
-.card h3, .tl-card h3 { margin: 0; font-size: 18px; }
-.row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-.stack, .date, .org { color: var(--muted); font-size: 13px; }
-.card p, .tl-card p { margin: 8px 0 0; }
-.repo { font-size: 13px; word-break: break-all; }
-.prize {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  color: #1a1206;
-  background: linear-gradient(90deg, var(--accent-2), #ffe1a8);
-  font-size: 12px;
-  font-weight: 700;
-}
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
-.tag, .chip {
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: var(--chip);
-  color: var(--text);
-  padding: 2px 10px;
-  font-size: 12px;
-}
-.chip { padding: 7px 14px; font-size: 13px; }
-
-.timeline { position: relative; margin-left: 8px; padding-left: 28px; }
-.timeline-track, .timeline-fill {
-  position: absolute;
-  left: 0; top: 8px; bottom: 8px;
-  width: 2px;
-}
-.timeline-track { background: var(--line); }
-.timeline-fill {
-  background: linear-gradient(var(--accent), var(--accent-2));
-  transform: scaleY(var(--p, 0));
-  transform-origin: top center;
-}
-.tl-item { position: relative; margin: 0 0 14px; }
-.tl-item::before {
-  content: "";
-  position: absolute;
-  left: -33px;
-  top: 22px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
-}
-
-.marquee {
-  overflow: hidden;
-  margin: 0 0 10px;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-.marquee-track {
   display: flex;
-  gap: 10px;
-  width: max-content;
-  animation: ticker 32s linear infinite;
-}
-.marquee.reverse .marquee-track { animation-direction: reverse; animation-duration: 38s; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-@keyframes ticker { to { transform: translateX(-50%); } }
-.skill-static { display: none; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-
-.cert-card { cursor: pointer; text-align: left; width: 100%; color: inherit; font: inherit; }
-.honors { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
-.honors li {
-  padding: 8px 12px;
-  border-radius: 14px;
-  background: var(--glass);
-  border: 1px solid var(--line);
-}
-.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.gallery button { padding: 0; border: 1px solid var(--line); background: var(--glass); border-radius: 16px; overflow: hidden; cursor: pointer; }
-.gallery img { width: 100%; height: 180px; object-fit: cover; display: block; }
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 13px;
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-}
-.game-link {
-  color: var(--text);
-  text-decoration: none;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 6px 12px;
-  background: var(--chip);
-}
-
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.in { opacity: 1; transform: none; }
-.stagger > * { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
-.stagger.in > * { opacity: 1; transform: none; }
-.stagger.in > *:nth-child(2) { transition-delay: .08s; }
-.stagger.in > *:nth-child(3) { transition-delay: .16s; }
-.stagger.in > *:nth-child(4) { transition-delay: .24s; }
-.stagger.in > *:nth-child(5) { transition-delay: .32s; }
-.stagger.in > *:nth-child(6) { transition-delay: .4s; }
-
-.viewer, .toast, #confetti { position: fixed; z-index: 60; }
-.viewer {
-  inset: 0;
-  display: none;
-  background: rgba(4, 6, 12, 0.82);
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  text-align: center;
+  padding: 32px 20px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
 }
-.viewer.open { display: flex; }
-.viewer img { max-width: min(960px, 100%); max-height: calc(100vh - 100px); background: #fff; }
-.viewer-close {
-  position: absolute;
-  top: 16px; right: 16px;
-  border: 0; border-radius: 999px;
-  padding: 8px 14px;
+.feature-slide.on { opacity: 1; transform: none; }
+.feature-num {
+  margin: 8px 0;
+  font-size: clamp(72px, 14vw, 160px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+.feature-label { margin: 0; font-size: clamp(21px, 3vw, 32px); font-weight: 600; letter-spacing: -0.02em; }
+.feature .kicker { color: var(--feature-muted); }
+
+.band { padding: 100px 0 40px; }
+.band.alt { background: var(--card); }
+.wrap { width: min(980px, calc(100% - 40px)); margin: 0 auto; }
+.band h2 { margin: 0 0 28px; }
+.h-scroll { position: relative; }
+.h-sticky { position: sticky; top: 48px; height: calc(100svh - 48px); overflow: hidden; display: flex; align-items: center; }
+.h-track { display: flex; gap: 24px; padding: 0 7vw; will-change: transform; }
+.product {
+  flex: 0 0 min(760px, 78vw);
+  min-height: 460px;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.product h3 { margin: 0; font-size: clamp(36px, 4.6vw, 56px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; overflow-wrap: anywhere; }
+.product .tag { margin: 14px 0 0; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+.chips li { background: var(--chip); color: var(--text); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+.links { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 28px; font-size: 17px; }
+.links a { text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+
+.detail { width: min(692px, calc(100% - 40px)); margin: 0 auto 72px; }
+.detail h3 { margin: 0 0 8px; font-size: clamp(32px, 4vw, 48px); font-weight: 600; letter-spacing: -0.03em; }
+.detail p { margin: 0; color: var(--muted); font-size: 17px; }
+
+.rows { width: min(860px, calc(100% - 40px)); margin: 0 auto; }
+.row-item { display: grid; grid-template-columns: 1fr auto; gap: 24px; padding: 28px 0; border-top: 1px solid var(--line); }
+.row-item h3 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+.row-item p { margin: 6px 0 0; color: var(--muted); }
+.row-item time { color: var(--muted); font-size: 17px; white-space: nowrap; }
+.award { color: var(--text) !important; font-weight: 600; }
+
+.skills { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; width: min(860px, calc(100% - 40px)); margin: 0 auto; }
+.skills h3 { margin: 0 0 8px; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+
+.certs { width: min(980px, calc(100% - 40px)); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.cert {
+  padding: 0;
+  border: 0;
+  background: var(--card);
+  color: inherit;
+  text-align: left;
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
   cursor: pointer;
 }
-#confetti { inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.toast {
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%) translateY(12px);
-  background: var(--text);
-  color: var(--bg);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 13px;
-  opacity: 0;
-  pointer-events: none;
-  transition: .3s ease;
-}
+.cert-media { height: 220px; overflow: hidden; background: #eee; }
+.cert img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform; }
+.cert div:last-child { padding: 18px 22px 22px; }
+.cert h3 { margin: 0; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; }
+.cert p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+.honors { width: min(860px, calc(100% - 40px)); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px 12px; padding: 0; list-style: none; }
+.honors li { background: var(--card); border-radius: 999px; padding: 10px 16px; box-shadow: var(--shadow); font-size: 15px; }
+.gallery { width: min(980px, calc(100% - 40px)); margin: 12px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.gallery button { padding: 0; border: 0; border-radius: 28px; overflow: hidden; cursor: pointer; box-shadow: var(--shadow); background: var(--card); }
+.gallery img { width: 100%; height: 320px; object-fit: cover; display: block; }
+.footer { text-align: center; color: var(--muted); font-size: 12px; padding: 28px 20px 48px; }
+.footer a { text-decoration: none; margin-left: 16px; }
+.line { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.line.in { opacity: 1; transform: none; }
+.line.d1 { transition-delay: .08s; }
+.line.d2 { transition-delay: .16s; }
+.line.d3 { transition-delay: .24s; }
+.line.d4 { transition-delay: .32s; }
+
+.viewer { position: fixed; inset: 0; z-index: 60; display: none; background: rgba(0, 0, 0, 0.72); align-items: center; justify-content: center; padding: 24px; }
+.viewer.open { display: flex; }
+.viewer img { max-width: min(1000px, 100%); max-height: calc(100vh - 100px); background: #fff; border-radius: 12px; }
+.viewer-close { position: absolute; top: 16px; right: 16px; border: 0; border-radius: 999px; background: #fff; color: #1d1d1f; padding: 8px 14px; cursor: pointer; }
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 70; }
+.toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(8px); background: #1d1d1f; color: #f5f5f7; border-radius: 999px; padding: 8px 14px; font-size: 14px; opacity: 0; z-index: 70; transition: .3s var(--ease); }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-@media (max-width: 760px) {
-  .nav { padding: 10px 12px; gap: 8px; }
-  .brand { letter-spacing: 0; font-size: 14px; }
-  .nav-links a { font-size: 12px; padding: 6px 5px; }
-  .hero { min-height: 0; grid-template-columns: 1fr; gap: 16px; padding-top: 22px; }
-  .avatar-btn, .avatar-btn img { width: 112px; height: 112px; }
-  .avatar-ring { inset: -4px; }
-  .name { font-size: 44px; }
-  .grid, .gallery { grid-template-columns: 1fr; }
-  .card, .tl-card { backdrop-filter: blur(8px); }
-  .stats div { min-width: 0; flex: 1; }
-  .aurora i { filter: blur(28px); opacity: 0.35; animation: none; }
+@media (max-width: 800px) {
+  .nav { padding: 0 12px; gap: 8px; }
+  .nav-links { min-width: 0; }
+  .nav-links a { padding: 6px 4px; font-size: 11px; }
+  .hero-pin, .feature, .h-scroll { height: auto; }
+  .hero-sticky, .feature-sticky, .h-sticky { position: static; height: auto; overflow: visible; }
+  .feature-sticky { display: block; }
+  .feature-slide { position: relative; opacity: 1; transform: none; min-height: 70vh; }
+  .h-sticky { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 8px 0 28px; }
+  .h-track { transform: none !important; padding: 0 20px 8px; }
+  .product { flex-basis: 86vw; scroll-snap-align: center; min-height: 380px; padding: 36px 28px; }
+  .skills, .certs, .gallery { grid-template-columns: 1fr; }
+  .gallery img, .cert-media { height: 200px; }
+  .row-item { grid-template-columns: 1fr; gap: 6px; }
+  .band { padding: 72px 0 16px; }
 }
-html.reduce .reveal,
-html.reduce .stagger > * { opacity: 1; transform: none; transition: none; }
-html.reduce .aurora i,
-html.reduce .avatar-ring,
-html.reduce .marquee-track { animation: none; }
-html.reduce .timeline-fill { transform: none; }
-html.reduce .marquee { display: none; }
-html.reduce .skill-static { display: flex; }
+html.reduce .line { opacity: 1; transform: none; transition: none; }
+html.reduce .hero-pin,
+html.reduce .feature,
+html.reduce .h-scroll { height: auto; }
+html.reduce .hero-sticky,
+html.reduce .feature-sticky,
+html.reduce .h-sticky { position: static; height: auto; overflow: visible; }
+html.reduce .feature-slide { position: relative; opacity: 1; transform: none; min-height: 0; padding: 48px 20px; }
+html.reduce .h-track { transform: none !important; flex-wrap: wrap; }
+html.reduce .product { flex: 1 1 100%; }
+html.reduce .hero-lockup,
+html.reduce .avatar-btn img,
+html.reduce [data-zoom] { transform: none !important; }
 
 @media print {
-  .aurora, #stars, .progress, .nav, .no-print, #confetti, .toast, .viewer, .marquee, .egg-hint { display: none !important; }
-  html, body { background: #fff !important; color: #1f2937 !important; }
-  body::before { display: none !important; }
-  main { width: auto; margin: 0; padding: 0; }
-  .hero { min-height: 0; display: block; padding: 0 0 8px; }
-  .avatar-btn, .avatar-btn img { width: 24mm; height: 24mm; }
-  .avatar-ring { display: none; }
-  .name, .role, .meta, .summary, a, .stack, .date, .org { color: #1f2937 !important; -webkit-text-fill-color: #1f2937 !important; background: none !important; }
-  .card, .tl-card, .stats div, .honors li, .tag, .chip {
-    background: #fff !important;
-    color: #1f2937 !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    border-color: #ddd !important;
-    transform: none !important;
-  }
-  .skill-static { display: block !important; }
-  .skill-static .chip { display: inline; border: 0; background: none !important; padding: 0; }
-  .skill-static .chip:not(:last-child)::after { content: "、"; }
-  .timeline-fill { transform: none !important; background: #888; }
-  .reveal, .stagger > * { opacity: 1 !important; transform: none !important; }
-  .prize { background: none; color: #1f2937; padding: 0; }
-  a { text-decoration: none; }
-  .block, .tl-item, .card { break-inside: avoid; }
+  .nav, .egg-hint, .no-print, #confetti, .toast, .viewer, .h-scroll { display: none !important; }
+  html, body { background: #fff !important; color: #1d1d1f !important; }
+  .hero-pin, .feature, .h-scroll { height: auto !important; }
+  .hero-sticky, .feature-sticky { position: static !important; height: auto !important; }
+  .feature { background: #fff !important; color: #1d1d1f !important; }
+  .feature-slide { position: static !important; opacity: 1 !important; transform: none !important; color: #1d1d1f !important; min-height: 0; padding: 8px 0; }
+  .feature-num { font-size: 32px; color: #1d1d1f; }
+  .line { opacity: 1 !important; transform: none !important; }
+  .avatar-btn img { width: 28mm; height: 28mm; box-shadow: none; }
+  .product, .cert, .honors li, .chips li { box-shadow: none; background: #fff; }
+  .chips li { display: inline; background: none; padding: 0; }
+  .chips li:not(:last-child)::after { content: "、"; }
+  a { color: #1d1d1f; text-decoration: none; }
+  .band { padding: 16px 0; }
+  .row-item, .detail, .cert { break-inside: avoid; }
   @page { size: A4; margin: 12mm; }
 }
 </style>
 </head>
 <body>
-<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-<canvas id="stars" aria-hidden="true"></canvas>
-<div class="progress" id="progress" aria-hidden="true"></div>
 <header class="nav">
   <a class="brand" href="#top" id="brand">陈芷锐</a>
-  <div class="nav-links" id="navLinks">
+  <nav class="nav-links" id="navLinks" aria-label="页面目录">
+    <a href="#highlights">数字</a>
     <a href="#projects">项目</a>
     <a href="#experience">经历</a>
     <a href="#education">教育</a>
     <a href="#skills">技能</a>
     <a href="#certs">证书</a>
     <a href="#honors">荣誉</a>
-    <span class="nav-ind" id="navInd"></span>
-  </div>
-  <button class="icon-btn" id="themeBtn" type="button" aria-label="切换深色和浅色">
-    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"/></svg>
-    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-  </button>
+  </nav>
+  <button class="theme-btn" id="themeBtn" type="button">深色</button>
 </header>
 <main id="app"></main>
 <div class="viewer no-print" id="viewer" role="dialog" aria-modal="true" aria-label="图片预览">
@@ -517,9 +317,8 @@ html.reduce .skill-static { display: flex; }
 <div class="toast no-print" id="toast" role="status"></div>
 <script>
 const reduce = document.documentElement.classList.contains('reduce');
-const narrowQuery = matchMedia('(max-width: 760px)');
+const narrowQuery = matchMedia('(max-width: 800px)');
 let narrow = narrowQuery.matches;
-const mouse = { x: 0, y: 0 };
 
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -536,10 +335,30 @@ function el(tag, className, html) {
   if (html !== undefined) node.innerHTML = html;
   return node;
 }
-function shortUrl(url) { return String(url || '').replace(/^https?:\/\//, ''); }
 function certItems(certificates) {
   if (Array.isArray(certificates)) return certificates;
   return (certificates && (certificates.items || certificates.cards)) || [];
+}
+function sentences(text) {
+  return String(text || '').split('。').map((part) => part.trim()).filter(Boolean).map((part) => `${part}。`);
+}
+function countWord(n) {
+  const digits = ['零', '一', '两', '三', '四', '五', '六', '七', '八', '九', '十'];
+  return n <= 10 ? digits[n] : String(n);
+}
+function taglineOf(summary) {
+  const text = String(summary || '');
+  const words = text.match(/(\d{3,})\s*词/);
+  if (words) return `${words[1]} 个词，离线也能背。`;
+  const first = text.split('。')[0] || text;
+  const cut = first.split('，')[0];
+  return `${cut || first}。`;
+}
+function progressOf(section) {
+  const start = section.offsetTop;
+  const end = start + section.offsetHeight - window.innerHeight;
+  if (end <= start) return 0;
+  return Math.min(1, Math.max(0, (window.scrollY - start) / (end - start)));
 }
 
 async function init() {
@@ -556,10 +375,10 @@ async function init() {
   document.title = config.site?.title || config.profile?.name || '陈芷锐';
   const description = document.querySelector('meta[name="description"]');
   if (description && config.site?.description) description.setAttribute('content', config.site.description);
-  const brand = document.getElementById('brand');
-  if (config.profile?.name) brand.textContent = config.profile.name;
+  if (config.profile?.name) document.getElementById('brand').textContent = config.profile.name;
 
   app.appendChild(renderHero(config));
+  app.appendChild(renderFeature(config));
   app.appendChild(renderProjects(config.projects || []));
   app.appendChild(renderExperience(config.experience || []));
   app.appendChild(renderEducation(config.education || []));
@@ -570,48 +389,37 @@ async function init() {
   app.appendChild(renderFooter(config));
 
   setupReveal();
-  setupCounts();
-  setupTilt();
-  setupTimelines();
+  setupScroll();
   setupNav();
-  scramble(document.getElementById('heroName'), config.profile?.name || '');
-  scramble(document.getElementById('heroRole'), config.profile?.title || '');
   document.getElementById('avatarBtn')?.addEventListener('click', (event) => {
     burst(event.clientX, event.clientY);
-    toast('彩蛋：头像点亮了');
+    toast('彩蛋');
   });
+  document.getElementById('themeBtn').textContent = document.documentElement.dataset.theme === 'dark' ? '浅色' : '深色';
 }
 
 function renderHero(config) {
   const profile = config.profile || {};
-  const header = el('header', 'hero reveal');
-  header.id = 'top';
+  const projects = config.projects || [];
+  const section = el('section', 'hero-pin');
+  section.id = 'top';
   const photo = safeUrl(profile.avatar);
-  const figure = el('div', '');
-  figure.innerHTML = `
-    <button class="avatar-btn" id="avatarBtn" type="button" aria-label="头像彩蛋">
-      <span class="avatar-ring" aria-hidden="true"></span>
-      ${photo ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(profile.name || '')}">` : ''}
-    </button>
-    <p class="egg-hint no-print">点击头像</p>`;
-  header.appendChild(figure);
-  const copy = el('div', '');
-  const meta = [profile.university, profile.major, profile.graduation, profile.location].filter(Boolean).map(escapeHtml).join(' · ');
-  const counts = [
-    [(config.projects || []).length, '项目'],
-    [certItems(config.certificates).length, '证书'],
-    [(config.honors || []).length, '荣誉']
-  ];
-  copy.innerHTML = `
-    <p class="kicker">${escapeHtml(profile.university || '')}</p>
-    <h1 class="name" id="heroName"></h1>
-    <p class="role" id="heroRole"></p>
-    <p class="meta">${meta}</p>
-    <p class="summary">${escapeHtml(profile.summary || '')}</p>
-    ${contactHtml(profile)}
-    <div class="stats">${counts.filter(([n]) => n > 0).map(([n, label]) => `<div><b class="count" data-to="${n}">${n}</b><span>${label}</span></div>`).join('')}</div>`;
-  header.appendChild(copy);
-  return header;
+  const lines = sentences(profile.summary).map((line, index) => `<p class="line d${Math.min(index + 1, 4)}">${escapeHtml(line)}</p>`).join('');
+  const meta = [profile.major, profile.graduation, profile.location, profile.status].filter(Boolean).map(escapeHtml).join(' · ');
+  section.innerHTML = `
+    <div class="hero-sticky">
+      <div class="hero-lockup" id="heroLockup">
+        <p class="eyebrow">${escapeHtml(profile.university || '')}</p>
+        <h1>${escapeHtml(profile.name || '')}</h1>
+        <p class="hero-title">${escapeHtml(profile.title || '')}</p>
+        <p class="tagline">一个人，${countWord(projects.length)}个项目。</p>
+        <div class="summary">${lines}</div>
+        <p class="meta">${meta}</p>
+        ${contactHtml(profile)}
+      </div>
+      ${photo ? `<button class="avatar-btn" id="avatarBtn" type="button" aria-label="照片彩蛋"><img data-zoom src="${escapeHtml(photo)}" alt="${escapeHtml(profile.name || '')}"></button><p class="egg-hint no-print">轻点照片</p>` : ''}
+    </div>`;
+  return section;
 }
 
 function contactHtml(profile) {
@@ -619,103 +427,132 @@ function contactHtml(profile) {
   if (profile.phone) bits.push(`<li><a href="tel:${escapeHtml(String(profile.phone).replace(/\s+/g, ''))}">${escapeHtml(profile.phone)}</a></li>`);
   if (profile.email) bits.push(`<li><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a></li>`);
   const github = safeUrl(profile.github);
-  if (github) bits.push(`<li><a href="${escapeHtml(github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(github))}</a></li>`);
+  if (github) bits.push(`<li><a href="${escapeHtml(github)}" target="_blank" rel="noopener noreferrer">GitHub</a></li>`);
   return `<ul class="contacts">${bits.join('')}</ul>`;
 }
 
+function renderFeature(config) {
+  const section = el('section', 'feature');
+  section.id = 'highlights';
+  const slides = [];
+  (config.projects || []).forEach((project) => {
+    const match = String(project.summary || '').match(/(\d{3,})/);
+    if (match && slides.every((slide) => slide.count !== Number(match[1]))) {
+      slides.push({ kicker: project.name, num: match[1], label: '离线词库里的词。', count: Number(match[1]) });
+    }
+  });
+  const prize = (config.experience || []).find((item) => String(item.description || '').includes('一等奖'));
+  if (prize) slides.push({ kicker: '北京赛区', num: '一等', label: `${prize.title}。`, count: 0 });
+  const honors = config.honors || [];
+  if (honors.length) slides.push({ kicker: '荣誉', num: String(honors.length), label: '项荣誉。', count: honors.length });
+  const sticky = el('div', 'feature-sticky');
+  slides.forEach((slide, index) => {
+    const node = el('div', `feature-slide${index === 0 ? ' on' : ''}`);
+    node.innerHTML = `<p class="kicker">${escapeHtml(slide.kicker)}</p><p class="feature-num" ${slide.count ? `data-count="${slide.count}"` : ''}>${escapeHtml(slide.num)}</p><p class="feature-label">${escapeHtml(slide.label)}</p>`;
+    sticky.appendChild(node);
+  });
+  section.appendChild(sticky);
+  return section;
+}
+
 function renderProjects(projects) {
-  const section = el('section', 'block');
+  const section = el('section', '');
   section.id = 'projects';
-  section.appendChild(el('h2', '', '项目'));
-  const grid = el('div', 'grid stagger');
-  projects.forEach((project) => {
+  const head = el('div', 'band');
+  head.innerHTML = `<div class="wrap"><h2 class="display line">${countWord(projects.length)}个项目。</h2></div>`;
+  section.appendChild(head);
+  const scroller = el('div', 'h-scroll');
+  scroller.id = 'gallery';
+  const sticky = el('div', 'h-sticky');
+  const track = el('div', 'h-track');
+  projects.forEach((project, index) => {
     const url = safeUrl(project.url);
-    const stack = (project.stack || []).map(escapeHtml).join(' · ');
-    const card = el('article', 'card');
+    const card = el('article', 'product');
+    card.id = `tile-${index}`;
     card.innerHTML = `
-      <div class="row"><h3>${escapeHtml(project.name || '')}</h3>${stack ? `<span class="stack">${stack}</span>` : ''}</div>
-      <p>${withCounts(project.summary || '')}</p>
-      ${url ? `<p><a class="repo" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(url))}</a></p>` : ''}`;
-    grid.appendChild(card);
+      <h3>${escapeHtml(project.name || '')}</h3>
+      <p class="tag">${escapeHtml(taglineOf(project.summary))}</p>
+      <ul class="chips">${(project.stack || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      <div class="links">
+        <a href="#detail-${index}">进一步了解 &gt;</a>
+        ${url ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">GitHub &gt;</a>` : ''}
+      </div>`;
+    track.appendChild(card);
+  });
+  sticky.appendChild(track);
+  scroller.appendChild(sticky);
+  section.appendChild(scroller);
+  const details = el('div', 'band');
+  projects.forEach((project, index) => {
+    const url = safeUrl(project.url);
+    const block = el('article', 'detail line');
+    block.id = `detail-${index}`;
+    block.innerHTML = `<h3>${escapeHtml(project.name || '')}</h3><p>${escapeHtml(project.summary || '')}</p><p class="links">${(project.stack || []).map(escapeHtml).join(' · ')}${url ? ` · <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">GitHub &gt;</a>` : ''}</p>`;
+    details.appendChild(block);
+  });
+  section.appendChild(details);
+  return section;
+}
+
+function renderExperience(items) {
+  const section = el('section', 'band alt');
+  section.id = 'experience';
+  section.innerHTML = `<div class="wrap"><h2 class="display line">实践。</h2></div>`;
+  const list = el('div', 'rows');
+  items.forEach((item, index) => {
+    const prize = '获北京赛区一等奖';
+    const description = item.description || '';
+    const hasPrize = description.includes(prize);
+    const body = hasPrize ? description.replace(prize, '').replace(/。{2,}/g, '。').trim() : description;
+    const row = el('article', `row-item line d${Math.min(index + 1, 4)}`);
+    row.innerHTML = `<div><h3>${escapeHtml(item.title || '')}</h3><p>${escapeHtml(item.org || '')}</p><p>${escapeHtml(body)}</p>${hasPrize ? `<p class="award">${prize}</p>` : ''}${(item.tags || []).length ? `<p>${item.tags.map(escapeHtml).join(' · ')}</p>` : ''}</div><time>${escapeHtml(item.date || '')}</time>`;
+    list.appendChild(row);
+  });
+  section.appendChild(list);
+  return section;
+}
+
+function renderEducation(items) {
+  const section = el('section', 'band');
+  section.id = 'education';
+  section.innerHTML = `<div class="wrap"><h2 class="display line">教育。</h2></div>`;
+  const list = el('div', 'rows');
+  items.forEach((item) => {
+    const bits = [item.detail || item.level, item.major, item.date, item.note].filter(Boolean).map(escapeHtml).join(' · ');
+    const row = el('article', 'row-item line');
+    row.innerHTML = `<div><h3>${escapeHtml(item.school || '')}</h3>${bits ? `<p>${bits}</p>` : ''}</div><time></time>`;
+    list.appendChild(row);
+  });
+  section.appendChild(list);
+  return section;
+}
+
+function renderSkills(groups) {
+  const section = el('section', 'band alt');
+  section.id = 'skills';
+  section.innerHTML = `<div class="wrap"><h2 class="display line">技能。</h2></div>`;
+  const grid = el('div', 'skills');
+  groups.forEach((group) => {
+    const tags = group.tags || [];
+    const block = el('article', 'line');
+    block.innerHTML = `<h3>${escapeHtml(group.name || '')}</h3>${tags.length ? `<ul class="chips">${tags.map((tag) => `<li>${escapeHtml(tag)}</li>`).join('')}</ul>` : ''}`;
+    grid.appendChild(block);
   });
   section.appendChild(grid);
   return section;
 }
 
-function withCounts(text) {
-  return escapeHtml(text).replace(/\d{3,}/g, (n) => `<span class="count" data-to="${n}">${n}</span>`);
-}
-
-function renderExperience(items) {
-  return renderTimeline('experience', '经历', items, (item) => {
-    const prize = '获北京赛区一等奖';
-    const description = item.description || '';
-    const hasPrize = description.includes(prize);
-    const body = hasPrize ? description.replace(prize, '').replace(/。{2,}/g, '。').trim() : description;
-    return `
-      <div class="row"><h3>${escapeHtml(item.title || '')}</h3><span class="date">${escapeHtml(item.date || '')}</span></div>
-      ${item.org ? `<p class="org">${escapeHtml(item.org)}</p>` : ''}
-      ${body ? `<p>${escapeHtml(body)}</p>` : ''}
-      ${hasPrize ? `<span class="prize">${prize}</span>` : ''}
-      ${(item.tags || []).length ? `<ul class="tags">${item.tags.map((tag) => `<li class="tag">${escapeHtml(tag)}</li>`).join('')}</ul>` : ''}`;
-  });
-}
-
-function renderEducation(items) {
-  return renderTimeline('education', '教育', items, (item) => {
-    const bits = [item.detail || item.level, item.major, item.date].filter(Boolean).map(escapeHtml).join(' · ');
-    return `<h3>${escapeHtml(item.school || '')}</h3>${bits ? `<p>${bits}</p>` : ''}${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}`;
-  });
-}
-
-function renderTimeline(id, title, items, inner) {
-  const section = el('section', 'block timeline-section');
-  section.id = id;
-  section.appendChild(el('h2', '', title));
-  const timeline = el('div', 'timeline');
-  timeline.appendChild(el('div', 'timeline-track'));
-  timeline.appendChild(el('div', 'timeline-fill'));
-  items.forEach((item) => {
-    const wrap = el('article', 'tl-item reveal');
-    wrap.appendChild(el('div', 'tl-card', inner(item)));
-    timeline.appendChild(wrap);
-  });
-  section.appendChild(timeline);
-  return section;
-}
-
-function renderSkills(groups) {
-  const section = el('section', 'block');
-  section.id = 'skills';
-  section.appendChild(el('h2', '', '技能'));
-  const chips = [];
-  groups.forEach((group) => {
-    if (group.name) chips.push(group.name);
-    (group.tags || []).forEach((tag) => chips.push(tag));
-  });
-  const unique = [...new Set(chips)];
-  const row = (reverse) => {
-    const track = unique.concat(unique).map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
-    return `<div class="marquee${reverse ? ' reverse' : ''}" aria-hidden="true"><div class="marquee-track">${track}</div></div>`;
-  };
-  section.insertAdjacentHTML('beforeend', row(false) + row(true));
-  const list = el('ul', 'skill-static');
-  unique.forEach((chip) => list.appendChild(el('li', 'chip', escapeHtml(chip))));
-  section.appendChild(list);
-  return section;
-}
-
 function renderCertificates(items) {
-  const section = el('section', 'block');
+  const section = el('section', 'band');
   section.id = 'certs';
-  section.appendChild(el('h2', '', '证书'));
-  const grid = el('div', 'grid stagger');
+  section.innerHTML = `<div class="wrap"><h2 class="display line">证书。</h2></div>`;
+  const grid = el('div', 'certs');
   items.forEach((item) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'card cert-card';
-    button.innerHTML = `<h3>${escapeHtml(item.title || '')}</h3><p class="org">${[item.issuer, item.year].filter(Boolean).map(escapeHtml).join(' · ')}</p>`;
+    button.className = 'cert line';
     const src = safeUrl(item.img);
+    button.innerHTML = `${src ? `<div class="cert-media"><img data-zoom src="${escapeHtml(src)}" alt=""></div>` : ''}<div><h3>${escapeHtml(item.title || '')}</h3><p>${[item.issuer, item.year].filter(Boolean).map(escapeHtml).join(' · ')}</p></div>`;
     if (src) button.addEventListener('click', () => openViewer(src, item.title || '证书'));
     grid.appendChild(button);
   });
@@ -724,29 +561,29 @@ function renderCertificates(items) {
 }
 
 function renderHonors(honors) {
-  const section = el('section', 'block reveal');
+  const section = el('section', 'band alt');
   section.id = 'honors';
-  section.appendChild(el('h2', '', '荣誉'));
+  section.innerHTML = `<div class="wrap"><h2 class="display line">荣誉。</h2></div>`;
   const list = el('ul', 'honors');
   honors.forEach((honor) => {
     const title = typeof honor === 'string' ? honor : honor.title;
-    if (title) list.appendChild(el('li', '', escapeHtml(title)));
+    if (title) list.appendChild(el('li', 'line', escapeHtml(title)));
   });
   section.appendChild(list);
   return section;
 }
 
 function renderGallery(items) {
-  const section = el('section', 'block no-print');
+  const section = el('section', 'band no-print');
   if (!items.length) return section;
-  section.appendChild(el('h2', '', '佐证'));
+  section.innerHTML = `<div class="wrap"><h2 class="display line">佐证。</h2></div>`;
   const grid = el('div', 'gallery');
   items.forEach((item) => {
     const src = safeUrl(item.img);
     if (!src) return;
     const button = document.createElement('button');
     button.type = 'button';
-    button.innerHTML = `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.title || '佐证图片')}">`;
+    button.innerHTML = `<img data-zoom src="${escapeHtml(src)}" alt="${escapeHtml(item.title || '佐证图片')}">`;
     button.addEventListener('click', () => openViewer(src, item.title || '佐证图片'));
     grid.appendChild(button);
   });
@@ -756,211 +593,144 @@ function renderGallery(items) {
 
 function renderFooter(config) {
   const footer = el('footer', 'footer');
-  const game = config.game || {};
-  const src = safeUrl(game.src);
-  footer.innerHTML = `<span>${escapeHtml(config.footer?.copyright || '')}</span>${src ? `<a class="game-link no-print" href="${escapeHtml(src)}">${escapeHtml(game.title || '小作品')}</a>` : ''}`;
+  const src = safeUrl(config.game?.src);
+  footer.innerHTML = `<span>${escapeHtml(config.footer?.copyright || '')}</span>${src ? `<a class="no-print" href="${escapeHtml(src)}">${escapeHtml(config.game.title || '小作品')} &gt;</a>` : ''}`;
   return footer;
 }
 
-function scramble(node, finalText) {
-  if (!node) return;
-  if (reduce) { node.textContent = finalText; return; }
-  const glyphs = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#$%';
-  const chars = [...finalText];
-  const start = performance.now();
-  const tick = (now) => {
-    const t = Math.min(1, (now - start) / 980);
-    const locked = Math.floor(t * chars.length);
-    node.textContent = chars.map((ch, i) => {
-      if (i < locked || /[\s·•.,，。、–—\-：:/]/.test(ch)) return ch;
-      return glyphs[Math.floor(Math.random() * glyphs.length)];
-    }).join('');
-    if (t < 1) requestAnimationFrame(tick);
-    else node.textContent = finalText;
-  };
-  requestAnimationFrame(tick);
-}
-
 function setupReveal() {
+  const nodes = [...document.querySelectorAll('.line')];
   if (reduce) {
-    document.querySelectorAll('.reveal, .stagger').forEach((node) => node.classList.add('in'));
+    nodes.forEach((node) => node.classList.add('in'));
     return;
   }
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
     });
-  }, { threshold: 0.16 });
-  document.querySelectorAll('.reveal, .stagger').forEach((node) => observer.observe(node));
+  }, { threshold: 0.2 });
+  nodes.forEach((node) => observer.observe(node));
 }
 
-function setupCounts() {
-  const nodes = [...document.querySelectorAll('.count')];
-  const run = (node) => {
-    const target = Number(node.dataset.to || 0);
-    if (reduce) { node.textContent = String(target); return; }
+function setupScroll() {
+  const hero = document.getElementById('top');
+  const lockup = document.getElementById('heroLockup');
+  const feature = document.getElementById('highlights');
+  const slides = [...document.querySelectorAll('.feature-slide')];
+  const gallery = document.getElementById('gallery');
+  const track = gallery?.querySelector('.h-track');
+  const counted = new WeakSet();
+
+  const runCount = (node) => {
+    if (!node || counted.has(node)) return;
+    counted.add(node);
+    const target = Number(node.dataset.count || 0);
+    if (!target || reduce) {
+      node.textContent = String(target || node.textContent);
+      return;
+    }
     const start = performance.now();
     const step = (now) => {
       const t = Math.min(1, (now - start) / 900);
-      node.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
+      const eased = 1 - Math.pow(1 - t, 3);
+      node.textContent = String(Math.round(target * eased));
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   };
-  if (reduce) { nodes.forEach(run); return; }
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      run(entry.target);
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.6 });
-  nodes.forEach((node) => observer.observe(node));
-}
 
-function setupTilt() {
-  if (reduce) return;
-  document.querySelectorAll('.card').forEach((card) => {
-    card.addEventListener('pointermove', (event) => {
-      if (narrow || event.pointerType === 'touch') return;
-      const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      card.style.setProperty('--gx', `${x * 100}%`);
-      card.style.setProperty('--gy', `${y * 100}%`);
-      card.style.transform = `rotateX(${(0.5 - y) * 8}deg) rotateY(${(x - 0.5) * 10}deg) translateY(-2px)`;
-    });
-    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
-  });
-}
-
-function setupTimelines() {
-  const sections = [...document.querySelectorAll('.timeline-section')];
-  const update = () => {
-    sections.forEach((section) => {
-      const fill = section.querySelector('.timeline-fill');
-      if (!fill) return;
-      if (reduce) { fill.style.setProperty('--p', 1); return; }
-      const rect = section.getBoundingClientRect();
-      const passed = Math.min(rect.height, Math.max(0, window.innerHeight * 0.62 - rect.top));
-      fill.style.setProperty('--p', (passed / rect.height).toFixed(3));
-    });
+  const sizeGallery = () => {
+    if (!gallery || !track) return;
+    if (reduce || narrow) {
+      gallery.style.height = 'auto';
+      track.style.transform = '';
+      return;
+    }
+    const max = Math.max(0, track.scrollWidth - gallery.querySelector('.h-sticky').clientWidth);
+    gallery.style.height = `${window.innerHeight + max}px`;
   };
+
+  const update = () => {
+    if (lockup && hero && !reduce && !narrow) {
+      const p = progressOf(hero);
+      lockup.style.transform = `scale(${(1 - p * 0.16).toFixed(4)})`;
+      lockup.style.opacity = String(1 - p * 0.25);
+      const photo = document.querySelector('.avatar-btn img');
+      if (photo) photo.style.transform = `scale(${(1 + p * 0.06).toFixed(4)})`;
+    }
+    if (feature && slides.length && !reduce && !narrow) {
+      const p = progressOf(feature);
+      const index = Math.min(slides.length - 1, Math.floor(p * slides.length));
+      slides.forEach((slide, i) => {
+        const on = i === index;
+        slide.classList.toggle('on', on);
+        slide.toggleAttribute('aria-hidden', !on);
+        if (on && p > 0.02) runCount(slide.querySelector('[data-count]'));
+      });
+    } else {
+      slides.forEach((slide) => runCount(slide.querySelector('[data-count]')));
+    }
+    if (gallery && track && !reduce && !narrow) {
+      const max = Math.max(0, track.scrollWidth - gallery.querySelector('.h-sticky').clientWidth);
+      track.style.transform = `translate3d(${(-progressOf(gallery) * max).toFixed(2)}px,0,0)`;
+    }
+    if (!reduce && !narrow) {
+      document.querySelectorAll('[data-zoom]').forEach((image) => {
+        if (image.closest('.avatar-btn')) return;
+        const rect = image.getBoundingClientRect();
+        const center = (rect.top + rect.height / 2) / window.innerHeight;
+        const scale = 1.04 - Math.min(Math.abs(center - 0.45), 0.5) * 0.06;
+        image.style.transform = `scale(${scale.toFixed(4)})`;
+      });
+    }
+  };
+
+  sizeGallery();
   update();
-  window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { update(); ticking = false; });
+  }, { passive: true });
+  window.addEventListener('resize', () => { narrow = narrowQuery.matches; sizeGallery(); update(); });
+  narrowQuery.addEventListener('change', () => { narrow = narrowQuery.matches; sizeGallery(); update(); });
 }
 
 function setupNav() {
   const links = [...document.querySelectorAll('.nav-links a')];
-  const indicator = document.getElementById('navInd');
-  const move = (link) => {
-    if (!link || !indicator) return;
-    const parent = link.parentElement.getBoundingClientRect();
-    const rect = link.getBoundingClientRect();
-    indicator.style.left = `${rect.left - parent.left + link.parentElement.scrollLeft}px`;
-    indicator.style.width = `${rect.width}px`;
-  };
   const spy = new IntersectionObserver((entries) => {
-    if (window.scrollY < 80) {
-      links.forEach((link) => link.classList.remove('active'));
-      indicator.style.width = '0px';
-      return;
-    }
     const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
     if (!visible) return;
     links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${visible.target.id}`));
-    move(links.find((link) => link.classList.contains('active')));
-  }, { threshold: [0.25, 0.55], rootMargin: '-30% 0px -45% 0px' });
-  document.querySelectorAll('main section[id]').forEach((section) => spy.observe(section));
-  links.forEach((link) => link.addEventListener('click', () => move(link)));
-  window.addEventListener('resize', () => {
-    const active = document.querySelector('.nav-links a.active');
-    if (active) move(active);
+  }, { threshold: 0.35, rootMargin: '-20% 0px -45% 0px' });
+  document.querySelectorAll('main section[id], #gallery').forEach((section) => {
+    if (section.id && section.id !== 'gallery') spy.observe(section);
   });
 }
 
 function openViewer(src, title) {
-  const viewer = document.getElementById('viewer');
   const image = document.getElementById('viewerImg');
   image.src = src;
   image.alt = title || '图片';
-  viewer.classList.add('open');
+  document.getElementById('viewer').classList.add('open');
 }
 function closeViewer() {
   document.getElementById('viewer').classList.remove('open');
   document.getElementById('viewerImg').src = '';
 }
 document.getElementById('viewerClose').addEventListener('click', closeViewer);
-document.getElementById('viewer').addEventListener('click', (event) => {
-  if (event.target.id === 'viewer') closeViewer();
-});
-
+document.getElementById('viewer').addEventListener('click', (event) => { if (event.target.id === 'viewer') closeViewer(); });
 document.getElementById('themeBtn').addEventListener('click', () => {
-  const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
+  document.getElementById('themeBtn').textContent = next === 'dark' ? '浅色' : '深色';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', next === 'dark' ? '#000000' : '#f5f5f7');
   try { localStorage.setItem('showcase-theme', next); } catch (e) {}
 });
-
-const progress = document.getElementById('progress');
-function updateProgress() {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
-  progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
-}
-window.addEventListener('scroll', updateProgress, { passive: true });
-updateProgress();
-
-window.addEventListener('pointermove', (event) => {
-  if (reduce || narrow || event.pointerType !== 'mouse') return;
-  mouse.x = event.clientX / window.innerWidth - 0.5;
-  mouse.y = event.clientY / window.innerHeight - 0.5;
-  document.documentElement.style.setProperty('--mx', `${mouse.x * 24}px`);
-  document.documentElement.style.setProperty('--my', `${mouse.y * 16}px`);
-}, { passive: true });
-narrowQuery.addEventListener('change', () => { narrow = narrowQuery.matches; });
-
-const starCanvas = document.getElementById('stars');
-const starCtx = starCanvas.getContext('2d');
-let stars = [];
-function resizeStars() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-  starCanvas.width = Math.floor(window.innerWidth * dpr);
-  starCanvas.height = Math.floor(window.innerHeight * dpr);
-  starCanvas.style.width = `${window.innerWidth}px`;
-  starCanvas.style.height = `${window.innerHeight}px`;
-  starCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const count = narrow ? 28 : 70;
-  stars = Array.from({ length: count }, () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    z: Math.random() * 1.4 + 0.4,
-    r: Math.random() * 1.4 + 0.3
-  }));
-}
-function drawStars() {
-  starCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  const light = document.documentElement.dataset.theme === 'light';
-  starCtx.fillStyle = light ? 'rgba(15, 23, 42, 0.45)' : 'rgba(238, 243, 255, 0.85)';
-  const ox = reduce || narrow ? 0 : mouse.x * 18;
-  const oy = reduce || narrow ? 0 : mouse.y * 12;
-  stars.forEach((star) => {
-    if (!reduce) {
-      star.y -= star.z * 0.15;
-      if (star.y < -4) star.y = window.innerHeight + 4;
-    }
-    starCtx.globalAlpha = 0.35 + star.z * 0.35;
-    starCtx.beginPath();
-    starCtx.arc(star.x + ox * star.z, star.y + oy * star.z, star.r, 0, Math.PI * 2);
-    starCtx.fill();
-  });
-  starCtx.globalAlpha = 1;
-  if (!reduce) requestAnimationFrame(drawStars);
-}
-resizeStars();
-drawStars();
-window.addEventListener('resize', resizeStars);
 
 const confetti = document.getElementById('confetti');
 const confettiCtx = confetti.getContext('2d');
@@ -969,73 +739,55 @@ function resizeConfetti() {
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   confetti.width = Math.floor(window.innerWidth * dpr);
   confetti.height = Math.floor(window.innerHeight * dpr);
-  confetti.style.width = `${window.innerWidth}px`;
-  confetti.style.height = `${window.innerHeight}px`;
   confettiCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 resizeConfetti();
 window.addEventListener('resize', resizeConfetti);
 function burst(x, y) {
   if (reduce) return;
-  const colors = ['#5ce1ff', '#ffb45c', '#c4b5fd', '#fb7185', '#f8fafc'];
-  for (let i = 0; i < 90; i += 1) {
+  const colors = ['#0071e3', '#1d1d1f', '#f5f5f7', '#6e6e73', '#ff4d4f'];
+  for (let i = 0; i < 80; i += 1) {
     const angle = Math.random() * Math.PI * 2;
-    const speed = 3 + Math.random() * 7;
-    bits.push({
-      x, y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed - 2,
-      g: 0.12 + Math.random() * 0.08,
-      life: 70 + Math.random() * 20,
-      color: colors[i % colors.length],
-      w: 4 + Math.random() * 4,
-      h: 6 + Math.random() * 6
+    const speed = 2 + Math.random() * 6;
+    bits.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 2, g: 0.12, life: 60, color: colors[i % colors.length], w: 5, h: 8 });
+  }
+  if (burst.running) return;
+  burst.running = true;
+  const step = () => {
+    confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    bits = bits.filter((bit) => bit.life > 0);
+    bits.forEach((bit) => {
+      bit.vy += bit.g;
+      bit.x += bit.vx;
+      bit.y += bit.vy;
+      bit.life -= 1;
+      confettiCtx.globalAlpha = Math.max(0, bit.life / 60);
+      confettiCtx.fillStyle = bit.color;
+      confettiCtx.fillRect(bit.x, bit.y, bit.w, bit.h);
     });
-  }
-  if (!burst.running) {
-    burst.running = true;
-    const step = () => {
-      confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      bits = bits.filter((bit) => bit.life > 0);
-      bits.forEach((bit) => {
-        bit.vy += bit.g;
-        bit.x += bit.vx;
-        bit.y += bit.vy;
-        bit.life -= 1;
-        confettiCtx.globalAlpha = Math.max(0, bit.life / 90);
-        confettiCtx.fillStyle = bit.color;
-        confettiCtx.fillRect(bit.x, bit.y, bit.w, bit.h);
-      });
-      confettiCtx.globalAlpha = 1;
-      if (bits.length) requestAnimationFrame(step);
-      else burst.running = false;
-    };
-    requestAnimationFrame(step);
-  }
+    if (bits.length) requestAnimationFrame(step);
+    else burst.running = false;
+  };
+  requestAnimationFrame(step);
 }
 function toast(message) {
   const node = document.getElementById('toast');
   node.textContent = message;
   node.classList.add('show');
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => node.classList.remove('show'), 1600);
+  toast.timer = setTimeout(() => node.classList.remove('show'), 1400);
 }
-
 const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let konamiAt = 0;
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeViewer();
   const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
   konamiAt = key === konami[konamiAt] ? konamiAt + 1 : (key === konami[0] ? 1 : 0);
-  if (konamiAt === konami.length) {
-    konamiAt = 0;
-    burst(window.innerWidth / 2, window.innerHeight / 2);
-    toast('彩蛋解锁，进入坦克大战');
-    setTimeout(() => { window.location.href = 'tank-battle.html'; }, reduce ? 0 : 700);
-  }
-});
-window.addEventListener('beforeprint', () => {
-  document.querySelectorAll('.count').forEach((node) => { node.textContent = node.dataset.to || node.textContent; });
+  if (konamiAt !== konami.length) return;
+  konamiAt = 0;
+  burst(window.innerWidth / 2, window.innerHeight / 3);
+  toast('进入坦克大战');
+  setTimeout(() => { window.location.href = 'tank-battle.html'; }, reduce ? 0 : 600);
 });
 
 init();
