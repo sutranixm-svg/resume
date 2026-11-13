@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "陈芷锐 · 简历",
-    "description": "陈芷锐，对外经济贸易大学在读，求职意向 AI 训练师。",
+    "title": "陈芷锐",
+    "description": "陈芷锐 · 对外经济贸易大学少数民族预科 · AI 训练师",
     "version": "4.0"
   },
   "profile": {
@@ -10,10 +10,10 @@
     "status": "寻求机会",
     "avatar": "assets/avatar.jpg",
     "university": "对外经济贸易大学",
-    "major": "TODO：专业",
-    "graduation": "TODO：预计毕业年份",
+    "major": "少数民族预科",
+    "graduation": "预计 2031 年",
     "location": "北京",
-    "summary": "对外经济贸易大学本科在读，求职方向为 AI 训练师。持有达摩院人工智能高级训练师、科大讯飞智能体工程师与 Prompt 工程师认证，以及 Datawhale × MarsCode AI+编程能力认证。有校级学生会管理与省级赛事组织经验。",
+    "summary": "对外经济贸易大学少数民族预科在读。持有达摩院人工智能高级训练师、科大讯飞智能体工程师与 Prompt 工程师认证，以及 Datawhale × MarsCode AI+编程能力认证。有校级学生会管理与省级赛事组织经验。",
     "phone": "18990430280",
     "email": "3041867249@qq.com",
     "github": "https://github.com/sutranixm-svg"
@@ -47,14 +47,13 @@
   "education": [
     {
       "school": "对外经济贸易大学",
-      "detail": "本科在读",
-      "major": "TODO：专业",
-      "date": "TODO：入学年份 – TODO：预计毕业年份"
+      "detail": "预科（1年）+ 本科（4年）",
+      "major": "少数民族预科",
+      "date": "2026.09 – 预计 2031.06"
     },
     {
       "school": "绵阳中学 / 绵阳外国语实验学校",
-      "detail": "高中 / 初中",
-      "date": "TODO：起止年份"
+      "detail": "高中 2023.09 – 2026.06 · 初中 2020.09 – 2023.06"
     }
   ],
   "skillGroups": [
@@ -80,34 +79,34 @@
       "title": "省赛组织小组长",
       "org": "省级赛事 · 组织组",
       "date": "2026.10",
-      "description": "担任省级赛事组织团队小组长，负责统筹赛事策划、人员分工与执行推进，包括方案设计、团队组建与物资协调。TODO：原文写「即将开展」，并预计国庆节开展；请补充实际进展与结果。",
+      "description": "担任省级赛事组织团队小组长，负责统筹赛事策划、人员分工与执行推进，包括方案设计、团队组建与物资协调。获北京赛区一等奖。",
       "tags": ["赛事策划", "团队管理", "项目筹备"]
     },
     {
       "title": "校级学生会干部",
       "org": "校级学生会",
-      "date": "TODO：起止时间",
+      "date": "2026",
       "description": "参与校级学生会日常运营，负责跨部门协调与项目推进。",
       "tags": []
     },
     {
       "title": "生活部部长",
       "org": "学生会 · 生活部",
-      "date": "TODO：起止时间",
+      "date": "2026",
       "description": "统筹生活部工作，策划并执行校园生活活动，管理团队推进项目落地。",
       "tags": []
     },
     {
       "title": "体育委员",
       "org": "班级委员会",
-      "date": "TODO：起止时间",
+      "date": "2026",
       "description": "组织班级体育活动，协调运动会参赛事宜。",
       "tags": []
     },
     {
       "title": "组织部部员",
       "org": "学生会 · 组织部",
-      "date": "TODO：起止时间",
+      "date": "2026",
       "description": "参与学生会组织建设、成员招募与培训，协助活动筹备与执行。",
       "tags": []
     }
@@ -123,7 +122,7 @@
       {
         "title": "人工智能训练师（初级）",
         "issuer": "阿里巴巴橙点同学",
-        "year": "TODO：年份",
+        "year": "2026",
         "img": "assets/cert-ai-junior.png"
       },
       {

@@ -2,21 +2,41 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<script>
+try { document.documentElement.dataset.theme = localStorage.getItem('showcase-theme') || 'dark'; }
+catch (e) { document.documentElement.dataset.theme = 'dark'; }
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduce');
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>简历</title>
-<meta name="description" content="个人简历">
+<title>陈芷锐</title>
+<meta name="description" content="陈芷锐">
 <link rel="icon" href="assets/avatar.jpg">
 <style>
 :root {
-  --bg: #fafafa;
-  --paper: #ffffff;
+  --bg: #070910;
+  --text: #eef3ff;
+  --muted: #a3adc2;
+  --accent: #5ce1ff;
+  --accent-2: #ffb45c;
+  --glass: rgba(12, 16, 32, 0.62);
+  --line: rgba(255, 255, 255, 0.14);
+  --chip: rgba(92, 225, 255, 0.12);
+  --glow: rgba(92, 225, 255, 0.35);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+  color-scheme: dark;
+}
+[data-theme="light"] {
+  --bg: #f4f6fb;
   --text: #1f2937;
-  --muted: #6b7280;
-  --line: #e5e7eb;
-  --accent: #0f4c5c;
-  --accent-soft: #e7f1f3;
-  --todo: #9a3412;
-  --todo-bg: #fff7ed;
+  --muted: #5c6678;
+  --accent: #0f766e;
+  --accent-2: #c2410c;
+  --glass: rgba(255, 255, 255, 0.78);
+  --line: rgba(15, 23, 42, 0.1);
+  --chip: rgba(15, 118, 110, 0.1);
+  --glow: rgba(15, 118, 110, 0.28);
+  --shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -25,341 +45,498 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  font-size: 14.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
-img { max-width: 100%; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 10% -10%, rgba(92, 225, 255, 0.16), transparent 55%),
+    radial-gradient(800px 480px at 100% 0%, rgba(255, 180, 92, 0.12), transparent 50%);
+  z-index: 0;
+}
+[data-theme="light"] body::before { opacity: 0.55; }
 a { color: var(--accent); }
 button, input { font-family: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+img { max-width: 100%; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+.aurora, #stars, .progress, .nav, main { position: relative; }
+.aurora, #stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.aurora i {
+  position: absolute;
+  width: 46vw;
+  height: 46vw;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.55;
+  animation: drift 18s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(92, 225, 255, 0.55), transparent 68%);
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+}
+.aurora i:nth-child(2) {
+  right: -8vw; top: 10vh; left: auto;
+  background: radial-gradient(circle, rgba(255, 180, 92, 0.45), transparent 68%);
+  animation-delay: -6s;
+}
+.aurora i:nth-child(3) {
+  left: 30vw; bottom: -18vw; top: auto;
+  width: 36vw; height: 36vw;
+  background: radial-gradient(circle, rgba(120, 90, 255, 0.35), transparent 70%);
+  animation-delay: -12s;
+}
+[data-theme="light"] .aurora i { opacity: 0.28; filter: blur(50px); }
+@keyframes drift {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 24px -18px; }
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 40;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
 .nav {
   position: sticky;
   top: 0;
-  z-index: 20;
-  background: rgba(250, 250, 250, 0.94);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 22px;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
 }
-.nav-inner {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 8px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 16px;
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  text-decoration: none;
+  flex: 0 0 auto;
 }
-.nav a {
+.nav-links {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  position: relative;
+  z-index: 1;
   color: var(--muted);
   text-decoration: none;
   font-size: 13px;
+  padding: 6px 10px;
+  white-space: nowrap;
 }
-.nav a:hover { color: var(--accent); }
-.print-btn {
-  margin-left: auto;
+.nav-links a.active { color: var(--text); }
+.nav-ind {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 0;
+  border-radius: 999px;
+  background: var(--chip);
   border: 1px solid var(--line);
-  background: #fff;
+  transition: left .28s ease, width .28s ease;
+  pointer-events: none;
+}
+.icon-btn {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--glass);
   color: var(--text);
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 13px;
   cursor: pointer;
+  display: grid;
+  place-items: center;
 }
-.print-btn:hover { border-color: var(--accent); color: var(--accent); }
+.icon-btn svg { width: 16px; height: 16px; }
+.icon-btn .sun { display: none; }
+[data-theme="light"] .icon-btn .moon { display: none; }
+[data-theme="light"] .icon-btn .sun { display: block; }
 
-.sheet {
-  max-width: 960px;
-  margin: 24px auto 40px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--accent);
-  padding: 28px 32px 22px;
+main {
+  z-index: 1;
+  width: min(1080px, calc(100% - 36px));
+  margin: 0 auto;
+  padding-bottom: 64px;
 }
-.identity {
-  padding-bottom: 14px;
-  margin-bottom: 18px;
-  border-bottom: 1px solid var(--line);
+.hero {
+  min-height: calc(100svh - 62px);
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 42px;
+  align-items: center;
+  padding: 36px 0 28px;
 }
+.avatar-btn {
+  width: 220px;
+  height: 220px;
+  padding: 0;
+  border: 0;
+  border-radius: 32px;
+  cursor: pointer;
+  position: relative;
+  background: transparent;
+}
+.avatar-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 28px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+.avatar-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 36px;
+  background: conic-gradient(from 0deg, var(--accent), var(--accent-2), #8b7cff, var(--accent));
+  animation: spin 8s linear infinite;
+  filter: blur(0.2px);
+}
+.avatar-ring::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 30px;
+  background: var(--bg);
+}
+@keyframes spin { to { transform: rotate(1turn); } }
+.egg-hint { margin: 16px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
+.kicker { margin: 0 0 8px; color: var(--accent); font-size: 13px; letter-spacing: 0.14em; }
 .name {
   margin: 0;
-  font-size: 28px;
-  line-height: 1.25;
-  font-weight: 700;
+  font-size: clamp(52px, 7vw, 88px);
+  line-height: 1.05;
   letter-spacing: 0.06em;
-  color: #111827;
+  font-weight: 760;
 }
-.target {
-  margin: 2px 0 0;
-  color: var(--accent);
-  font-weight: 600;
+@supports (-webkit-background-clip: text) {
+  .name {
+    background: linear-gradient(105deg, var(--text) 10%, var(--accent) 48%, var(--accent-2) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
-.meta { margin: 2px 0 0; }
-.contacts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 13px;
+.role { margin: 10px 0 0; font-size: 22px; font-weight: 650; }
+.meta { margin: 6px 0 0; color: var(--muted); }
+.summary { margin: 14px 0 0; max-width: 62ch; }
+.contacts { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.contacts a { color: var(--text); text-decoration: none; border-bottom: 1px solid transparent; }
+.contacts a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.stats { display: flex; gap: 18px; margin-top: 22px; }
+.stats div {
+  min-width: 88px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px);
 }
-.contacts a, .side-list a { color: var(--accent); text-decoration: none; }
-.contacts a:hover, .side-list a:hover { text-decoration: underline; }
-.contacts li, .side-list li { display: flex; align-items: center; gap: 6px; }
-.icon { width: 14px; height: 14px; flex: 0 0 auto; display: block; }
+.stats b { display: block; font-size: 26px; line-height: 1.1; color: var(--accent); }
+.stats span { color: var(--muted); font-size: 12px; }
 
-.layout {
-  display: grid;
-  grid-template-columns: minmax(200px, 30%) minmax(0, 1fr);
-  column-gap: 32px;
-  align-items: start;
-}
-.photo { grid-column: 1; grid-row: 1; margin: 0 0 14px; }
-.side { grid-column: 1; grid-row: 2; }
-.main { grid-column: 2; grid-row: 1 / span 2; }
-.photo img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  display: block;
-  border-radius: 2px;
-}
-
-.block { margin: 0 0 16px; }
+.block { margin: 18px 0 42px; }
 .block h2 {
-  margin: 0 0 8px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid #d7e4e7;
-  color: var(--accent);
+  margin: 0 0 16px;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-}
-.summary { margin: 0; }
-
-.project + .project,
-.exp + .exp,
-.edu + .edu { margin-top: 11px; }
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.45; }
-.stack, .date, .org { color: var(--muted); font-size: 12.5px; }
-.stack, .date { white-space: nowrap; }
-.org { margin: 0; }
-.project p, .exp p, .edu p { margin: 2px 0 0; }
-.repo { font-size: 12.5px; word-break: break-all; }
-
-.tags, .side-list, .honors, .certs { margin: 0; padding: 0; list-style: none; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag {
-  background: var(--accent-soft);
+  letter-spacing: 0.18em;
   color: var(--accent);
-  border-radius: 999px;
-  padding: 0 8px;
-  font-size: 12px;
-  line-height: 1.7;
 }
-.skill-name { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
-.skill-group + .skill-group { margin-top: 8px; }
-.side-list li { margin: 0 0 3px; font-size: 13px; word-break: break-all; }
-.certs { font-size: 13px; }
-.cert-btn {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 5px 0;
-  border: 0;
-  border-bottom: 1px solid #f3f4f6;
-  background: transparent;
-  color: inherit;
-  text-align: left;
-  font: inherit;
-  line-height: 1.5;
-  cursor: pointer;
-}
-.cert-btn:hover { color: var(--accent); }
-.honors li { font-size: 13px; padding: 1px 0 1px 12px; position: relative; }
-.honors li::before {
-  content: "";
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--accent);
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-}
-.game-link { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
-.footer {
-  margin-top: 4px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 12px;
-}
-.todo {
-  color: var(--todo);
-  background: var(--todo-bg);
-  border-radius: 2px;
-  padding: 0 3px;
-}
-.gallery {
+.grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 16px;
 }
-.gallery button {
-  padding: 0;
+.card, .tl-card {
+  position: relative;
+  border-radius: 20px;
+  background: var(--glass);
   border: 1px solid var(--line);
-  background: #fff;
-  cursor: pointer;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+  padding: 18px 18px 16px;
+  transform-style: preserve-3d;
+  transition: box-shadow .3s ease;
 }
-.gallery img { width: 100%; height: 72px; object-fit: cover; display: block; }
-.gallery figcaption { font-size: 11px; color: var(--muted); padding: 2px 4px 4px; }
-
-.viewer {
-  display: none;
-  position: fixed;
+.card::before, .tl-card::before {
+  content: "";
+  position: absolute;
   inset: 0;
-  z-index: 40;
-  background: rgba(17, 24, 39, 0.78);
+  border-radius: inherit;
+  background: radial-gradient(380px circle at var(--gx, 20%) var(--gy, 0%), var(--glow), transparent 42%);
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+.card:hover::before, .tl-card:hover::before { opacity: 1; }
+.card:hover, .cert-card:hover { box-shadow: 0 18px 40px var(--glow); }
+.card h3, .tl-card h3 { margin: 0; font-size: 18px; }
+.row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.stack, .date, .org { color: var(--muted); font-size: 13px; }
+.card p, .tl-card p { margin: 8px 0 0; }
+.repo { font-size: 13px; word-break: break-all; }
+.prize {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: #1a1206;
+  background: linear-gradient(90deg, var(--accent-2), #ffe1a8);
+  font-size: 12px;
+  font-weight: 700;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
+.tag, .chip {
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--chip);
+  color: var(--text);
+  padding: 2px 10px;
+  font-size: 12px;
+}
+.chip { padding: 7px 14px; font-size: 13px; }
+
+.timeline { position: relative; margin-left: 8px; padding-left: 28px; }
+.timeline-track, .timeline-fill {
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 2px;
+}
+.timeline-track { background: var(--line); }
+.timeline-fill {
+  background: linear-gradient(var(--accent), var(--accent-2));
+  transform: scaleY(var(--p, 0));
+  transform-origin: top center;
+}
+.tl-item { position: relative; margin: 0 0 14px; }
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -33px;
+  top: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.marquee {
+  overflow: hidden;
+  margin: 0 0 10px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+  animation: ticker 32s linear infinite;
+}
+.marquee.reverse .marquee-track { animation-direction: reverse; animation-duration: 38s; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes ticker { to { transform: translateX(-50%); } }
+.skill-static { display: none; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+
+.cert-card { cursor: pointer; text-align: left; width: 100%; color: inherit; font: inherit; }
+.honors { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.honors li {
+  padding: 8px 12px;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+}
+.gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.gallery button { padding: 0; border: 1px solid var(--line); background: var(--glass); border-radius: 16px; overflow: hidden; cursor: pointer; }
+.gallery img { width: 100%; height: 180px; object-fit: cover; display: block; }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.game-link {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: var(--chip);
+}
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.stagger > * { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+.stagger.in > * { opacity: 1; transform: none; }
+.stagger.in > *:nth-child(2) { transition-delay: .08s; }
+.stagger.in > *:nth-child(3) { transition-delay: .16s; }
+.stagger.in > *:nth-child(4) { transition-delay: .24s; }
+.stagger.in > *:nth-child(5) { transition-delay: .32s; }
+.stagger.in > *:nth-child(6) { transition-delay: .4s; }
+
+.viewer, .toast, #confetti { position: fixed; z-index: 60; }
+.viewer {
+  inset: 0;
+  display: none;
+  background: rgba(4, 6, 12, 0.82);
   align-items: center;
   justify-content: center;
   padding: 24px;
 }
 .viewer.open { display: flex; }
-.viewer-card { max-width: min(960px, 100%); max-height: 100%; }
-.viewer img { max-width: 100%; max-height: calc(100vh - 96px); display: block; background: #fff; }
+.viewer img { max-width: min(960px, 100%); max-height: calc(100vh - 100px); background: #fff; }
 .viewer-close {
-  display: block;
-  margin: 0 0 8px auto;
-  border: 0;
-  background: #fff;
-  color: var(--text);
-  border-radius: 4px;
-  padding: 4px 10px;
+  position: absolute;
+  top: 16px; right: 16px;
+  border: 0; border-radius: 999px;
+  padding: 8px 14px;
   cursor: pointer;
 }
-.error { max-width: 960px; margin: 40px auto; padding: 0 20px; }
-
-@media (max-width: 640px) {
-  .nav-inner { padding: 8px 16px; }
-  .print-btn { margin-left: 0; }
-  .sheet { margin: 0; border-left: 0; border-right: 0; padding: 18px 16px 24px; }
-  .name { font-size: 24px; letter-spacing: 0.04em; }
-  .layout { display: flex; flex-direction: column; }
-  .side-col { display: contents; }
-  .photo { order: 1; margin-bottom: 16px; }
-  .main { order: 2; }
-  .side { order: 3; }
-  .photo img { width: 112px; height: 112px; }
-  .row { flex-wrap: wrap; }
-  .stack, .date { white-space: normal; }
+#confetti { inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.toast {
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .3s ease;
 }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 760px) {
+  .nav { padding: 10px 12px; gap: 8px; }
+  .brand { letter-spacing: 0; font-size: 14px; }
+  .nav-links a { font-size: 12px; padding: 6px 5px; }
+  .hero { min-height: 0; grid-template-columns: 1fr; gap: 16px; padding-top: 22px; }
+  .avatar-btn, .avatar-btn img { width: 112px; height: 112px; }
+  .avatar-ring { inset: -4px; }
+  .name { font-size: 44px; }
+  .grid, .gallery { grid-template-columns: 1fr; }
+  .card, .tl-card { backdrop-filter: blur(8px); }
+  .stats div { min-width: 0; flex: 1; }
+  .aurora i { filter: blur(28px); opacity: 0.35; animation: none; }
+}
+html.reduce .reveal,
+html.reduce .stagger > * { opacity: 1; transform: none; transition: none; }
+html.reduce .aurora i,
+html.reduce .avatar-ring,
+html.reduce .marquee-track { animation: none; }
+html.reduce .timeline-fill { transform: none; }
+html.reduce .marquee { display: none; }
+html.reduce .skill-static { display: flex; }
 
 @media print {
-  .no-print { display: none !important; }
-  body { background: #fff; font-size: 11.5px; line-height: 1.38; }
-  .sheet {
-    max-width: none;
-    margin: 0;
-    border: 0;
-    padding: 0;
+  .aurora, #stars, .progress, .nav, .no-print, #confetti, .toast, .viewer, .marquee, .egg-hint { display: none !important; }
+  html, body { background: #fff !important; color: #1f2937 !important; }
+  body::before { display: none !important; }
+  main { width: auto; margin: 0; padding: 0; }
+  .hero { min-height: 0; display: block; padding: 0 0 8px; }
+  .avatar-btn, .avatar-btn img { width: 24mm; height: 24mm; }
+  .avatar-ring { display: none; }
+  .name, .role, .meta, .summary, a, .stack, .date, .org { color: #1f2937 !important; -webkit-text-fill-color: #1f2937 !important; background: none !important; }
+  .card, .tl-card, .stats div, .honors li, .tag, .chip {
+    background: #fff !important;
+    color: #1f2937 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-color: #ddd !important;
+    transform: none !important;
   }
-  a { color: inherit; text-decoration: none; }
-  .layout { grid-template-columns: 32% minmax(0, 1fr); }
-  .tags, .tag { display: inline; }
-  .tag {
-    background: none;
-    color: inherit;
-    padding: 0;
-    border-radius: 0;
-    font-size: inherit;
-  }
-  .tag:not(:last-child)::after { content: "、"; }
-  .photo { margin-bottom: 6px; }
-  .photo img { width: 24mm; height: 24mm; }
-  .identity { margin-bottom: 8px; padding-bottom: 6px; }
-  .block { margin-bottom: 8px; }
-  .block h2 { margin-bottom: 4px; }
-  .project + .project, .exp + .exp, .edu + .edu { margin-top: 5px; }
-  .name { font-size: 20px; }
-  h3 { font-size: 13px; }
-  .side-contact { display: none !important; }
-  .todo { background: none; color: inherit; padding: 0; }
-  .project, .exp, .edu, .skill-group, .cert-btn, .honors { break-inside: avoid; }
-  h2, h3 { break-after: avoid; }
-  @page { size: A4; margin: 10mm; }
+  .skill-static { display: block !important; }
+  .skill-static .chip { display: inline; border: 0; background: none !important; padding: 0; }
+  .skill-static .chip:not(:last-child)::after { content: "、"; }
+  .timeline-fill { transform: none !important; background: #888; }
+  .reveal, .stagger > * { opacity: 1 !important; transform: none !important; }
+  .prize { background: none; color: #1f2937; padding: 0; }
+  a { text-decoration: none; }
+  .block, .tl-item, .card { break-inside: avoid; }
+  @page { size: A4; margin: 12mm; }
 }
 </style>
 </head>
 <body>
-<nav class="nav no-print" aria-label="页面目录">
-  <div class="nav-inner">
-    <a href="#summary">简介</a>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="nav">
+  <a class="brand" href="#top" id="brand">陈芷锐</a>
+  <div class="nav-links" id="navLinks">
     <a href="#projects">项目</a>
     <a href="#experience">经历</a>
     <a href="#education">教育</a>
     <a href="#skills">技能</a>
     <a href="#certs">证书</a>
     <a href="#honors">荣誉</a>
-    <button type="button" class="print-btn" onclick="window.print()">打印</button>
+    <span class="nav-ind" id="navInd"></span>
   </div>
-</nav>
-<div id="app"></div>
+  <button class="icon-btn" id="themeBtn" type="button" aria-label="切换深色和浅色">
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</header>
+<main id="app"></main>
 <div class="viewer no-print" id="viewer" role="dialog" aria-modal="true" aria-label="图片预览">
-  <div class="viewer-card">
-    <button type="button" class="viewer-close" id="viewerClose">关闭</button>
-    <img id="viewerImg" alt="">
-  </div>
+  <button class="viewer-close" id="viewerClose" type="button">关闭</button>
+  <img id="viewerImg" alt="">
 </div>
+<canvas id="confetti" class="no-print" aria-hidden="true"></canvas>
+<div class="toast no-print" id="toast" role="status"></div>
 <script>
-const ICONS = {
-  phone: '<path d="M6.5 4.5h2.2l1.2 3-1.7 1a12.5 12.5 0 0 0 5.8 5.8l1-1.7 3 1.2v2.2a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 4.5 6.1 1.5 1.5 0 0 1 6 4.5z"/>',
-  mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 7l8 6 8-6"/>',
-  github: '<path fill="currentColor" stroke="none" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.35 9.35 0 0 1 12 6.84c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.81 0 .27.18.59.69.49A10.05 10.05 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>'
-};
+const reduce = document.documentElement.classList.contains('reduce');
+const narrowQuery = matchMedia('(max-width: 760px)');
+let narrow = narrowQuery.matches;
+const mouse = { x: 0, y: 0 };
 
 function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  return String(value ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
-
-function formatText(value) {
-  return escapeHtml(value).replace(/TODO：(?:(?!TODO：)[^。\n])*/g, (match) => `<span class="todo">${match}</span>`);
-}
-
 function safeUrl(url) {
   const value = String(url ?? '').trim();
   if (/^(https?:\/\/|mailto:|tel:)/i.test(value)) return value;
   if (/^(assets\/|tank-battle\.html)[\w./-]*$/.test(value)) return value;
   return '';
 }
-
-function icon(name) {
-  return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
-}
-
 function el(tag, className, html) {
   const node = document.createElement(tag);
   if (className) node.className = className;
   if (html !== undefined) node.innerHTML = html;
   return node;
 }
-
-function shortUrl(url) {
-  return String(url || '').replace(/^https?:\/\//, '');
-}
-
+function shortUrl(url) { return String(url || '').replace(/^https?:\/\//, ''); }
 function certItems(certificates) {
   if (Array.isArray(certificates)) return certificates;
   return (certificates && (certificates.items || certificates.cards)) || [];
@@ -370,206 +547,184 @@ async function init() {
   let config;
   try {
     const response = await fetch('config.json');
-    if (!response.ok) throw new Error(response.statusText);
+    if (!response.ok) throw new Error(String(response.status));
     config = await response.json();
   } catch (error) {
-    app.appendChild(el('p', 'error', '简历内容加载失败，请确认 config.json 可以访问。'));
+    app.appendChild(el('p', 'summary', '内容加载失败，请确认 config.json 可以访问。'));
     return;
   }
-
-  document.title = config.site?.title || '简历';
+  document.title = config.site?.title || config.profile?.name || '陈芷锐';
   const description = document.querySelector('meta[name="description"]');
   if (description && config.site?.description) description.setAttribute('content', config.site.description);
+  const brand = document.getElementById('brand');
+  if (config.profile?.name) brand.textContent = config.profile.name;
 
-  const sheet = el('main', 'sheet');
-  sheet.appendChild(renderIdentity(config.profile || {}));
+  app.appendChild(renderHero(config));
+  app.appendChild(renderProjects(config.projects || []));
+  app.appendChild(renderExperience(config.experience || []));
+  app.appendChild(renderEducation(config.education || []));
+  app.appendChild(renderSkills(config.skillGroups || []));
+  app.appendChild(renderCertificates(certItems(config.certificates)));
+  app.appendChild(renderHonors(config.honors || []));
+  app.appendChild(renderGallery((config.certificates && config.certificates.gallery) || []));
+  app.appendChild(renderFooter(config));
 
-  const layout = el('div', 'layout');
-  const sideCol = el('aside', 'side-col');
-  sideCol.appendChild(renderPhoto(config.profile || {}));
-  const side = el('div', 'side');
-  side.appendChild(renderSideContact(config.profile || {}));
-  side.appendChild(renderSkills(config.skillGroups || []));
-  side.appendChild(renderCertificates(certItems(config.certificates)));
-  side.appendChild(renderHonors(config.honors || []));
-  side.appendChild(renderGallery((config.certificates && config.certificates.gallery) || []));
-  sideCol.appendChild(side);
-
-  const main = el('div', 'main');
-  main.appendChild(renderSummary(config.profile || {}));
-  main.appendChild(renderProjects(config.projects || []));
-  main.appendChild(renderExperience(config.experience || []));
-  main.appendChild(renderEducation(config.education || []));
-  main.appendChild(renderGame(config.game));
-  layout.appendChild(sideCol);
-  layout.appendChild(main);
-
-  sheet.appendChild(layout);
-  sheet.appendChild(renderFooter(config.footer || {}));
-  app.appendChild(sheet);
+  setupReveal();
+  setupCounts();
+  setupTilt();
+  setupTimelines();
+  setupNav();
+  scramble(document.getElementById('heroName'), config.profile?.name || '');
+  scramble(document.getElementById('heroRole'), config.profile?.title || '');
+  document.getElementById('avatarBtn')?.addEventListener('click', (event) => {
+    burst(event.clientX, event.clientY);
+    toast('彩蛋：头像点亮了');
+  });
 }
 
-function renderIdentity(profile) {
-  const header = el('header', 'identity');
-  header.appendChild(el('h1', 'name', escapeHtml(profile.name || '')));
-  const targetBits = [profile.title, profile.status].filter(Boolean).join(' · ');
-  if (targetBits) header.appendChild(el('p', 'target', '求职意向：' + formatText(targetBits)));
-  const meta = [profile.university, profile.location, profile.major, profile.graduation].filter(Boolean);
-  if (meta.length) header.appendChild(el('p', 'meta', meta.map(formatText).join(' · ')));
-  header.appendChild(renderContactList(profile, 'contacts'));
+function renderHero(config) {
+  const profile = config.profile || {};
+  const header = el('header', 'hero reveal');
+  header.id = 'top';
+  const photo = safeUrl(profile.avatar);
+  const figure = el('div', '');
+  figure.innerHTML = `
+    <button class="avatar-btn" id="avatarBtn" type="button" aria-label="头像彩蛋">
+      <span class="avatar-ring" aria-hidden="true"></span>
+      ${photo ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(profile.name || '')}">` : ''}
+    </button>
+    <p class="egg-hint no-print">点击头像</p>`;
+  header.appendChild(figure);
+  const copy = el('div', '');
+  const meta = [profile.university, profile.major, profile.graduation, profile.location].filter(Boolean).map(escapeHtml).join(' · ');
+  const counts = [
+    [(config.projects || []).length, '项目'],
+    [certItems(config.certificates).length, '证书'],
+    [(config.honors || []).length, '荣誉']
+  ];
+  copy.innerHTML = `
+    <p class="kicker">${escapeHtml(profile.university || '')}</p>
+    <h1 class="name" id="heroName"></h1>
+    <p class="role" id="heroRole"></p>
+    <p class="meta">${meta}</p>
+    <p class="summary">${escapeHtml(profile.summary || '')}</p>
+    ${contactHtml(profile)}
+    <div class="stats">${counts.filter(([n]) => n > 0).map(([n, label]) => `<div><b class="count" data-to="${n}">${n}</b><span>${label}</span></div>`).join('')}</div>`;
+  header.appendChild(copy);
   return header;
 }
 
-function renderContactList(profile, className) {
-  const list = el('ul', className);
-  if (profile.phone) {
-    const phone = String(profile.phone);
-    list.appendChild(el('li', '', `${icon('phone')}<a href="tel:${escapeHtml(phone.replace(/\s+/g, ''))}">${escapeHtml(phone)}</a>`));
-  }
-  if (profile.email) {
-    list.appendChild(el('li', '', `${icon('mail')}<a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a>`));
-  }
+function contactHtml(profile) {
+  const bits = [];
+  if (profile.phone) bits.push(`<li><a href="tel:${escapeHtml(String(profile.phone).replace(/\s+/g, ''))}">${escapeHtml(profile.phone)}</a></li>`);
+  if (profile.email) bits.push(`<li><a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a></li>`);
   const github = safeUrl(profile.github);
-  if (github) {
-    list.appendChild(el('li', '', `${icon('github')}<a href="${escapeHtml(github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(github))}</a>`));
-  }
-  return list;
-}
-
-function renderPhoto(profile) {
-  const figure = el('figure', 'photo');
-  const src = safeUrl(profile.avatar);
-  if (!src) {
-    figure.hidden = true;
-    return figure;
-  }
-  figure.innerHTML = `<img src="${escapeHtml(src)}" alt="${escapeHtml(profile.name || '照片')}">`;
-  return figure;
-}
-
-function renderSideContact(profile) {
-  const section = el('section', 'block side-contact');
-  section.appendChild(el('h2', '', '联系方式'));
-  const list = renderContactList(profile, 'side-list');
-  section.appendChild(list);
-  return section;
-}
-
-function renderSummary(profile) {
-  const section = el('section', 'block');
-  section.id = 'summary';
-  section.appendChild(el('h2', '', '个人简介'));
-  section.appendChild(el('p', 'summary', formatText(profile.summary || profile.bio || '')));
-  return section;
+  if (github) bits.push(`<li><a href="${escapeHtml(github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(github))}</a></li>`);
+  return `<ul class="contacts">${bits.join('')}</ul>`;
 }
 
 function renderProjects(projects) {
   const section = el('section', 'block');
   section.id = 'projects';
-  section.appendChild(el('h2', '', '项目经历'));
+  section.appendChild(el('h2', '', '项目'));
+  const grid = el('div', 'grid stagger');
   projects.forEach((project) => {
-    const article = el('article', 'project');
-    const stack = (project.stack || []).map(escapeHtml).join(' · ');
-    article.appendChild(el('div', 'row', `<h3>${escapeHtml(project.name || '')}</h3>${stack ? `<span class="stack">${stack}</span>` : ''}`));
-    if (project.summary) article.appendChild(el('p', '', formatText(project.summary)));
     const url = safeUrl(project.url);
-    if (url) {
-      article.appendChild(el('p', '', `<a class="repo" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(url))}</a>`));
-    }
-    section.appendChild(article);
+    const stack = (project.stack || []).map(escapeHtml).join(' · ');
+    const card = el('article', 'card');
+    card.innerHTML = `
+      <div class="row"><h3>${escapeHtml(project.name || '')}</h3>${stack ? `<span class="stack">${stack}</span>` : ''}</div>
+      <p>${withCounts(project.summary || '')}</p>
+      ${url ? `<p><a class="repo" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(url))}</a></p>` : ''}`;
+    grid.appendChild(card);
   });
+  section.appendChild(grid);
   return section;
+}
+
+function withCounts(text) {
+  return escapeHtml(text).replace(/\d{3,}/g, (n) => `<span class="count" data-to="${n}">${n}</span>`);
 }
 
 function renderExperience(items) {
-  const section = el('section', 'block');
-  section.id = 'experience';
-  section.appendChild(el('h2', '', '实践经历'));
-  items.forEach((item) => {
-    const article = el('article', 'exp');
-    article.appendChild(el('div', 'row', `<h3>${escapeHtml(item.title || '')}</h3><span class="date">${formatText(item.date || '')}</span>`));
-    if (item.org) article.appendChild(el('p', 'org', escapeHtml(item.org)));
-    if (item.description) article.appendChild(el('p', '', formatText(item.description)));
-    const tags = item.tags || [];
-    if (tags.length) article.appendChild(renderTags(tags));
-    section.appendChild(article);
+  return renderTimeline('experience', '经历', items, (item) => {
+    const prize = '获北京赛区一等奖';
+    const description = item.description || '';
+    const hasPrize = description.includes(prize);
+    const body = hasPrize ? description.replace(prize, '').replace(/。{2,}/g, '。').trim() : description;
+    return `
+      <div class="row"><h3>${escapeHtml(item.title || '')}</h3><span class="date">${escapeHtml(item.date || '')}</span></div>
+      ${item.org ? `<p class="org">${escapeHtml(item.org)}</p>` : ''}
+      ${body ? `<p>${escapeHtml(body)}</p>` : ''}
+      ${hasPrize ? `<span class="prize">${prize}</span>` : ''}
+      ${(item.tags || []).length ? `<ul class="tags">${item.tags.map((tag) => `<li class="tag">${escapeHtml(tag)}</li>`).join('')}</ul>` : ''}`;
   });
-  return section;
 }
 
 function renderEducation(items) {
-  const section = el('section', 'block');
-  section.id = 'education';
-  section.appendChild(el('h2', '', '教育背景'));
-  items.forEach((item) => {
-    const article = el('article', 'edu');
-    const bits = [item.detail || item.level, item.major, item.date].filter(Boolean);
-    article.appendChild(el('div', 'row', `<h3>${escapeHtml(item.school || '')}</h3>`));
-    if (bits.length) article.appendChild(el('p', '', bits.map(formatText).join(' · ')));
-    if (item.note) article.appendChild(el('p', '', formatText(item.note)));
-    section.appendChild(article);
+  return renderTimeline('education', '教育', items, (item) => {
+    const bits = [item.detail || item.level, item.major, item.date].filter(Boolean).map(escapeHtml).join(' · ');
+    return `<h3>${escapeHtml(item.school || '')}</h3>${bits ? `<p>${bits}</p>` : ''}${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}`;
   });
-  return section;
 }
 
-function renderGame(game) {
-  const line = el('p', 'game-link no-print');
-  if (!game || !game.src) {
-    line.hidden = true;
-    return line;
-  }
-  const src = safeUrl(game.src);
-  if (!src) {
-    line.hidden = true;
-    return line;
-  }
-  line.innerHTML = `小作品 <a href="${escapeHtml(src)}">${escapeHtml(game.title || '打开')}</a>`;
-  return line;
+function renderTimeline(id, title, items, inner) {
+  const section = el('section', 'block timeline-section');
+  section.id = id;
+  section.appendChild(el('h2', '', title));
+  const timeline = el('div', 'timeline');
+  timeline.appendChild(el('div', 'timeline-track'));
+  timeline.appendChild(el('div', 'timeline-fill'));
+  items.forEach((item) => {
+    const wrap = el('article', 'tl-item reveal');
+    wrap.appendChild(el('div', 'tl-card', inner(item)));
+    timeline.appendChild(wrap);
+  });
+  section.appendChild(timeline);
+  return section;
 }
 
 function renderSkills(groups) {
   const section = el('section', 'block');
   section.id = 'skills';
   section.appendChild(el('h2', '', '技能'));
+  const chips = [];
   groups.forEach((group) => {
-    const wrap = el('div', 'skill-group');
-    const tags = group.tags || [];
-    wrap.appendChild(el('p', 'skill-name', escapeHtml(group.name || '')));
-    if (tags.length) wrap.appendChild(renderTags(tags));
-    section.appendChild(wrap);
+    if (group.name) chips.push(group.name);
+    (group.tags || []).forEach((tag) => chips.push(tag));
   });
+  const unique = [...new Set(chips)];
+  const row = (reverse) => {
+    const track = unique.concat(unique).map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+    return `<div class="marquee${reverse ? ' reverse' : ''}" aria-hidden="true"><div class="marquee-track">${track}</div></div>`;
+  };
+  section.insertAdjacentHTML('beforeend', row(false) + row(true));
+  const list = el('ul', 'skill-static');
+  unique.forEach((chip) => list.appendChild(el('li', 'chip', escapeHtml(chip))));
+  section.appendChild(list);
   return section;
-}
-
-function renderTags(tags) {
-  const list = el('ul', 'tags');
-  tags.forEach((tag) => list.appendChild(el('li', 'tag', escapeHtml(tag))));
-  return list;
 }
 
 function renderCertificates(items) {
   const section = el('section', 'block');
   section.id = 'certs';
   section.appendChild(el('h2', '', '证书'));
-  const list = el('div', 'certs');
+  const grid = el('div', 'grid stagger');
   items.forEach((item) => {
-    const parts = [item.title, item.issuer, item.year].filter(Boolean);
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'cert-btn';
-    button.innerHTML = formatText(parts.join(' · '));
+    button.className = 'card cert-card';
+    button.innerHTML = `<h3>${escapeHtml(item.title || '')}</h3><p class="org">${[item.issuer, item.year].filter(Boolean).map(escapeHtml).join(' · ')}</p>`;
     const src = safeUrl(item.img);
-    if (src) {
-      button.addEventListener('click', () => openViewer(src, item.title || '证书'));
-    }
-    list.appendChild(button);
+    if (src) button.addEventListener('click', () => openViewer(src, item.title || '证书'));
+    grid.appendChild(button);
   });
-  section.appendChild(list);
+  section.appendChild(grid);
   return section;
 }
 
 function renderHonors(honors) {
-  const section = el('section', 'block');
+  const section = el('section', 'block reveal');
   section.id = 'honors';
   section.appendChild(el('h2', '', '荣誉'));
   const list = el('ul', 'honors');
@@ -583,26 +738,148 @@ function renderHonors(honors) {
 
 function renderGallery(items) {
   const section = el('section', 'block no-print');
-  if (!items.length) {
-    section.hidden = true;
-    return section;
-  }
-  section.appendChild(el('h2', '', '佐证图片'));
+  if (!items.length) return section;
+  section.appendChild(el('h2', '', '佐证'));
   const grid = el('div', 'gallery');
   items.forEach((item) => {
     const src = safeUrl(item.img);
     if (!src) return;
-    const figure = document.createElement('figure');
-    figure.innerHTML = `<button type="button"><img src="${escapeHtml(src)}" alt="${escapeHtml(item.title || '佐证图片')}"></button>`;
-    figure.querySelector('button').addEventListener('click', () => openViewer(src, item.title || '佐证图片'));
-    grid.appendChild(figure);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.innerHTML = `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.title || '佐证图片')}">`;
+    button.addEventListener('click', () => openViewer(src, item.title || '佐证图片'));
+    grid.appendChild(button);
   });
   section.appendChild(grid);
   return section;
 }
 
-function renderFooter(footer) {
-  return el('footer', 'footer', escapeHtml(footer.copyright || ''));
+function renderFooter(config) {
+  const footer = el('footer', 'footer');
+  const game = config.game || {};
+  const src = safeUrl(game.src);
+  footer.innerHTML = `<span>${escapeHtml(config.footer?.copyright || '')}</span>${src ? `<a class="game-link no-print" href="${escapeHtml(src)}">${escapeHtml(game.title || '小作品')}</a>` : ''}`;
+  return footer;
+}
+
+function scramble(node, finalText) {
+  if (!node) return;
+  if (reduce) { node.textContent = finalText; return; }
+  const glyphs = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#$%';
+  const chars = [...finalText];
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / 980);
+    const locked = Math.floor(t * chars.length);
+    node.textContent = chars.map((ch, i) => {
+      if (i < locked || /[\s·•.,，。、–—\-：:/]/.test(ch)) return ch;
+      return glyphs[Math.floor(Math.random() * glyphs.length)];
+    }).join('');
+    if (t < 1) requestAnimationFrame(tick);
+    else node.textContent = finalText;
+  };
+  requestAnimationFrame(tick);
+}
+
+function setupReveal() {
+  if (reduce) {
+    document.querySelectorAll('.reveal, .stagger').forEach((node) => node.classList.add('in'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.16 });
+  document.querySelectorAll('.reveal, .stagger').forEach((node) => observer.observe(node));
+}
+
+function setupCounts() {
+  const nodes = [...document.querySelectorAll('.count')];
+  const run = (node) => {
+    const target = Number(node.dataset.to || 0);
+    if (reduce) { node.textContent = String(target); return; }
+    const start = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / 900);
+      node.textContent = String(Math.round(target * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  if (reduce) { nodes.forEach(run); return; }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      run(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.6 });
+  nodes.forEach((node) => observer.observe(node));
+}
+
+function setupTilt() {
+  if (reduce) return;
+  document.querySelectorAll('.card').forEach((card) => {
+    card.addEventListener('pointermove', (event) => {
+      if (narrow || event.pointerType === 'touch') return;
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      card.style.setProperty('--gx', `${x * 100}%`);
+      card.style.setProperty('--gy', `${y * 100}%`);
+      card.style.transform = `rotateX(${(0.5 - y) * 8}deg) rotateY(${(x - 0.5) * 10}deg) translateY(-2px)`;
+    });
+    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+  });
+}
+
+function setupTimelines() {
+  const sections = [...document.querySelectorAll('.timeline-section')];
+  const update = () => {
+    sections.forEach((section) => {
+      const fill = section.querySelector('.timeline-fill');
+      if (!fill) return;
+      if (reduce) { fill.style.setProperty('--p', 1); return; }
+      const rect = section.getBoundingClientRect();
+      const passed = Math.min(rect.height, Math.max(0, window.innerHeight * 0.62 - rect.top));
+      fill.style.setProperty('--p', (passed / rect.height).toFixed(3));
+    });
+  };
+  update();
+  window.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+}
+
+function setupNav() {
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const indicator = document.getElementById('navInd');
+  const move = (link) => {
+    if (!link || !indicator) return;
+    const parent = link.parentElement.getBoundingClientRect();
+    const rect = link.getBoundingClientRect();
+    indicator.style.left = `${rect.left - parent.left + link.parentElement.scrollLeft}px`;
+    indicator.style.width = `${rect.width}px`;
+  };
+  const spy = new IntersectionObserver((entries) => {
+    if (window.scrollY < 80) {
+      links.forEach((link) => link.classList.remove('active'));
+      indicator.style.width = '0px';
+      return;
+    }
+    const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (!visible) return;
+    links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${visible.target.id}`));
+    move(links.find((link) => link.classList.contains('active')));
+  }, { threshold: [0.25, 0.55], rootMargin: '-30% 0px -45% 0px' });
+  document.querySelectorAll('main section[id]').forEach((section) => spy.observe(section));
+  links.forEach((link) => link.addEventListener('click', () => move(link)));
+  window.addEventListener('resize', () => {
+    const active = document.querySelector('.nav-links a.active');
+    if (active) move(active);
+  });
 }
 
 function openViewer(src, title) {
@@ -611,24 +888,154 @@ function openViewer(src, title) {
   image.src = src;
   image.alt = title || '图片';
   viewer.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('viewerClose').focus();
 }
-
 function closeViewer() {
-  const viewer = document.getElementById('viewer');
-  const image = document.getElementById('viewerImg');
-  viewer.classList.remove('open');
-  image.src = '';
-  document.body.style.overflow = '';
+  document.getElementById('viewer').classList.remove('open');
+  document.getElementById('viewerImg').src = '';
 }
-
 document.getElementById('viewerClose').addEventListener('click', closeViewer);
 document.getElementById('viewer').addEventListener('click', (event) => {
   if (event.target.id === 'viewer') closeViewer();
 });
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('showcase-theme', next); } catch (e) {}
+});
+
+const progress = document.getElementById('progress');
+function updateProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+window.addEventListener('pointermove', (event) => {
+  if (reduce || narrow || event.pointerType !== 'mouse') return;
+  mouse.x = event.clientX / window.innerWidth - 0.5;
+  mouse.y = event.clientY / window.innerHeight - 0.5;
+  document.documentElement.style.setProperty('--mx', `${mouse.x * 24}px`);
+  document.documentElement.style.setProperty('--my', `${mouse.y * 16}px`);
+}, { passive: true });
+narrowQuery.addEventListener('change', () => { narrow = narrowQuery.matches; });
+
+const starCanvas = document.getElementById('stars');
+const starCtx = starCanvas.getContext('2d');
+let stars = [];
+function resizeStars() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  starCanvas.width = Math.floor(window.innerWidth * dpr);
+  starCanvas.height = Math.floor(window.innerHeight * dpr);
+  starCanvas.style.width = `${window.innerWidth}px`;
+  starCanvas.style.height = `${window.innerHeight}px`;
+  starCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const count = narrow ? 28 : 70;
+  stars = Array.from({ length: count }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    z: Math.random() * 1.4 + 0.4,
+    r: Math.random() * 1.4 + 0.3
+  }));
+}
+function drawStars() {
+  starCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  const light = document.documentElement.dataset.theme === 'light';
+  starCtx.fillStyle = light ? 'rgba(15, 23, 42, 0.45)' : 'rgba(238, 243, 255, 0.85)';
+  const ox = reduce || narrow ? 0 : mouse.x * 18;
+  const oy = reduce || narrow ? 0 : mouse.y * 12;
+  stars.forEach((star) => {
+    if (!reduce) {
+      star.y -= star.z * 0.15;
+      if (star.y < -4) star.y = window.innerHeight + 4;
+    }
+    starCtx.globalAlpha = 0.35 + star.z * 0.35;
+    starCtx.beginPath();
+    starCtx.arc(star.x + ox * star.z, star.y + oy * star.z, star.r, 0, Math.PI * 2);
+    starCtx.fill();
+  });
+  starCtx.globalAlpha = 1;
+  if (!reduce) requestAnimationFrame(drawStars);
+}
+resizeStars();
+drawStars();
+window.addEventListener('resize', resizeStars);
+
+const confetti = document.getElementById('confetti');
+const confettiCtx = confetti.getContext('2d');
+let bits = [];
+function resizeConfetti() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  confetti.width = Math.floor(window.innerWidth * dpr);
+  confetti.height = Math.floor(window.innerHeight * dpr);
+  confetti.style.width = `${window.innerWidth}px`;
+  confetti.style.height = `${window.innerHeight}px`;
+  confettiCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeConfetti();
+window.addEventListener('resize', resizeConfetti);
+function burst(x, y) {
+  if (reduce) return;
+  const colors = ['#5ce1ff', '#ffb45c', '#c4b5fd', '#fb7185', '#f8fafc'];
+  for (let i = 0; i < 90; i += 1) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 3 + Math.random() * 7;
+    bits.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2,
+      g: 0.12 + Math.random() * 0.08,
+      life: 70 + Math.random() * 20,
+      color: colors[i % colors.length],
+      w: 4 + Math.random() * 4,
+      h: 6 + Math.random() * 6
+    });
+  }
+  if (!burst.running) {
+    burst.running = true;
+    const step = () => {
+      confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      bits = bits.filter((bit) => bit.life > 0);
+      bits.forEach((bit) => {
+        bit.vy += bit.g;
+        bit.x += bit.vx;
+        bit.y += bit.vy;
+        bit.life -= 1;
+        confettiCtx.globalAlpha = Math.max(0, bit.life / 90);
+        confettiCtx.fillStyle = bit.color;
+        confettiCtx.fillRect(bit.x, bit.y, bit.w, bit.h);
+      });
+      confettiCtx.globalAlpha = 1;
+      if (bits.length) requestAnimationFrame(step);
+      else burst.running = false;
+    };
+    requestAnimationFrame(step);
+  }
+}
+function toast(message) {
+  const node = document.getElementById('toast');
+  node.textContent = message;
+  node.classList.add('show');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => node.classList.remove('show'), 1600);
+}
+
+const konami = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiAt = 0;
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') closeViewer();
+  const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+  konamiAt = key === konami[konamiAt] ? konamiAt + 1 : (key === konami[0] ? 1 : 0);
+  if (konamiAt === konami.length) {
+    konamiAt = 0;
+    burst(window.innerWidth / 2, window.innerHeight / 2);
+    toast('彩蛋解锁，进入坦克大战');
+    setTimeout(() => { window.location.href = 'tank-battle.html'; }, reduce ? 0 : 700);
+  }
+});
+window.addEventListener('beforeprint', () => {
+  document.querySelectorAll('.count').forEach((node) => { node.textContent = node.dataset.to || node.textContent; });
 });
 
 init();
