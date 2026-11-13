@@ -3,1015 +3,635 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio</title>
-<meta name="description" content="Personal Portfolio">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<style id="theme-style"></style>
+<title>简历</title>
+<meta name="description" content="个人简历">
+<link rel="icon" href="assets/avatar.jpg">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #0f4c5c;
+  --accent-soft: #e7f1f3;
+  --todo: #9a3412;
+  --todo-bg: #fff7ed;
+}
+* { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { font-family:'Inter',sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; cursor:none; }
-::selection { background:var(--accent); color:var(--bg); }
-::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-track { background:var(--bg); }
-::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
-::-webkit-scrollbar-thumb:hover { background:var(--text-dim); }
-.font-display { font-family:'Space Grotesk',sans-serif; }
-.font-mono { font-family:'JetBrains Mono',monospace; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  font-size: 14.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; }
+a { color: var(--accent); }
+button, input { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.cursor-dot{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999;transition:width .3s,height .3s,background .3s;will-change:transform}
-.cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--text-dim);border-radius:50%;pointer-events:none;z-index:99998;transition:width .3s,height .3s,border-color .3s,background .3s;will-change:transform}
-.cursor-ring.hover{width:60px;height:60px;border-color:var(--accent);background:rgba(180,255,57,.05)}
-.cursor-dot.hover{width:12px;height:12px}
-@media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(250, 250, 250, 0.94);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+}
+.nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+}
+.nav a:hover { color: var(--accent); }
+.print-btn {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.print-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-.mesh-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.mesh-blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:.12;animation:floatBlob 20s ease-in-out infinite}
-.mesh-blob:nth-child(1){width:600px;height:600px;background:#b4ff39;top:-100px;left:-150px}
-.mesh-blob:nth-child(2){width:500px;height:500px;background:#ff5e3a;top:30%;right:-100px;animation-delay:-5s}
-.mesh-blob:nth-child(3){width:400px;height:400px;background:#3b82f6;bottom:-100px;left:30%;animation-delay:-10s}
-.mesh-blob:nth-child(4){width:350px;height:350px;background:#a855f7;bottom:20%;right:20%;animation-delay:-15s}
-@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-60px) scale(1.1)}50%{transform:translate(-50px,80px) scale(.95)}75%{transform:translate(60px,40px) scale(1.05)}}
+.sheet {
+  max-width: 960px;
+  margin: 24px auto 40px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  padding: 28px 32px 22px;
+}
+.identity {
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.name {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #111827;
+}
+.target {
+  margin: 2px 0 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+.meta { margin: 2px 0 0; }
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+.contacts a, .side-list a { color: var(--accent); text-decoration: none; }
+.contacts a:hover, .side-list a:hover { text-decoration: underline; }
+.contacts li, .side-list li { display: flex; align-items: center; gap: 6px; }
+.icon { width: 14px; height: 14px; flex: 0 0 auto; display: block; }
 
-.noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
-
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.clip-reveal{display:inline-block;clip-path:inset(0 100% 0 0);transition:clip-path 1s cubic-bezier(.77,0,.175,1)}
-.clip-reveal.visible{clip-path:inset(0 0 0 0)}
-
-.stagger>*{opacity:0;transform:translateY(30px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
-.stagger.visible>*{opacity:1;transform:translateY(0)}
-.stagger.visible>*:nth-child(1){transition-delay:.05s}
-.stagger.visible>*:nth-child(2){transition-delay:.12s}
-.stagger.visible>*:nth-child(3){transition-delay:.19s}
-.stagger.visible>*:nth-child(4){transition-delay:.26s}
-.stagger.visible>*:nth-child(5){transition-delay:.33s}
-.stagger.visible>*:nth-child(6){transition-delay:.40s}
-.stagger.visible>*:nth-child(7){transition-delay:.47s}
-.stagger.visible>*:nth-child(8){transition-delay:.54s}
-
-.marquee{display:flex;overflow:hidden;border-block:1px solid var(--border);background:var(--bg-2);padding:22px 0;white-space:nowrap;position:relative;z-index:2}
-.marquee-track{display:flex;gap:3rem;animation:marqueeScroll 30s linear infinite;flex-shrink:0}
-.marquee-item{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,4vw,3rem);font-weight:600;color:var(--text);display:inline-flex;align-items:center;gap:2rem;flex-shrink:0}
-.marquee-item .dot-sep{width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.marquee-item .outline-text{-webkit-text-stroke:1.5px var(--text);color:transparent}
-@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-.nav-bar{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(16px);background:rgba(10,10,11,.65);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
-.nav-bar.scrolled{border-bottom-color:var(--border);background:rgba(10,10,11,.85)}
-.nav-link{position:relative;font-size:13px;font-weight:500;color:var(--text-dim);transition:color .2s;padding:4px 0}
-.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--accent);transition:width .3s cubic-bezier(.4,0,.2,1)}
-.nav-link:hover{color:var(--text)}
-.nav-link:hover::after{width:100%}
-.nav-link.active{color:var(--text)}
-.nav-link.active::after{width:100%}
-
-.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;font-weight:600;background:var(--accent);color:var(--bg);border-radius:8px;transition:all .3s;position:relative;overflow:hidden}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px var(--accent-glow)}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;font-weight:600;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:8px;transition:all .3s}
-.btn-secondary:hover{border-color:var(--text-mid);background:var(--surface)}
-
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(180,255,57,.06),transparent 40%);opacity:0;transition:opacity .35s;pointer-events:none}
-.card:hover{border-color:rgba(180,255,57,.3);transform:translateY(-3px)}
-.card:hover::before{opacity:1}
-
-.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:500;background:rgba(180,255,57,.08);border:1px solid rgba(180,255,57,.2);color:var(--accent)}
-.pill .live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:livePulse 2s ease-in-out infinite}
-@keyframes livePulse{0%,100%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 5px transparent}}
-
-.s-label{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim)}
-
-.timeline-line{position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--accent),var(--border),transparent)}
-.timeline-dot{position:absolute;left:4px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(180,255,57,.15);transition:all .3s}
-.timeline-dot::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:1px solid var(--accent);animation:ringExpand 2.5s ease-out infinite;opacity:0}
-@keyframes ringExpand{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.5);opacity:0}}
-
-.skill-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
-.skill-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;transform:translateX(-100%);transition:transform 1.2s cubic-bezier(.22,1,.36,1)}
-.skill-fill.fill{transform:translateX(0)}
-
-.hero-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(4rem,18vw,16rem);line-height:.85;letter-spacing:-.04em}
-
-.cert-img{transition:transform .5s cubic-bezier(.22,1,.36,1)}
-.cert-card:hover .cert-img{transform:scale(1.08)}
-
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);z-index:9999;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.active{display:flex}
-.modal-box{position:relative;width:100%;max-width:1280px;height:90vh;background:var(--bg-2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--border)}
-.modal-frame{flex:1;border:none;width:100%}
-
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:var(--bg);padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.22,1,.36,1);z-index:99999;box-shadow:0 8px 30px var(--accent-glow)}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-.scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-dim);font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase}
-.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--text-dim),transparent);position:relative;overflow:hidden}
-.scroll-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:50%;background:var(--accent);animation:scrollDown 2s ease-in-out infinite}
-@keyframes scrollDown{0%{transform:translateY(-100%)}100%{transform:translateY(200%)}}
-
-.badge{display:inline-block;padding:2px 8px;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);background:var(--surface);border:1px solid var(--border);border-radius:4px}
-
-/* Mobile Nav */
-.mobile-menu-btn{display:none}
-.mobile-menu{display:none;position:fixed;top:57px;left:0;right:0;background:rgba(10,10,11,.98);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);z-index:99;padding:16px 24px;flex-direction:column;gap:4px}
-.mobile-menu.active{display:flex}
-.mobile-menu a{display:block;padding:12px 0;font-size:16px;font-weight:500;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,.04);transition:color .2s}
-.mobile-menu a:hover{color:var(--text)}
-.mobile-menu a:last-child{border-bottom:none}
-
-/* Mobile Responsive */
-@media(max-width:768px){
-  .hero-name{font-size:clamp(3.5rem,22vw,7rem);line-height:.9}
-  .scroll-indicator{display:none}
-  .nav-bar .max-w-5xl{padding-left:16px;padding-right:16px}
-  .mobile-menu-btn{display:flex}
-  section{padding-left:16px!important;padding-right:16px!important}
-  #hero{padding-top:80px;padding-bottom:40px;min-height:auto}
-  #hero .mb-10{margin-bottom:2rem}
-  .grid-cols-2{grid-template-columns:1fr}
-  .sm\:grid-cols-2{grid-template-columns:1fr}
-  .sm\:grid-cols-4{grid-template-columns:repeat(2,1fr)}
-  .md\:grid-cols-2{grid-template-columns:1fr}
-  .md\:grid-cols-3{grid-template-columns:1fr}
-  .sm\:flex-row{flex-direction:column}
-  .sm\:items-end{align-items:flex-start}
-  .sm\:gap-8{gap:1rem}
-  .text-lg{font-size:.95rem}
-  .sm\:text-xl{font-size:.95rem}
-  .sm\:text-3xl{font-size:1.5rem}
-  .sm\:text-5xl{font-size:2rem}
-  .gap-8{gap:1rem}
-  .h-12{height:2.5rem}
-  .px-6{padding-left:16px;padding-right:16px}
-  .py-24{padding-top:3rem;padding-bottom:3rem}
-  .py-20{padding-top:2.5rem;padding-bottom:2.5rem}
-  .mb-10{margin-bottom:1.5rem}
-  .mb-8{margin-bottom:1rem}
-  .p-5{padding:14px}
-  .p-6{padding:16px}
-  .marquee-item{font-size:1.3rem}
-  .marquee{padding:14px 0}
-  .btn-secondary{padding:8px 14px;font-size:12px}
-  .modal-box{height:95vh;max-width:100vw;border-radius:0}
-  .modal-box img{max-width:100%;max-height:100%;object-fit:contain}
-  /* Images: scale proportionally on mobile */
-  .cert-card .aspect-\[4\/3\]{aspect-ratio:4/3}
-  .cert-card img{width:100%;height:100%;object-fit:contain}
-  /* Gallery: 2 columns on mobile with smaller images */
-  .grid.grid-cols-2.sm\:grid-cols-4{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
-  /* Avatar: keep small */
-  .w-11{width:44px;height:44px;flex-shrink:0}
-  /* Education/skill cards: full width */
-  .md\:col-span-2{grid-column:span 1!important}
-  .md\:grid-cols-3{grid-template-columns:1fr!important}
-  /* Ensure all images have max-width */
-  .cert-card img,#hero img,.card img{max-width:100%;height:auto}
-  .object-cover{object-fit:cover}
-  .object-contain{object-fit:contain}
-  /* Stats grid: 1 column on small mobile */
-  .grid.grid-cols-3{grid-template-columns:1fr;gap:8px}
-  /* Hero stats wrap */
-  #hero .flex{flex-wrap:wrap}
-  /* Gallery card text smaller */
-  .cert-card .text-xs{font-size:11px}
-  .cert-card .text-\[10px\]{font-size:10px}
-  /* Honors grid: 2 columns */
-  .grid.grid-cols-2.sm\:grid-cols-4:has(.card){grid-template-columns:repeat(2,1fr)!important}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 30%) minmax(0, 1fr);
+  column-gap: 32px;
+  align-items: start;
+}
+.photo { grid-column: 1; grid-row: 1; margin: 0 0 14px; }
+.side { grid-column: 1; grid-row: 2; }
+.main { grid-column: 2; grid-row: 1 / span 2; }
+.photo img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
 }
 
-@media print{
-  body{background:#fff!important;color:#000!important;cursor:auto!important}
-  .mesh-bg,.noise,.cursor-dot,.cursor-ring,.nav-bar,.marquee,.modal-overlay,.toast,.scroll-indicator{display:none!important}
-  .card{background:#fff!important;border-color:#ccc!important}
-  .reveal,.stagger>*{opacity:1!important;transform:none!important}
-  .clip-reveal{clip-path:inset(0 0 0 0)!important}
-  section{page-break-inside:avoid}
-  @page{margin:1.8cm;size:A4}
+.block { margin: 0 0 16px; }
+.block h2 {
+  margin: 0 0 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #d7e4e7;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.summary { margin: 0; }
+
+.project + .project,
+.exp + .exp,
+.edu + .edu { margin-top: 11px; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.45; }
+.stack, .date, .org { color: var(--muted); font-size: 12.5px; }
+.stack, .date { white-space: nowrap; }
+.org { margin: 0; }
+.project p, .exp p, .edu p { margin: 2px 0 0; }
+.repo { font-size: 12.5px; word-break: break-all; }
+
+.tags, .side-list, .honors, .certs { margin: 0; padding: 0; list-style: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.skill-name { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.skill-group + .skill-group { margin-top: 8px; }
+.side-list li { margin: 0 0 3px; font-size: 13px; word-break: break-all; }
+.certs { font-size: 13px; }
+.cert-btn {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 5px 0;
+  border: 0;
+  border-bottom: 1px solid #f3f4f6;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.cert-btn:hover { color: var(--accent); }
+.honors li { font-size: 13px; padding: 1px 0 1px 12px; position: relative; }
+.honors li::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+}
+.game-link { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.footer {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+.todo {
+  color: var(--todo);
+  background: var(--todo-bg);
+  border-radius: 2px;
+  padding: 0 3px;
+}
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.gallery button {
+  padding: 0;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+}
+.gallery img { width: 100%; height: 72px; object-fit: cover; display: block; }
+.gallery figcaption { font-size: 11px; color: var(--muted); padding: 2px 4px 4px; }
+
+.viewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(17, 24, 39, 0.78);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.viewer.open { display: flex; }
+.viewer-card { max-width: min(960px, 100%); max-height: 100%; }
+.viewer img { max-width: 100%; max-height: calc(100vh - 96px); display: block; background: #fff; }
+.viewer-close {
+  display: block;
+  margin: 0 0 8px auto;
+  border: 0;
+  background: #fff;
+  color: var(--text);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.error { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+
+@media (max-width: 640px) {
+  .nav-inner { padding: 8px 16px; }
+  .print-btn { margin-left: 0; }
+  .sheet { margin: 0; border-left: 0; border-right: 0; padding: 18px 16px 24px; }
+  .name { font-size: 24px; letter-spacing: 0.04em; }
+  .layout { display: flex; flex-direction: column; }
+  .side-col { display: contents; }
+  .photo { order: 1; margin-bottom: 16px; }
+  .main { order: 2; }
+  .side { order: 3; }
+  .photo img { width: 112px; height: 112px; }
+  .row { flex-wrap: wrap; }
+  .stack, .date { white-space: normal; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; font-size: 11.5px; line-height: 1.38; }
+  .sheet {
+    max-width: none;
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+  a { color: inherit; text-decoration: none; }
+  .layout { grid-template-columns: 32% minmax(0, 1fr); }
+  .tags, .tag { display: inline; }
+  .tag {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+  .tag:not(:last-child)::after { content: "、"; }
+  .photo { margin-bottom: 6px; }
+  .photo img { width: 24mm; height: 24mm; }
+  .identity { margin-bottom: 8px; padding-bottom: 6px; }
+  .block { margin-bottom: 8px; }
+  .block h2 { margin-bottom: 4px; }
+  .project + .project, .exp + .exp, .edu + .edu { margin-top: 5px; }
+  .name { font-size: 20px; }
+  h3 { font-size: 13px; }
+  .side-contact { display: none !important; }
+  .todo { background: none; color: inherit; padding: 0; }
+  .project, .exp, .edu, .skill-group, .cert-btn, .honors { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  @page { size: A4; margin: 10mm; }
 }
 </style>
 </head>
 <body>
-
-<!-- Custom Cursor -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Mesh Background -->
-<div class="mesh-bg">
-  <div class="mesh-blob"></div>
-  <div class="mesh-blob"></div>
-  <div class="mesh-blob"></div>
-  <div class="mesh-blob"></div>
-</div>
-<div class="noise"></div>
-
-<!-- Navigation -->
-<nav class="nav-bar" id="navBar">
-  <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#hero" class="flex items-center gap-2.5" id="navLogo"></a>
-    <div class="hidden md:flex items-center gap-7" id="navLinks"></div>
-    <div class="flex items-center gap-1">
-      <button onclick="window.print()" class="p-2 rounded-lg hover:bg-white/5 transition-colors" title="打印 / 导出PDF">
-        <i data-lucide="printer" class="w-4 h-4 text-zinc-400"></i>
-      </button>
-      <button class="mobile-menu-btn p-2 rounded-lg hover:bg-white/5 transition-colors" onclick="toggleMobileMenu()" title="菜单">
-        <i data-lucide="menu" class="w-5 h-5 text-zinc-300" id="menuIcon"></i>
-      </button>
-    </div>
+<nav class="nav no-print" aria-label="页面目录">
+  <div class="nav-inner">
+    <a href="#summary">简介</a>
+    <a href="#projects">项目</a>
+    <a href="#experience">经历</a>
+    <a href="#education">教育</a>
+    <a href="#skills">技能</a>
+    <a href="#certs">证书</a>
+    <a href="#honors">荣誉</a>
+    <button type="button" class="print-btn" onclick="window.print()">打印</button>
   </div>
 </nav>
-<nav class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="toggleMobileMenu()">关于</a>
-  <a href="#education" onclick="toggleMobileMenu()">教育</a>
-  <a href="#skills" onclick="toggleMobileMenu()">技能</a>
-  <a href="#experience" onclick="toggleMobileMenu()">经历</a>
-  <a href="#certs" onclick="toggleMobileMenu()">证书</a>
-  <a href="#contact" onclick="toggleMobileMenu()">联系</a>
-</nav>
-
-<!-- Content container -->
 <div id="app"></div>
-
-<!-- Game Modal -->
-<div class="modal-overlay" id="gameModal" onclick="if(event.target.id==='gameModal') closeGame()">
-  <div class="modal-box">
-    <div class="flex items-center justify-between px-5 py-3 border-b border-zinc-800" style="background:var(--bg-2);">
-      <div class="flex items-center gap-2" id="gameModalTitle"></div>
-      <button onclick="closeGame()" class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors">
-        <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
-      </button>
-    </div>
-    <iframe class="modal-frame" id="gameFrame" src=""></iframe>
+<div class="viewer no-print" id="viewer" role="dialog" aria-modal="true" aria-label="图片预览">
+  <div class="viewer-card">
+    <button type="button" class="viewer-close" id="viewerClose">关闭</button>
+    <img id="viewerImg" alt="">
   </div>
 </div>
-
-<!-- Cert Viewer Modal -->
-<div class="modal-overlay" id="certModal" onclick="if(event.target.id==='certModal') closeCertViewer()">
-  <div class="modal-box" style="max-width:900px;height:auto;max-height:90vh;">
-    <div class="flex items-center justify-between px-5 py-3 border-b border-zinc-800" style="background:var(--bg-2);">
-      <div class="flex items-center gap-2">
-        <i data-lucide="award" class="w-4 h-4" style="color:var(--accent);"></i>
-        <span class="text-sm font-medium text-zinc-100">证书查看</span>
-      </div>
-      <button onclick="closeCertViewer()" class="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors">
-        <i data-lucide="x" class="w-4 h-4 text-zinc-400"></i>
-      </button>
-    </div>
-    <div class="flex-1 overflow-auto flex items-center justify-center p-4" style="background:var(--bg);">
-      <img id="certViewerImg" src="" alt="证书大图" class="max-w-full max-h-[80vh] object-contain rounded-lg">
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
 <script>
-let CONFIG = null;
+const ICONS = {
+  phone: '<path d="M6.5 4.5h2.2l1.2 3-1.7 1a12.5 12.5 0 0 0 5.8 5.8l1-1.7 3 1.2v2.2a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 4.5 6.1 1.5 1.5 0 0 1 6 4.5z"/>',
+  mail: '<rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 7l8 6 8-6"/>',
+  github: '<path fill="currentColor" stroke="none" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.35 9.35 0 0 1 12 6.84c.85 0 1.7.12 2.5.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.81 0 .27.18.59.69.49A10.05 10.05 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>'
+};
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatText(value) {
+  return escapeHtml(value).replace(/TODO：(?:(?!TODO：)[^。\n])*/g, (match) => `<span class="todo">${match}</span>`);
+}
+
+function safeUrl(url) {
+  const value = String(url ?? '').trim();
+  if (/^(https?:\/\/|mailto:|tel:)/i.test(value)) return value;
+  if (/^(assets\/|tank-battle\.html)[\w./-]*$/.test(value)) return value;
+  return '';
+}
+
+function icon(name) {
+  return `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
+}
+
+function el(tag, className, html) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (html !== undefined) node.innerHTML = html;
+  return node;
+}
+
+function shortUrl(url) {
+  return String(url || '').replace(/^https?:\/\//, '');
+}
+
+function certItems(certificates) {
+  if (Array.isArray(certificates)) return certificates;
+  return (certificates && (certificates.items || certificates.cards)) || [];
+}
 
 async function init() {
+  const app = document.getElementById('app');
+  let config;
   try {
-    const res = await fetch('config.json');
-    CONFIG = await res.json();
-  } catch(e) {
-    console.error('Failed to load config.json:', e);
+    const response = await fetch('config.json');
+    if (!response.ok) throw new Error(response.statusText);
+    config = await response.json();
+  } catch (error) {
+    app.appendChild(el('p', 'error', '简历内容加载失败，请确认 config.json 可以访问。'));
     return;
   }
 
-  applyTheme(CONFIG.theme);
-  document.title = CONFIG.site.title;
-  document.querySelector('meta[name="description"]').setAttribute('content', CONFIG.site.description);
-  renderNav(CONFIG);
-  renderHero(CONFIG);
-  renderMarquee(CONFIG.marquee);
-  renderAbout(CONFIG.about);
-  renderEducation(CONFIG.education);
-  renderSkills(CONFIG.skills, CONFIG.skillTags);
-  renderExperience(CONFIG.experience);
-  renderCertificates(CONFIG.certificates);
-  renderGame(CONFIG.game);
-  renderContact(CONFIG.profile);
-  renderFooter(CONFIG.footer);
+  document.title = config.site?.title || '简历';
+  const description = document.querySelector('meta[name="description"]');
+  if (description && config.site?.description) description.setAttribute('content', config.site.description);
 
-  lucide.createIcons();
-  initCursor();
-  initReveal();
-  initSkillBars();
-  initCounters();
-  initNavScroll();
+  const sheet = el('main', 'sheet');
+  sheet.appendChild(renderIdentity(config.profile || {}));
+
+  const layout = el('div', 'layout');
+  const sideCol = el('aside', 'side-col');
+  sideCol.appendChild(renderPhoto(config.profile || {}));
+  const side = el('div', 'side');
+  side.appendChild(renderSideContact(config.profile || {}));
+  side.appendChild(renderSkills(config.skillGroups || []));
+  side.appendChild(renderCertificates(certItems(config.certificates)));
+  side.appendChild(renderHonors(config.honors || []));
+  side.appendChild(renderGallery((config.certificates && config.certificates.gallery) || []));
+  sideCol.appendChild(side);
+
+  const main = el('div', 'main');
+  main.appendChild(renderSummary(config.profile || {}));
+  main.appendChild(renderProjects(config.projects || []));
+  main.appendChild(renderExperience(config.experience || []));
+  main.appendChild(renderEducation(config.education || []));
+  main.appendChild(renderGame(config.game));
+  layout.appendChild(sideCol);
+  layout.appendChild(main);
+
+  sheet.appendChild(layout);
+  sheet.appendChild(renderFooter(config.footer || {}));
+  app.appendChild(sheet);
 }
 
-function applyTheme(t) {
-  const style = document.getElementById('theme-style');
-  style.textContent = `:root{--bg:${t.bg};--bg-2:${t.bg2};--surface:${t.surface};--border:${t.border};--text:${t.text};--text-dim:${t.textDim};--text-mid:#a1a1aa;--accent:${t.accent};--accent-glow:${t.accent}66;--accent-2:${t.accent2}}body{background:var(--bg);color:var(--text)}`;
+function renderIdentity(profile) {
+  const header = el('header', 'identity');
+  header.appendChild(el('h1', 'name', escapeHtml(profile.name || '')));
+  const targetBits = [profile.title, profile.status].filter(Boolean).join(' · ');
+  if (targetBits) header.appendChild(el('p', 'target', '求职意向：' + formatText(targetBits)));
+  const meta = [profile.university, profile.location, profile.major, profile.graduation].filter(Boolean);
+  if (meta.length) header.appendChild(el('p', 'meta', meta.map(formatText).join(' · ')));
+  header.appendChild(renderContactList(profile, 'contacts'));
+  return header;
 }
 
-function el(tag, cls, html) {
-  const e = document.createElement(tag);
-  if (cls) e.className = cls;
-  if (html !== undefined) e.innerHTML = html;
-  return e;
-}
-
-function renderNav(cfg) {
-  const logo = document.getElementById('navLogo');
-  logo.innerHTML = `
-    <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:var(--accent);">
-      <span style="color:var(--bg);font-size:12px;font-weight:800;" class="font-display">${cfg.profile.name[0]}</span>
-    </div>
-    <span class="font-semibold text-sm text-zinc-100">${cfg.profile.name}</span>
-  `;
-
-  const links = document.getElementById('navLinks');
-  const sections = [
-    {id:'about',label:'关于'},{id:'education',label:'教育'},{id:'skills',label:'技能'},
-    {id:'experience',label:'经历'},{id:'certs',label:'证书'},{id:'contact',label:'联系'}
-  ];
-  sections.forEach(s => {
-    const a = el('a','nav-link',s.label);
-    a.href = '#' + s.id;
-    a.dataset.section = s.id;
-    links.appendChild(a);
-  });
-}
-
-function renderHero(cfg) {
-  const p = cfg.profile;
-  const app = document.getElementById('app');
-
-  const section = el('section');
-  section.id = 'hero';
-  section.className = 'relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-20';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto w-full');
-
-  // Badges
-  const badges = el('div','flex items-center gap-3 mb-8 reveal');
-  badges.appendChild(makePill(p.status, true));
-  p.badges.forEach(b => badges.appendChild(makeBadge(b)));
-  inner.appendChild(badges);
-
-  // Name
-  const h1 = el('h1','hero-name font-display mb-6');
-  const span = el('span','clip-reveal block',p.name);
-  h1.appendChild(span);
-  inner.appendChild(h1);
-
-  // Bio + buttons
-  const bioRow = el('div','flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8 mb-10 reveal');
-  const bio = el('p','text-lg sm:text-xl text-zinc-400 font-medium max-w-md leading-relaxed', p.bio);
-  bioRow.appendChild(bio);
-  const btns = el('div','flex flex-wrap gap-2 shrink-0');
-  const phoneBtn = makeBtn('phone', p.phone, () => copyText(p.phone));
-  const emailBtn = makeBtn('mail', 'Email', () => copyText(p.email));
-  btns.appendChild(phoneBtn);
-  btns.appendChild(emailBtn);
-  bioRow.appendChild(btns);
-  inner.appendChild(bioRow);
-
-  // Stats
-  const stats = el('div','flex items-center gap-8 reveal');
-  cfg.stats.forEach((s, i) => {
-    if (i > 0) stats.appendChild(el('div','w-px h-12 bg-zinc-800'));
-    const wrap = el('div');
-    const num = el('div', 'text-3xl sm:text-4xl font-bold font-display' + (s.highlight ? '' : ' counter'),
-      s.highlight ? s.value : '0');
-    if (s.highlight) num.style.color = 'var(--accent)';
-    if (!s.highlight) { num.dataset.target = s.value; num.dataset.suffix = s.suffix || ''; }
-    wrap.appendChild(num);
-    wrap.appendChild(el('p','text-xs text-zinc-500 mt-1',s.label));
-    stats.appendChild(wrap);
-  });
-  inner.appendChild(stats);
-
-  section.appendChild(inner);
-
-  // Scroll indicator
-  const scrollInd = el('div','scroll-indicator');
-  scrollInd.innerHTML = '<span>Scroll</span><div class="scroll-line"></div>';
-  section.appendChild(scrollInd);
-
-  app.appendChild(section);
-}
-
-function renderMarquee(items) {
-  const app = document.getElementById('app');
-  const marquee = el('div','marquee');
-  const track = el('div','marquee-track');
-
-  // Duplicate for seamless loop
-  for (let r = 0; r < 2; r++) {
-    const group = el('span','marquee-item');
-    items.forEach((item, i) => {
-      if (i > 0 || r > 0) group.appendChild(el('span','dot-sep'));
-      if (item.outline) {
-        const s = el('span','outline-text',item.text);
-        group.appendChild(s);
-      } else {
-        group.appendChild(document.createTextNode(item.text));
-      }
-    });
-    track.appendChild(group);
+function renderContactList(profile, className) {
+  const list = el('ul', className);
+  if (profile.phone) {
+    const phone = String(profile.phone);
+    list.appendChild(el('li', '', `${icon('phone')}<a href="tel:${escapeHtml(phone.replace(/\s+/g, ''))}">${escapeHtml(phone)}</a>`));
   }
-
-  marquee.appendChild(track);
-  app.appendChild(marquee);
+  if (profile.email) {
+    list.appendChild(el('li', '', `${icon('mail')}<a href="mailto:${escapeHtml(profile.email)}">${escapeHtml(profile.email)}</a>`));
+  }
+  const github = safeUrl(profile.github);
+  if (github) {
+    list.appendChild(el('li', '', `${icon('github')}<a href="${escapeHtml(github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(github))}</a>`));
+  }
+  return list;
 }
 
-function renderAbout(cfg) {
-  const app = document.getElementById('app');
-  const section = el('section');
-  section.id = 'about';
-  section.className = 'relative px-6 py-24';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('user','About'));
-
-  const grid = el('div','grid grid-cols-1 md:grid-cols-3 gap-6 stagger');
-
-  const main = el('div','md:col-span-2');
-  main.innerHTML = `
-    <h2 class="text-2xl sm:text-3xl font-bold font-display leading-tight mb-4">
-      ${cfg.heading}<br><span style="color:var(--accent);">${cfg.headingHighlight}</span>，${cfg.headingSuffix}
-    </h2>
-    <p class="text-zinc-400 leading-relaxed text-sm">${cfg.description}</p>
-  `;
-  grid.appendChild(main);
-
-  // Card
-  const card = el('div','card p-5');
-  const c = cfg.card;
-  card.innerHTML = `
-    <div class="flex items-center gap-3 mb-4">
-      <div class="w-11 h-11 rounded-lg overflow-hidden border border-zinc-700 shrink-0">
-        <img src="${c.avatar}" alt="${c.name}" class="w-full h-full object-cover">
-      </div>
-      <div>
-        <p class="font-semibold text-sm text-zinc-100">${c.name}</p>
-        <p class="text-xs text-zinc-500">${c.role}</p>
-      </div>
-    </div>
-    <div class="space-y-2 text-xs">
-      ${c.info.map(i => `<div class="flex justify-between items-center"><span class="text-zinc-500">${i.label}</span><span ${i.highlight?'style="color:var(--accent);"':''}class="${i.highlight?'font-medium':'text-zinc-300'}">${i.value}</span></div>`).join('')}
-    </div>
-  `;
-  grid.appendChild(card);
-
-  inner.appendChild(grid);
-  section.appendChild(inner);
-  app.appendChild(section);
+function renderPhoto(profile) {
+  const figure = el('figure', 'photo');
+  const src = safeUrl(profile.avatar);
+  if (!src) {
+    figure.hidden = true;
+    return figure;
+  }
+  figure.innerHTML = `<img src="${escapeHtml(src)}" alt="${escapeHtml(profile.name || '照片')}">`;
+  return figure;
 }
 
-function renderEducation(items) {
-  const app = document.getElementById('app');
-  const section = el('section');
-  section.id = 'education';
-  section.className = 'relative px-6 py-20';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('graduation-cap','Education'));
-
-  const grid = el('div','grid grid-cols-1 md:grid-cols-2 gap-4 stagger');
-
-  items.forEach(item => {
-    const card = el('div','card p-5');
-    const top = el('div','flex items-start justify-between mb-2');
-    top.appendChild(el('h3','font-semibold text-zinc-100',item.school));
-
-    if (item.pill) {
-      top.appendChild(makePill(item.pill.label, false, item.pill.color));
-    } else if (item.badge) {
-      top.appendChild(el('span','text-xs font-mono text-zinc-500',item.badge));
-    }
-
-    card.appendChild(top);
-
-    if (item.score) {
-      const scoreText = (item.scoreLabel || '{score}').replace('{score}', `<span class="font-mono font-bold" style="color:var(--accent);">${item.score}</span>`);
-      card.appendChild(el('p','text-sm text-zinc-500 mb-3',scoreText));
-    } else if (item.level) {
-      card.appendChild(el('p','text-sm text-zinc-500 mb-3',item.level));
-    }
-
-    if (item.tags && item.tags.length) {
-      const tagWrap = el('div','flex flex-wrap gap-1.5');
-      item.tags.forEach(t => tagWrap.appendChild(makeBadge(t)));
-      card.appendChild(tagWrap);
-    }
-
-    grid.appendChild(card);
-  });
-
-  inner.appendChild(grid);
-  section.appendChild(inner);
-  app.appendChild(section);
+function renderSideContact(profile) {
+  const section = el('section', 'block side-contact');
+  section.appendChild(el('h2', '', '联系方式'));
+  const list = renderContactList(profile, 'side-list');
+  section.appendChild(list);
+  return section;
 }
 
-function renderSkills(skills, tags) {
-  const app = document.getElementById('app');
-  const section = el('section');
-  section.id = 'skills';
-  section.className = 'relative px-6 py-20';
-  section.style.zIndex = '2';
+function renderSummary(profile) {
+  const section = el('section', 'block');
+  section.id = 'summary';
+  section.appendChild(el('h2', '', '个人简介'));
+  section.appendChild(el('p', 'summary', formatText(profile.summary || profile.bio || '')));
+  return section;
+}
 
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('zap','Skills'));
-
-  const grid = el('div','grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10 stagger');
-
-  skills.forEach(s => {
-    const wrap = el('div');
-    wrap.innerHTML = `
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="${s.icon}" class="w-4 h-4 text-zinc-400"></i>
-          <span class="text-sm font-medium text-zinc-200">${s.name}</span>
-        </div>
-        <span class="text-xs font-mono text-zinc-500">${s.level}</span>
-      </div>
-      <div class="skill-bar"><div class="skill-fill" data-width="${s.width}"></div></div>
-      <p class="text-xs text-zinc-600 mt-1.5">${s.desc}</p>
-    `;
-    grid.appendChild(wrap);
+function renderProjects(projects) {
+  const section = el('section', 'block');
+  section.id = 'projects';
+  section.appendChild(el('h2', '', '项目经历'));
+  projects.forEach((project) => {
+    const article = el('article', 'project');
+    const stack = (project.stack || []).map(escapeHtml).join(' · ');
+    article.appendChild(el('div', 'row', `<h3>${escapeHtml(project.name || '')}</h3>${stack ? `<span class="stack">${stack}</span>` : ''}`));
+    if (project.summary) article.appendChild(el('p', '', formatText(project.summary)));
+    const url = safeUrl(project.url);
+    if (url) {
+      article.appendChild(el('p', '', `<a class="repo" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(shortUrl(url))}</a>`));
+    }
+    section.appendChild(article);
   });
-
-  inner.appendChild(grid);
-
-  const tagWrap = el('div','flex flex-wrap gap-2 reveal');
-  tags.forEach(t => {
-    const b = makeBadge(t);
-    b.style.padding = '6px 14px';
-    b.style.fontSize = '11px';
-    tagWrap.appendChild(b);
-  });
-  inner.appendChild(tagWrap);
-
-  section.appendChild(inner);
-  app.appendChild(section);
+  return section;
 }
 
 function renderExperience(items) {
-  const app = document.getElementById('app');
-  const section = el('section');
+  const section = el('section', 'block');
   section.id = 'experience';
-  section.className = 'relative px-6 py-20';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('briefcase','Experience'));
-
-  const timeline = el('div','relative pl-6 space-y-5');
-  timeline.appendChild(el('div','timeline-line'));
-
-  items.forEach(item => {
-    const wrap = el('div','relative reveal');
-    wrap.appendChild(el('div','timeline-dot'));
-
-    const card = el('div','card p-5');
-    const top = el('div','flex items-start justify-between gap-3 mb-2');
-
-    const info = el('div');
-    const titleRow = el('div','flex items-center gap-2 mb-1');
-    titleRow.appendChild(el('h3','text-sm font-bold text-zinc-100',item.title));
-    if (item.pill) {
-      titleRow.appendChild(makePill(item.pill.label, true, item.pill.color));
-    }
-    info.appendChild(titleRow);
-    info.appendChild(el('p','text-xs text-zinc-500',item.org));
-    top.appendChild(info);
-
-    if (item.date) {
-      top.appendChild(el('span','text-xs font-mono text-zinc-600 whitespace-nowrap shrink-0',item.date));
-    } else {
-      top.appendChild(el('i','',''));
-      const icon = el('i','w-4 h-4 text-zinc-600 shrink-0 mt-1');
-      icon.setAttribute('data-lucide','chevron-right');
-      top.appendChild(icon);
-    }
-    card.appendChild(top);
-
-    // Description with highlight
-    let descText = item.description;
-    if (item.highlight) {
-      descText = descText.replace(item.highlight, `<span style="color:var(--accent);font-weight:500;">${item.highlight}</span>`);
-    }
-    card.appendChild(el('p','text-sm text-zinc-400 mt-2 leading-relaxed',descText));
-
-    if (item.tags && item.tags.length) {
-      const tagWrap = el('div','flex flex-wrap gap-1.5 mt-3');
-      item.tags.forEach(t => tagWrap.appendChild(makeBadge(t)));
-      card.appendChild(tagWrap);
-    }
-
-    wrap.appendChild(card);
-    timeline.appendChild(wrap);
+  section.appendChild(el('h2', '', '实践经历'));
+  items.forEach((item) => {
+    const article = el('article', 'exp');
+    article.appendChild(el('div', 'row', `<h3>${escapeHtml(item.title || '')}</h3><span class="date">${formatText(item.date || '')}</span>`));
+    if (item.org) article.appendChild(el('p', 'org', escapeHtml(item.org)));
+    if (item.description) article.appendChild(el('p', '', formatText(item.description)));
+    const tags = item.tags || [];
+    if (tags.length) article.appendChild(renderTags(tags));
+    section.appendChild(article);
   });
-
-  inner.appendChild(timeline);
-  section.appendChild(inner);
-  app.appendChild(section);
+  return section;
 }
 
-function renderCertificates(cfg) {
-  const app = document.getElementById('app');
-  const section = el('section');
+function renderEducation(items) {
+  const section = el('section', 'block');
+  section.id = 'education';
+  section.appendChild(el('h2', '', '教育背景'));
+  items.forEach((item) => {
+    const article = el('article', 'edu');
+    const bits = [item.detail || item.level, item.major, item.date].filter(Boolean);
+    article.appendChild(el('div', 'row', `<h3>${escapeHtml(item.school || '')}</h3>`));
+    if (bits.length) article.appendChild(el('p', '', bits.map(formatText).join(' · ')));
+    if (item.note) article.appendChild(el('p', '', formatText(item.note)));
+    section.appendChild(article);
+  });
+  return section;
+}
+
+function renderGame(game) {
+  const line = el('p', 'game-link no-print');
+  if (!game || !game.src) {
+    line.hidden = true;
+    return line;
+  }
+  const src = safeUrl(game.src);
+  if (!src) {
+    line.hidden = true;
+    return line;
+  }
+  line.innerHTML = `小作品 <a href="${escapeHtml(src)}">${escapeHtml(game.title || '打开')}</a>`;
+  return line;
+}
+
+function renderSkills(groups) {
+  const section = el('section', 'block');
+  section.id = 'skills';
+  section.appendChild(el('h2', '', '技能'));
+  groups.forEach((group) => {
+    const wrap = el('div', 'skill-group');
+    const tags = group.tags || [];
+    wrap.appendChild(el('p', 'skill-name', escapeHtml(group.name || '')));
+    if (tags.length) wrap.appendChild(renderTags(tags));
+    section.appendChild(wrap);
+  });
+  return section;
+}
+
+function renderTags(tags) {
+  const list = el('ul', 'tags');
+  tags.forEach((tag) => list.appendChild(el('li', 'tag', escapeHtml(tag))));
+  return list;
+}
+
+function renderCertificates(items) {
+  const section = el('section', 'block');
   section.id = 'certs';
-  section.className = 'relative px-6 py-20';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('award','Certificates &amp; Honors'));
-
-  // Cert cards (all certs as detailed cards)
-  const cards = cfg.cards || (cfg.main ? [cfg.main] : []);
-  cards.forEach(main => {
-    const mainCard = el('div','card p-0 overflow-hidden mb-6 reveal');
-    const header = el('div','flex items-center gap-3 p-4 border-b border-zinc-800');
-    header.style.background = 'rgba(255,255,255,0.02)';
-    const iconBox = el('div','w-10 h-10 rounded-lg flex items-center justify-center shrink-0');
-    iconBox.style.background = 'rgba(180,255,57,0.08)';
-    iconBox.style.border = '1px solid rgba(180,255,57,0.2)';
-    const iconI = el('i','','');
-    iconI.setAttribute('data-lucide', main.icon);
-    iconI.style.color = 'var(--accent)';
-    iconI.className = 'w-5 h-5';
-    iconBox.appendChild(iconI);
-    header.appendChild(iconBox);
-    const titleDiv = el('div','flex-1');
-    titleDiv.innerHTML = `<h3 class="text-sm font-bold text-zinc-100">${main.title}</h3><p class="text-xs text-zinc-500">${main.issuer}</p>`;
-    header.appendChild(titleDiv);
-    if (main.pill) header.appendChild(makePill(main.pill.label, false, main.pill.color));
-    if (main.img) {
-      const thumb = el('img','w-12 h-12 rounded-lg object-contain shrink-0 cursor-pointer');
-      thumb.src = main.img;
-      thumb.onclick = () => openCertViewer(main.img);
-      header.appendChild(thumb);
+  section.appendChild(el('h2', '', '证书'));
+  const list = el('div', 'certs');
+  items.forEach((item) => {
+    const parts = [item.title, item.issuer, item.year].filter(Boolean);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'cert-btn';
+    button.innerHTML = formatText(parts.join(' · '));
+    const src = safeUrl(item.img);
+    if (src) {
+      button.addEventListener('click', () => openViewer(src, item.title || '证书'));
     }
-    mainCard.appendChild(header);
-
-    const details = el('div','p-4');
-    const detailGrid = el('div','grid grid-cols-2 gap-3 text-xs');
-    main.details.forEach(d => {
-      const row = el('div','flex justify-between py-1.5 border-b border-zinc-800');
-      if (d.span === 2) row.className = 'col-span-2 flex justify-between py-1.5 border-b border-zinc-800';
-      row.appendChild(el('span','text-zinc-500',d.label));
-      row.appendChild(el('span', d.mono ? 'font-mono text-zinc-300' : 'text-zinc-300', d.value));
-      detailGrid.appendChild(row);
-    });
-    details.appendChild(detailGrid);
-    mainCard.appendChild(details);
-    inner.appendChild(mainCard);
+    list.appendChild(button);
   });
+  section.appendChild(list);
+  return section;
+}
 
-  // Gallery
-  const gallery = el('div','grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 stagger');
-  cfg.gallery.forEach(g => {
-    const card = el('div','cert-card card overflow-hidden cursor-pointer');
-    card.onclick = () => openCertViewer(g.img);
-    card.innerHTML = `
-      <div class="aspect-[4/3] overflow-hidden bg-zinc-900">
-        <img src="${g.img}" alt="${g.title}" class="cert-img w-full h-full object-contain">
-      </div>
-      <div class="px-3 py-2">
-        <p class="text-xs font-medium text-zinc-200">${g.title}</p>
-        <p class="text-[10px] text-zinc-600">${g.sub}</p>
-      </div>
-    `;
-    gallery.appendChild(card);
+function renderHonors(honors) {
+  const section = el('section', 'block');
+  section.id = 'honors';
+  section.appendChild(el('h2', '', '荣誉'));
+  const list = el('ul', 'honors');
+  honors.forEach((honor) => {
+    const title = typeof honor === 'string' ? honor : honor.title;
+    if (title) list.appendChild(el('li', '', escapeHtml(title)));
   });
-  inner.appendChild(gallery);
+  section.appendChild(list);
+  return section;
+}
 
-  // Honors
-  app.appendChild(section);
-  section.appendChild(inner);
-
-  // We need honors data - render from CONFIG
-  if (CONFIG.honors) {
-    const honorsGrid = el('div','grid grid-cols-2 sm:grid-cols-4 gap-2 stagger');
-    CONFIG.honors.forEach(h => {
-      const card = el('div','card p-3 text-center');
-      const iconWrap = el('div','w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center');
-      iconWrap.style.background = 'rgba(180,255,57,0.06)';
-      const iconI = el('i','w-4 h-4');
-      iconI.setAttribute('data-lucide', h.icon);
-      iconI.style.color = 'var(--accent)';
-      iconWrap.appendChild(iconI);
-      card.appendChild(iconWrap);
-      card.appendChild(el('p','text-[11px] font-medium text-zinc-300',h.title));
-      honorsGrid.appendChild(card);
-    });
-    inner.appendChild(honorsGrid);
+function renderGallery(items) {
+  const section = el('section', 'block no-print');
+  if (!items.length) {
+    section.hidden = true;
+    return section;
   }
-}
-
-function renderGame(cfg) {
-  const app = document.getElementById('app');
-  const section = el('section');
-  section.id = 'play';
-  section.className = 'relative px-6 py-20';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('gamepad-2','Play'));
-
-  const card = el('div','card p-6 reveal');
-  card.innerHTML = `
-    <div class="flex items-start gap-4">
-      <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style="background:var(--accent);">
-        <i data-lucide="target" class="w-7 h-7" style="color:var(--bg);"></i>
-      </div>
-      <div class="flex-1">
-        <div class="flex items-center gap-2 mb-2"><span class="badge">${cfg.badge}</span></div>
-        <h3 class="text-lg font-bold font-display text-zinc-100 mb-2">${cfg.title}</h3>
-        <p class="text-sm text-zinc-400 leading-relaxed mb-4">${cfg.description}</p>
-        <div class="flex flex-wrap gap-1.5 mb-4">
-          ${cfg.tags.map(t => `<span class="badge">${t}</span>`).join('')}
-        </div>
-        <button onclick="openGame()" class="btn-primary">
-          <i data-lucide="play" class="w-4 h-4"></i>${cfg.button}
-        </button>
-      </div>
-    </div>
-  `;
-  inner.appendChild(card);
-  section.appendChild(inner);
-
-  // Set game modal title
-  document.getElementById('gameModalTitle').innerHTML = `<i data-lucide="gamepad-2" class="w-4 h-4" style="color:var(--accent);"></i><span class="text-sm font-medium text-zinc-100">${cfg.title}</span>`;
-
-  app.appendChild(section);
-}
-
-function renderContact(p) {
-  const app = document.getElementById('app');
-  const section = el('section');
-  section.id = 'contact';
-  section.className = 'relative px-6 py-24';
-  section.style.zIndex = '2';
-
-  const inner = el('div','max-w-5xl mx-auto');
-  inner.appendChild(makeSectionLabel('mail','Contact'));
-
-  const heading = el('h2','text-3xl sm:text-5xl font-bold font-display leading-tight mb-8 reveal');
-  heading.innerHTML = `Let's <span style="color:var(--accent);">talk</span>.`;
-  inner.appendChild(heading);
-
-  const grid = el('div','grid grid-cols-1 sm:grid-cols-2 gap-4 stagger');
-
-  const phoneBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
-  phoneBtn.onclick = () => copyText(p.phone);
-  phoneBtn.innerHTML = `
-    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
-      <i data-lucide="phone" class="w-4 h-4" style="color:var(--accent);"></i>
-    </div>
-    <div class="flex-1">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-600 mb-0.5">Phone</p>
-      <p class="text-sm font-medium text-zinc-100">${p.phone}</p>
-    </div>
-    <i data-lucide="copy" class="w-4 h-4 text-zinc-600"></i>
-  `;
-  grid.appendChild(phoneBtn);
-
-  const emailBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
-  emailBtn.onclick = () => copyText(p.email);
-  emailBtn.innerHTML = `
-    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
-      <i data-lucide="mail" class="w-4 h-4" style="color:var(--accent);"></i>
-    </div>
-    <div class="flex-1">
-      <p class="text-[11px] font-semibold uppercase tracking-wider text-zinc-600 mb-0.5">Email</p>
-      <p class="text-sm font-medium text-zinc-100">${p.email}</p>
-    </div>
-    <i data-lucide="copy" class="w-4 h-4 text-zinc-600"></i>
-  `;
-  grid.appendChild(emailBtn);
-
-  inner.appendChild(grid);
-  section.appendChild(inner);
-  app.appendChild(section);
-}
-
-function renderFooter(cfg) {
-  const app = document.getElementById('app');
-  const footer = el('footer','relative px-6 py-10 border-t border-zinc-800');
-  footer.style.zIndex = '2';
-  footer.innerHTML = `
-    <div class="max-w-5xl mx-auto flex items-center justify-between text-xs text-zinc-600">
-      <span>${cfg.copyright}</span>
-      <div class="flex items-center gap-4">
-        <a href="admin.html" class="hover:text-zinc-400 transition-colors">Admin</a>
-        <span class="font-mono">${cfg.note}</span>
-      </div>
-    </div>
-  `;
-  app.appendChild(footer);
-}
-
-// Helpers
-function makeSectionLabel(icon, label) {
-  const wrap = el('div','flex items-center gap-2 mb-10 reveal');
-  const i = el('i','w-4 h-4 text-zinc-500');
-  i.setAttribute('data-lucide', icon);
-  wrap.appendChild(i);
-  wrap.appendChild(el('span','s-label',label));
-  return wrap;
-}
-
-function makePill(label, live, color) {
-  const pill = el('span','pill');
-  if (color) {
-    pill.style.background = `${color}14`;
-    pill.style.borderColor = `${color}40`;
-    pill.style.color = color;
-  }
-  if (live) {
-    const dot = el('span','live-dot');
-    if (color) dot.style.background = color;
-    pill.appendChild(dot);
-  }
-  pill.appendChild(document.createTextNode(label));
-  return pill;
-}
-
-function makeBadge(text) {
-  return el('span','badge',text);
-}
-
-function makeBtn(icon, label, onclick) {
-  const btn = el('button','btn-secondary');
-  btn.onclick = onclick;
-  const i = el('i','w-3.5 h-3.5');
-  i.setAttribute('data-lucide', icon);
-  btn.appendChild(i);
-  btn.appendChild(document.createTextNode(label));
-  return btn;
-}
-
-// Cursor
-function initCursor() {
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  let mx=0,my=0,rx=0,ry=0;
-
-  document.addEventListener('mousemove', e => {
-    mx=e.clientX; my=e.clientY;
-    dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+  section.appendChild(el('h2', '', '佐证图片'));
+  const grid = el('div', 'gallery');
+  items.forEach((item) => {
+    const src = safeUrl(item.img);
+    if (!src) return;
+    const figure = document.createElement('figure');
+    figure.innerHTML = `<button type="button"><img src="${escapeHtml(src)}" alt="${escapeHtml(item.title || '佐证图片')}"></button>`;
+    figure.querySelector('button').addEventListener('click', () => openViewer(src, item.title || '佐证图片'));
+    grid.appendChild(figure);
   });
-
-  function anim() {
-    rx += (mx-rx)*0.18;
-    ry += (my-ry)*0.18;
-    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
-    requestAnimationFrame(anim);
-  }
-  anim();
-
-  document.querySelectorAll('a,button,.card,.cert-card').forEach(el => {
-    el.addEventListener('mouseenter', () => { dot.classList.add('hover'); ring.classList.add('hover'); });
-    el.addEventListener('mouseleave', () => { dot.classList.remove('hover'); ring.classList.remove('hover'); });
-  });
-
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
-      card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
-    });
-  });
+  section.appendChild(grid);
+  return section;
 }
 
-// Reveal on scroll
-function initReveal() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold:0.1, rootMargin:'0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal,.stagger,.clip-reveal').forEach(el => obs.observe(el));
+function renderFooter(footer) {
+  return el('footer', 'footer', escapeHtml(footer.copyright || ''));
 }
 
-// Skill bars
-function initSkillBars() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const fill = e.target;
-        fill.style.transform = `translateX(-${100 - parseInt(fill.dataset.width)}%)`;
-        fill.classList.add('fill');
-      }
-    });
-  }, { threshold:0.3 });
-  document.querySelectorAll('.skill-fill').forEach(el => obs.observe(el));
-}
-
-// Counters
-function initCounters() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const el = e.target;
-        const target = parseInt(el.dataset.target);
-        const suffix = el.dataset.suffix || '';
-        let cur = 0;
-        const step = Math.ceil(target/30);
-        const interval = setInterval(() => {
-          cur += step;
-          if (cur >= target) { cur = target; clearInterval(interval); }
-          el.textContent = cur + suffix;
-        }, 40);
-        obs.unobserve(el);
-      }
-    });
-  }, { threshold:0.5 });
-  document.querySelectorAll('.counter').forEach(el => obs.observe(el));
-}
-
-// Nav scroll
-function initNavScroll() {
-  const navBar = document.getElementById('navBar');
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) navBar.classList.add('scrolled');
-    else navBar.classList.remove('scrolled');
-
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    navLinks.forEach(l => {
-      l.classList.remove('active');
-      if (l.dataset.section === current) l.classList.add('active');
-    });
-  });
-}
-
-// Mobile menu toggle
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const icon = document.getElementById('menuIcon');
-  menu.classList.toggle('active');
-  if (menu.classList.contains('active')) {
-    icon.setAttribute('data-lucide', 'x');
-  } else {
-    icon.setAttribute('data-lucide', 'menu');
-  }
-  lucide.createIcons();
-}
-
-// Copy
-function copyText(text) {
-  navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'))
-    .catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      document.execCommand('copy'); document.body.removeChild(ta);
-      showToast('已复制到剪贴板');
-    });
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1800);
-}
-
-// Game modal
-function openGame() {
-  document.getElementById('gameFrame').src = CONFIG.game.src;
-  document.getElementById('gameModal').classList.add('active');
+function openViewer(src, title) {
+  const viewer = document.getElementById('viewer');
+  const image = document.getElementById('viewerImg');
+  image.src = src;
+  image.alt = title || '图片';
+  viewer.classList.add('open');
   document.body.style.overflow = 'hidden';
+  document.getElementById('viewerClose').focus();
 }
-function closeGame() {
-  document.getElementById('gameFrame').src = '';
-  document.getElementById('gameModal').classList.remove('active');
+
+function closeViewer() {
+  const viewer = document.getElementById('viewer');
+  const image = document.getElementById('viewerImg');
+  viewer.classList.remove('open');
+  image.src = '';
   document.body.style.overflow = '';
 }
 
-// Cert viewer
-function openCertViewer(src) {
-  document.getElementById('certViewerImg').src = src;
-  document.getElementById('certModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeCertViewer() {
-  document.getElementById('certViewerImg').src = '';
-  document.getElementById('certModal').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeGame(); closeCertViewer(); }
+document.getElementById('viewerClose').addEventListener('click', closeViewer);
+document.getElementById('viewer').addEventListener('click', (event) => {
+  if (event.target.id === 'viewer') closeViewer();
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeViewer();
 });
 
 init();
 </script>
-
 </body>
 </html>

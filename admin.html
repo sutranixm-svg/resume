@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Resume Admin · 内容管理面板</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0a0a0b;
@@ -25,13 +23,13 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
-.mono { font-family: 'JetBrains Mono', monospace; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
 /* Top bar */
 .topbar {
@@ -91,7 +89,7 @@ body {
   width: 100%; padding: 10px 14px;
   background: var(--bg-2); border: 1px solid var(--border);
   border-radius: 8px; color: var(--text); font-size: 14px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   transition: border-color 0.2s;
 }
 .auth-card input:focus { outline: none; border-color: var(--accent); }
@@ -268,7 +266,7 @@ input[type="color"] {
   flex: 1; overflow: auto; padding: 20px;
 }
 .json-modal-body pre {
-  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
   color: var(--text-mid); white-space: pre-wrap; word-break: break-all;
 }
 
@@ -358,16 +356,13 @@ input[type="color"] {
   <!-- Sidebar -->
   <div class="sidebar">
     <a data-tab="profile" class="active" onclick="switchTab('profile')">个人资料</a>
-    <a data-tab="stats" onclick="switchTab('stats')">首页统计</a>
-    <a data-tab="marquee" onclick="switchTab('marquee')">跑马灯</a>
-    <a data-tab="about" onclick="switchTab('about')">关于</a>
+    <a data-tab="projects" onclick="switchTab('projects')">项目</a>
     <a data-tab="education" onclick="switchTab('education')">教育经历</a>
     <a data-tab="skills" onclick="switchTab('skills')">技能</a>
     <a data-tab="experience" onclick="switchTab('experience')">经历</a>
     <a data-tab="certificates" onclick="switchTab('certificates')">证书</a>
     <a data-tab="honors" onclick="switchTab('honors')">荣誉</a>
-    <a data-tab="game" onclick="switchTab('game')">游戏</a>
-    <a data-tab="theme" onclick="switchTab('theme')">主题颜色</a>
+    <a data-tab="game" onclick="switchTab('game')">小作品</a>
     <a data-tab="footer" onclick="switchTab('footer')">页脚</a>
   </div>
 
@@ -385,21 +380,43 @@ input[type="color"] {
           <input type="text" id="p-name" data-path="profile.name">
         </div>
         <div class="field-group">
-          <label>头衔</label>
+          <label>求职意向</label>
           <input type="text" id="p-title" data-path="profile.title">
         </div>
       </div>
-      <div class="field-group">
-        <label>头像路径</label>
-        <input type="text" id="p-avatar" data-path="profile.avatar">
+      <div class="row-2">
+        <div class="field-group">
+          <label>学校</label>
+          <input type="text" id="p-university" data-path="profile.university">
+        </div>
+        <div class="field-group">
+          <label>专业</label>
+          <input type="text" id="p-major" data-path="profile.major" placeholder="TODO：专业">
+        </div>
       </div>
-      <div class="field-group">
-        <label>状态标签</label>
-        <input type="text" id="p-status" data-path="profile.status">
+      <div class="row-2">
+        <div class="field-group">
+          <label>预计毕业年份</label>
+          <input type="text" id="p-graduation" data-path="profile.graduation" placeholder="TODO：预计毕业年份">
+        </div>
+        <div class="field-group">
+          <label>状态</label>
+          <input type="text" id="p-status" data-path="profile.status">
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field-group">
+          <label>所在地</label>
+          <input type="text" id="p-location" data-path="profile.location">
+        </div>
+        <div class="field-group">
+          <label>头像路径</label>
+          <input type="text" id="p-avatar" data-path="profile.avatar">
+        </div>
       </div>
       <div class="field-group">
         <label>个人简介</label>
-        <textarea id="p-bio" data-path="profile.bio"></textarea>
+        <textarea id="p-summary" data-path="profile.summary"></textarea>
       </div>
       <div class="row-2">
         <div class="field-group">
@@ -412,72 +429,26 @@ input[type="color"] {
         </div>
       </div>
       <div class="field-group">
-        <label>徽章标签（逗号分隔）</label>
-        <input type="text" id="p-badges" data-path="profile.badges" placeholder="AI Trainer, 达摩院认证">
+        <label>GitHub</label>
+        <input type="url" id="p-github" data-path="profile.github">
       </div>
     </div>
 
-    <!-- Stats -->
-    <div class="section" id="tab-stats">
+    <!-- Projects -->
+    <div class="section" id="tab-projects">
       <div class="section-header">
-        <h2>首页统计</h2>
-        <p>首页展示的数字统计卡片</p>
+        <h2>项目</h2>
+        <p>显示在简历右侧最上方。每项需要名称、简介、技术栈和仓库链接。</p>
       </div>
-      <div id="statsContainer"></div>
-      <button class="add-btn" onclick="addStat()">+ 添加统计</button>
-    </div>
-
-    <!-- Marquee -->
-    <div class="section" id="tab-marquee">
-      <div class="section-header">
-        <h2>跑马灯</h2>
-        <p>首页滚动的文字条目</p>
-      </div>
-      <div id="marqueeContainer"></div>
-      <button class="add-btn" onclick="addMarquee()">+ 添加条目</button>
-    </div>
-
-    <!-- About -->
-    <div class="section" id="tab-about">
-      <div class="section-header">
-        <h2>关于</h2>
-        <p>关于区域的标题和描述文案</p>
-      </div>
-      <div class="field-group">
-        <label>主标题</label>
-        <input type="text" id="a-heading" data-path="about.heading">
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>高亮文字</label>
-          <input type="text" id="a-highlight" data-path="about.headingHighlight">
-        </div>
-        <div class="field-group">
-          <label>后缀文字</label>
-          <input type="text" id="a-suffix" data-path="about.headingSuffix">
-        </div>
-      </div>
-      <div class="field-group">
-        <label>描述文案</label>
-        <textarea id="a-desc" data-path="about.description"></textarea>
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>卡片-姓名</label>
-          <input type="text" id="a-card-name" data-path="about.card.name">
-        </div>
-        <div class="field-group">
-          <label>卡片-角色</label>
-          <input type="text" id="a-card-role" data-path="about.card.role">
-        </div>
-      </div>
+      <div id="projectsContainer"></div>
+      <button class="add-btn" onclick="addProject()">+ 添加项目</button>
     </div>
 
     <!-- Education -->
     <div class="section" id="tab-education">
       <div class="section-header">
         <h2>教育经历</h2>
-        <p>从大学到小学的教育记录</p>
+        <p>学校、阶段、专业和起止时间。未知内容保留 TODO，不要填猜测。</p>
       </div>
       <div id="educationContainer"></div>
       <button class="add-btn" onclick="addEducation()">+ 添加教育</button>
@@ -487,16 +458,10 @@ input[type="color"] {
     <div class="section" id="tab-skills">
       <div class="section-header">
         <h2>技能</h2>
-        <p>技能条和标签</p>
+        <p>按分组编辑技能标签。页面只显示标签，不显示百分比。</p>
       </div>
-      <h3 style="font-size:15px;margin-bottom:12px;">技能条</h3>
       <div id="skillsContainer"></div>
-      <button class="add-btn" onclick="addSkill()" style="margin-bottom:24px;">+ 添加技能</button>
-      <h3 style="font-size:15px;margin-bottom:12px;">技能标签</h3>
-      <div class="field-group">
-        <label>标签（逗号分隔）</label>
-        <input type="text" id="skillTags" data-path="skillTags" placeholder="数据标注, 模型调优, ...">
-      </div>
+      <button class="add-btn" onclick="addSkillGroup()">+ 添加分组</button>
     </div>
 
     <!-- Experience -->
@@ -513,24 +478,11 @@ input[type="color"] {
     <div class="section" id="tab-certificates">
       <div class="section-header">
         <h2>证书</h2>
-        <p>主要证书信息和图片画廊</p>
+        <p>每条证书一行：名称、颁发机构和年份。页面不展示证书编号。点击名称会打开图片。</p>
       </div>
-      <h3 style="font-size:15px;margin-bottom:12px;">主证书</h3>
-      <div class="row-2">
-        <div class="field-group">
-          <label>证书标题</label>
-          <input type="text" id="c-main-title" data-path="certificates.main.title">
-        </div>
-        <div class="field-group">
-          <label>颁发机构</label>
-          <input type="text" id="c-main-issuer" data-path="certificates.main.issuer">
-        </div>
-      </div>
-      <div class="field-group">
-        <label>图标名（lucide）</label>
-        <input type="text" id="c-main-icon" data-path="certificates.main.icon">
-      </div>
-      <h3 style="font-size:15px;margin:24px 0 12px;">证书图片画廊</h3>
+      <div id="certItemsContainer"></div>
+      <button class="add-btn" onclick="addCertItem()" style="margin-bottom:24px;">+ 添加证书</button>
+      <h3 style="font-size:15px;margin:24px 0 12px;">佐证图片（仅屏幕显示，打印时隐藏）</h3>
       <div id="galleryContainer"></div>
       <button class="add-btn" onclick="addGalleryItem()">+ 添加图片</button>
     </div>
@@ -548,83 +500,17 @@ input[type="color"] {
     <!-- Game -->
     <div class="section" id="tab-game">
       <div class="section-header">
-        <h2>游戏</h2>
-        <p>游戏模块信息</p>
+        <h2>小作品</h2>
+        <p>简历底部的一行链接，打印时隐藏。坦克游戏页面本身不受影响。</p>
       </div>
       <div class="row-2">
-        <div class="field-group">
-          <label>徽章</label>
-          <input type="text" id="g-badge" data-path="game.badge">
-        </div>
         <div class="field-group">
           <label>标题</label>
           <input type="text" id="g-title" data-path="game.title">
         </div>
-      </div>
-      <div class="field-group">
-        <label>描述</label>
-        <textarea id="g-desc" data-path="game.description"></textarea>
-      </div>
-      <div class="field-group">
-        <label>标签（逗号分隔）</label>
-        <input type="text" id="g-tags" data-path="game.tags">
-      </div>
-      <div class="row-2">
         <div class="field-group">
-          <label>按钮文字</label>
-          <input type="text" id="g-button" data-path="game.button">
-        </div>
-        <div class="field-group">
-          <label>游戏文件路径</label>
+          <label>页面路径</label>
           <input type="text" id="g-src" data-path="game.src">
-        </div>
-      </div>
-    </div>
-
-    <!-- Theme -->
-    <div class="section" id="tab-theme">
-      <div class="section-header">
-        <h2>主题颜色</h2>
-        <p>自定义网站配色方案</p>
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>背景色</label>
-          <input type="color" id="t-bg" data-path="theme.bg">
-        </div>
-        <div class="field-group">
-          <label>次背景色</label>
-          <input type="color" id="t-bg2" data-path="theme.bg2">
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>卡片背景</label>
-          <input type="color" id="t-surface" data-path="theme.surface">
-        </div>
-        <div class="field-group">
-          <label>边框色</label>
-          <input type="color" id="t-border" data-path="theme.border">
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>主文字色</label>
-          <input type="color" id="t-text" data-path="theme.text">
-        </div>
-        <div class="field-group">
-          <label>次要文字色</label>
-          <input type="color" id="t-textDim" data-path="theme.textDim">
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field-group">
-          <label>强调色</label>
-          <input type="color" id="t-accent" data-path="theme.accent">
-        </div>
-        <div class="field-group">
-          <label>次强调色</label>
-          <input type="color" id="t-accent2" data-path="theme.accent2">
         </div>
       </div>
     </div>
@@ -638,10 +524,6 @@ input[type="color"] {
       <div class="field-group">
         <label>版权文字</label>
         <input type="text" id="f-copyright" data-path="footer.copyright">
-      </div>
-      <div class="field-group">
-        <label>备注</label>
-        <input type="text" id="f-note" data-path="footer.note">
       </div>
     </div>
   </div>
@@ -746,268 +628,280 @@ function switchTab(tab) {
 }
 
 // Load form from config
+function esc(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function ensureConfig() {
+  CONFIG.profile = CONFIG.profile || {};
+  CONFIG.projects = CONFIG.projects || [];
+  CONFIG.education = CONFIG.education || [];
+  CONFIG.skillGroups = CONFIG.skillGroups || [];
+  CONFIG.experience = CONFIG.experience || [];
+  CONFIG.honors = (CONFIG.honors || []).map(item => typeof item === 'string' ? { title: item } : item);
+  if (Array.isArray(CONFIG.certificates)) {
+    CONFIG.certificates = { items: CONFIG.certificates, gallery: [] };
+  }
+  CONFIG.certificates = CONFIG.certificates || {};
+  CONFIG.certificates.items = CONFIG.certificates.items || CONFIG.certificates.cards || [];
+  CONFIG.certificates.gallery = CONFIG.certificates.gallery || [];
+  CONFIG.game = CONFIG.game || { title: '', src: 'tank-battle.html' };
+  CONFIG.footer = CONFIG.footer || {};
+  CONFIG.site = CONFIG.site || {};
+}
+
 function loadFormFromConfig() {
-  // Simple fields with data-path
+  ensureConfig();
   document.querySelectorAll('[data-path]').forEach(el => {
     const path = el.dataset.path.split('.');
     let val = CONFIG;
     for (const p of path) val = val?.[p];
-    if (val === undefined) val = '';
+    if (val === undefined || val === null) val = '';
     if (Array.isArray(val)) val = val.join(', ');
     el.value = val;
   });
 
-  // Stats
-  renderStats();
-  renderMarquee();
+  renderProjects();
   renderEducation();
   renderSkills();
   renderExperience();
+  renderCertItems();
   renderGallery();
   renderHonors();
 }
 
-// Collect form to config
 function collectForm() {
+  ensureConfig();
   document.querySelectorAll('[data-path]').forEach(el => {
     const path = el.dataset.path.split('.');
-    let val = el.value;
-    // Parse arrays from comma-separated
-    if (path[path.length-1] === 'badges' || path[path.length-1] === 'tags' || path[path.length-1] === 'skillTags') {
-      val = val.split(',').map(s => s.trim()).filter(Boolean);
-    }
-    // Parse numbers
-    if (path[path.length-1] === 'width' || path[path.length-1] === 'value') {
-      const n = parseInt(val);
-      if (!isNaN(n)) val = n;
-    }
+    const val = el.value;
     let obj = CONFIG;
     for (let i = 0; i < path.length - 1; i++) {
-      if (!obj[path[i]]) obj[path[i]] = {};
+      if (!obj[path[i]] || typeof obj[path[i]] !== 'object') obj[path[i]] = {};
       obj = obj[path[i]];
     }
-    obj[path[path.length-1]] = val;
+    obj[path[path.length - 1]] = val;
   });
 
-  collectStats();
-  collectMarquee();
+  collectProjects();
   collectEducation();
   collectSkills();
   collectExperience();
+  collectCertItems();
   collectGallery();
   collectHonors();
 }
 
-// === Stats ===
-function renderStats() {
-  const c = document.getElementById('statsContainer');
-  c.innerHTML = '';
-  CONFIG.stats.forEach((s, i) => {
-    const item = document.createElement('div');
-    item.className = 'array-item';
-    item.innerHTML = `
-      <div class="array-item-header">
-        <span class="array-item-title">统计 #${i+1}</span>
-        <button class="array-item-remove" onclick="removeItem('stats', ${i})">删除</button>
-      </div>
-      <div class="row-3">
-        <div class="inline-field"><label>数值</label><input type="text" value="${s.value}" data-stat="value" data-idx="${i}"></div>
-        <div class="inline-field"><label>后缀</label><input type="text" value="${s.suffix || ''}" data-stat="suffix" data-idx="${i}"></div>
-        <div class="inline-field"><label>标签</label><input type="text" value="${s.label}" data-stat="label" data-idx="${i}"></div>
-      </div>
-      <div class="inline-field"><label><input type="checkbox" ${s.highlight ? 'checked' : ''} data-stat="highlight" data-idx="${i}"> 高亮显示</label></div>
-    `;
-    c.appendChild(item);
-  });
-}
-function addStat() {
-  CONFIG.stats.push({ value: 0, suffix: '', label: '新统计' });
-  renderStats();
-}
-function collectStats() {
-  document.querySelectorAll('[data-stat]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
-    const key = el.dataset.stat;
-    if (el.type === 'checkbox') {
-      CONFIG.stats[i][key] = el.checked;
-    } else {
-      CONFIG.stats[i][key] = el.value;
-    }
-  });
+function splitList(value) {
+  return String(value || '').split(',').map(s => s.trim()).filter(Boolean);
 }
 
-// === Marquee ===
-function renderMarquee() {
-  const c = document.getElementById('marqueeContainer');
+function renderProjects() {
+  const c = document.getElementById('projectsContainer');
   c.innerHTML = '';
-  CONFIG.marquee.forEach((m, i) => {
+  CONFIG.projects.forEach((project, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">条目 #${i+1}</span>
-        <button class="array-item-remove" onclick="removeItem('marquee', ${i})">删除</button>
+        <span class="array-item-title">${esc(project.name || '项目 #' + (i + 1))}</span>
+        <button class="array-item-remove" onclick="removeItem('projects', ${i})">删除</button>
       </div>
+      <div class="inline-field"><label>名称</label><input type="text" value="${esc(project.name || '')}" data-project="name" data-idx="${i}"></div>
+      <div class="inline-field"><label>简介</label><textarea data-project="summary" data-idx="${i}">${esc(project.summary || '')}</textarea></div>
       <div class="row-2">
-        <div class="inline-field"><label>文字</label><input type="text" value="${m.text}" data-marquee="text" data-idx="${i}"></div>
-        <div class="inline-field"><label>描边样式</label><select data-marquee="outline" data-idx="${i}"><option value="false" ${!m.outline?'selected':''}>实心</option><option value="true" ${m.outline?'selected':''}>描边</option></select></div>
+        <div class="inline-field"><label>技术栈（逗号分隔）</label><input type="text" value="${esc((project.stack || []).join(', '))}" data-project="stack" data-idx="${i}"></div>
+        <div class="inline-field"><label>仓库链接</label><input type="url" value="${esc(project.url || '')}" data-project="url" data-idx="${i}"></div>
       </div>
     `;
     c.appendChild(item);
   });
 }
-function addMarquee() {
-  CONFIG.marquee.push({ text: '新条目', outline: false });
-  renderMarquee();
+function addProject() {
+  CONFIG.projects.push({ name: '', summary: '', stack: [], url: 'https://github.com/sutranixm-svg/' });
+  renderProjects();
 }
-function collectMarquee() {
-  document.querySelectorAll('[data-marquee]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
-    CONFIG.marquee[i][el.dataset.marquee] = el.value === 'true';
+function collectProjects() {
+  document.querySelectorAll('[data-project]').forEach(el => {
+    const i = parseInt(el.dataset.idx, 10);
+    const key = el.dataset.project;
+    CONFIG.projects[i][key] = key === 'stack' ? splitList(el.value) : el.value;
   });
 }
 
-// === Education ===
 function renderEducation() {
   const c = document.getElementById('educationContainer');
   c.innerHTML = '';
-  CONFIG.education.forEach((e, i) => {
+  CONFIG.education.forEach((entry, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">${e.school || '教育 #'+(i+1)}</span>
+        <span class="array-item-title">${esc(entry.school || '教育 #' + (i + 1))}</span>
         <button class="array-item-remove" onclick="removeItem('education', ${i})">删除</button>
       </div>
-      <div class="inline-field"><label>学校名称</label><input type="text" value="${e.school||''}" data-edu="school" data-idx="${i}"></div>
+      <div class="inline-field"><label>学校</label><input type="text" value="${esc(entry.school || '')}" data-edu="school" data-idx="${i}"></div>
       <div class="row-2">
-        <div class="inline-field"><label>学历/描述</label><input type="text" value="${e.level||''}" data-edu="level" data-idx="${i}"></div>
-        <div class="inline-field"><label>分数 (可选)</label><input type="text" value="${e.score||''}" data-edu="score" data-idx="${i}"></div>
+        <div class="inline-field"><label>阶段</label><input type="text" value="${esc(entry.detail || entry.level || '')}" data-edu="detail" data-idx="${i}" placeholder="本科在读"></div>
+        <div class="inline-field"><label>专业</label><input type="text" value="${esc(entry.major || '')}" data-edu="major" data-idx="${i}" placeholder="TODO：专业"></div>
       </div>
-      <div class="inline-field"><label>分数标签</label><input type="text" value="${e.scoreLabel||''}" data-edu="scoreLabel" data-idx="${i}" placeholder="以 {score} 分成绩考入"></div>
-      <div class="inline-field"><label>角标 (如 HIGH SCHOOL)</label><input type="text" value="${e.badge||''}" data-edu="badge" data-idx="${i}"></div>
-      <div class="inline-field"><label>标签 (逗号分隔)</label><input type="text" value="${(e.tags||[]).join(', ')}" data-edu="tags" data-idx="${i}"></div>
+      <div class="inline-field"><label>时间</label><input type="text" value="${esc(entry.date || '')}" data-edu="date" data-idx="${i}" placeholder="TODO：起止年份"></div>
+      <div class="inline-field"><label>补充（可选）</label><input type="text" value="${esc(entry.note || '')}" data-edu="note" data-idx="${i}"></div>
     `;
     c.appendChild(item);
   });
 }
 function addEducation() {
-  CONFIG.education.push({ school: '新学校', level: '', tags: [] });
+  CONFIG.education.push({ school: '', detail: '', major: '', date: 'TODO：起止年份', note: '' });
   renderEducation();
 }
 function collectEducation() {
   document.querySelectorAll('[data-edu]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
-    const key = el.dataset.edu;
-    if (key === 'tags') {
-      CONFIG.education[i][key] = el.value.split(',').map(s=>s.trim()).filter(Boolean);
-    } else {
-      CONFIG.education[i][key] = el.value;
-    }
+    const i = parseInt(el.dataset.idx, 10);
+    CONFIG.education[i][el.dataset.edu] = el.value;
+  });
+  CONFIG.education.forEach(entry => {
+    ['level', 'score', 'scoreLabel', 'badge', 'pill', 'tags'].forEach(key => delete entry[key]);
+    ['major', 'note'].forEach(key => {
+      if (!entry[key]) delete entry[key];
+    });
   });
 }
 
-// === Skills ===
 function renderSkills() {
   const c = document.getElementById('skillsContainer');
   c.innerHTML = '';
-  CONFIG.skills.forEach((s, i) => {
+  CONFIG.skillGroups.forEach((group, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">${s.name || '技能 #'+(i+1)}</span>
-        <button class="array-item-remove" onclick="removeItem('skills', ${i})">删除</button>
+        <span class="array-item-title">${esc(group.name || '分组 #' + (i + 1))}</span>
+        <button class="array-item-remove" onclick="removeItem('skillGroups', ${i})">删除</button>
       </div>
-      <div class="row-2">
-        <div class="inline-field"><label>技能名称</label><input type="text" value="${s.name||''}" data-skill="name" data-idx="${i}"></div>
-        <div class="inline-field"><label>等级</label><input type="text" value="${s.level||''}" data-skill="level" data-idx="${i}"></div>
-      </div>
-      <div class="row-2">
-        <div class="inline-field"><label>图标 (lucide)</label><input type="text" value="${s.icon||''}" data-skill="icon" data-idx="${i}"></div>
-        <div class="inline-field"><label>进度 (%)</label><input type="number" value="${s.width||80}" data-skill="width" data-idx="${i}"></div>
-      </div>
-      <div class="inline-field"><label>描述</label><input type="text" value="${s.desc||''}" data-skill="desc" data-idx="${i}"></div>
+      <div class="inline-field"><label>分组名称</label><input type="text" value="${esc(group.name || '')}" data-skill="name" data-idx="${i}"></div>
+      <div class="inline-field"><label>标签（逗号分隔）</label><input type="text" value="${esc((group.tags || []).join(', '))}" data-skill="tags" data-idx="${i}"></div>
     `;
     c.appendChild(item);
   });
 }
-function addSkill() {
-  CONFIG.skills.push({ icon: 'zap', name: '新技能', level: 'Intermediate', width: 70, desc: '' });
+function addSkillGroup() {
+  CONFIG.skillGroups.push({ name: '新分组', tags: [] });
   renderSkills();
 }
 function collectSkills() {
   document.querySelectorAll('[data-skill]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
+    const i = parseInt(el.dataset.idx, 10);
     const key = el.dataset.skill;
-    if (key === 'width') { CONFIG.skills[i][key] = parseInt(el.value)||0; }
-    else { CONFIG.skills[i][key] = el.value; }
+    CONFIG.skillGroups[i][key] = key === 'tags' ? splitList(el.value) : el.value;
   });
+  delete CONFIG.skills;
+  delete CONFIG.skillTags;
 }
 
-// === Experience ===
 function renderExperience() {
   const c = document.getElementById('experienceContainer');
   c.innerHTML = '';
-  CONFIG.experience.forEach((e, i) => {
+  CONFIG.experience.forEach((entry, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">${e.title || '经历 #'+(i+1)}</span>
+        <span class="array-item-title">${esc(entry.title || '经历 #' + (i + 1))}</span>
         <button class="array-item-remove" onclick="removeItem('experience', ${i})">删除</button>
       </div>
       <div class="row-2">
-        <div class="inline-field"><label>职位标题</label><input type="text" value="${e.title||''}" data-exp="title" data-idx="${i}"></div>
-        <div class="inline-field"><label>组织/部门</label><input type="text" value="${e.org||''}" data-exp="org" data-idx="${i}"></div>
+        <div class="inline-field"><label>标题</label><input type="text" value="${esc(entry.title || '')}" data-exp="title" data-idx="${i}"></div>
+        <div class="inline-field"><label>组织</label><input type="text" value="${esc(entry.org || '')}" data-exp="org" data-idx="${i}"></div>
       </div>
-      <div class="inline-field"><label>日期</label><input type="text" value="${e.date||''}" data-exp="date" data-idx="${i}" placeholder="2026.10"></div>
-      <div class="inline-field"><label>描述</label><textarea data-exp="description" data-idx="${i}">${e.description||''}</textarea></div>
-      <div class="inline-field"><label>高亮文字 (描述中的文字)</label><input type="text" value="${e.highlight||''}" data-exp="highlight" data-idx="${i}"></div>
-      <div class="inline-field"><label>标签 (逗号分隔)</label><input type="text" value="${(e.tags||[]).join(', ')}" data-exp="tags" data-idx="${i}"></div>
+      <div class="inline-field"><label>日期（未知填 TODO）</label><input type="text" value="${esc(entry.date || '')}" data-exp="date" data-idx="${i}" placeholder="TODO：起止时间"></div>
+      <div class="inline-field"><label>描述</label><textarea data-exp="description" data-idx="${i}">${esc(entry.description || '')}</textarea></div>
+      <div class="inline-field"><label>标签（逗号分隔）</label><input type="text" value="${esc((entry.tags || []).join(', '))}" data-exp="tags" data-idx="${i}"></div>
     `;
     c.appendChild(item);
   });
 }
 function addExperience() {
-  CONFIG.experience.push({ title: '新经历', org: '', description: '', tags: [] });
+  CONFIG.experience.push({ title: '', org: '', date: 'TODO：起止时间', description: '', tags: [] });
   renderExperience();
 }
 function collectExperience() {
   document.querySelectorAll('[data-exp]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
+    const i = parseInt(el.dataset.idx, 10);
     const key = el.dataset.exp;
-    if (key === 'tags') {
-      CONFIG.experience[i][key] = el.value.split(',').map(s=>s.trim()).filter(Boolean);
-    } else {
-      CONFIG.experience[i][key] = el.value;
-    }
+    CONFIG.experience[i][key] = key === 'tags' ? splitList(el.value) : el.value;
+  });
+  CONFIG.experience.forEach(entry => {
+    delete entry.highlight;
+    delete entry.pill;
   });
 }
 
-// === Gallery ===
-function renderGallery() {
-  const c = document.getElementById('galleryContainer');
+function renderCertItems() {
+  const c = document.getElementById('certItemsContainer');
   c.innerHTML = '';
-  CONFIG.certificates.gallery.forEach((g, i) => {
+  CONFIG.certificates.items.forEach((cert, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">图片 #${i+1}</span>
+        <span class="array-item-title">${esc(cert.title || '证书 #' + (i + 1))}</span>
+        <button class="array-item-remove" onclick="removeItem('certificates', ${i})">删除</button>
+      </div>
+      <div class="inline-field"><label>名称</label><input type="text" value="${esc(cert.title || '')}" data-cert="title" data-idx="${i}"></div>
+      <div class="row-2">
+        <div class="inline-field"><label>颁发机构</label><input type="text" value="${esc(cert.issuer || '')}" data-cert="issuer" data-idx="${i}"></div>
+        <div class="inline-field"><label>年份</label><input type="text" value="${esc(cert.year || '')}" data-cert="year" data-idx="${i}" placeholder="TODO：年份"></div>
+      </div>
+      <div class="inline-field"><label>图片路径</label><input type="text" value="${esc(cert.img || '')}" data-cert="img" data-idx="${i}"></div>
+    `;
+    c.appendChild(item);
+  });
+}
+function addCertItem() {
+  CONFIG.certificates.items.push({ title: '', issuer: '', year: 'TODO：年份', img: '' });
+  renderCertItems();
+}
+function collectCertItems() {
+  document.querySelectorAll('[data-cert]').forEach(el => {
+    const i = parseInt(el.dataset.idx, 10);
+    CONFIG.certificates.items[i][el.dataset.cert] = el.value;
+  });
+  CONFIG.certificates.items.forEach(cert => {
+    delete cert.details;
+    delete cert.icon;
+    delete cert.pill;
+    delete cert.id;
+  });
+  delete CONFIG.certificates.main;
+  delete CONFIG.certificates.cards;
+}
+
+function renderGallery() {
+  const c = document.getElementById('galleryContainer');
+  c.innerHTML = '';
+  CONFIG.certificates.gallery.forEach((image, i) => {
+    const item = document.createElement('div');
+    item.className = 'array-item';
+    item.innerHTML = `
+      <div class="array-item-header">
+        <span class="array-item-title">${esc(image.title || '图片 #' + (i + 1))}</span>
         <button class="array-item-remove" onclick="removeGalleryItem(${i})">删除</button>
       </div>
-      <div class="row-3">
-        <div class="inline-field"><label>图片路径</label><input type="text" value="${g.img||''}" data-gal="img" data-idx="${i}"></div>
-        <div class="inline-field"><label>标题</label><input type="text" value="${g.title||''}" data-gal="title" data-idx="${i}"></div>
-        <div class="inline-field"><label>副标题</label><input type="text" value="${g.sub||''}" data-gal="sub" data-idx="${i}"></div>
+      <div class="row-2">
+        <div class="inline-field"><label>图片路径</label><input type="text" value="${esc(image.img || '')}" data-gal="img" data-idx="${i}"></div>
+        <div class="inline-field"><label>标题</label><input type="text" value="${esc(image.title || '')}" data-gal="title" data-idx="${i}"></div>
       </div>
     `;
     c.appendChild(item);
   });
 }
 function addGalleryItem() {
-  CONFIG.certificates.gallery.push({ img: 'assets/new.jpg', title: '新图片', sub: '' });
+  CONFIG.certificates.gallery.push({ img: 'assets/new.jpg', title: '佐证图片' });
   renderGallery();
 }
 function removeGalleryItem(i) {
@@ -1016,51 +910,54 @@ function removeGalleryItem(i) {
 }
 function collectGallery() {
   document.querySelectorAll('[data-gal]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
+    const i = parseInt(el.dataset.idx, 10);
     CONFIG.certificates.gallery[i][el.dataset.gal] = el.value;
   });
 }
 
-// === Honors ===
 function renderHonors() {
   const c = document.getElementById('honorsContainer');
   c.innerHTML = '';
-  CONFIG.honors.forEach((h, i) => {
+  CONFIG.honors.forEach((honor, i) => {
     const item = document.createElement('div');
     item.className = 'array-item';
     item.innerHTML = `
       <div class="array-item-header">
-        <span class="array-item-title">${h.title || '荣誉 #'+(i+1)}</span>
+        <span class="array-item-title">${esc(honor.title || '荣誉 #' + (i + 1))}</span>
         <button class="array-item-remove" onclick="removeItem('honors', ${i})">删除</button>
       </div>
-      <div class="row-2">
-        <div class="inline-field"><label>图标 (lucide)</label><input type="text" value="${h.icon||''}" data-honor="icon" data-idx="${i}"></div>
-        <div class="inline-field"><label>名称</label><input type="text" value="${h.title||''}" data-honor="title" data-idx="${i}"></div>
-      </div>
+      <div class="inline-field"><label>名称</label><input type="text" value="${esc(honor.title || '')}" data-honor="title" data-idx="${i}"></div>
     `;
     c.appendChild(item);
   });
 }
 function addHonor() {
-  CONFIG.honors.push({ icon: 'star', title: '新荣誉' });
+  CONFIG.honors.push({ title: '' });
   renderHonors();
 }
 function collectHonors() {
   document.querySelectorAll('[data-honor]').forEach(el => {
-    const i = parseInt(el.dataset.idx);
+    const i = parseInt(el.dataset.idx, 10);
     CONFIG.honors[i][el.dataset.honor] = el.value;
+    delete CONFIG.honors[i].icon;
   });
 }
 
-// Remove item (generic)
 function removeItem(type, idx) {
+  if (type === 'certificates') {
+    CONFIG.certificates.items.splice(idx, 1);
+    renderCertItems();
+    return;
+  }
   CONFIG[type].splice(idx, 1);
-  if (type === 'stats') renderStats();
-  else if (type === 'marquee') renderMarquee();
-  else if (type === 'education') renderEducation();
-  else if (type === 'skills') renderSkills();
-  else if (type === 'experience') renderExperience();
-  else if (type === 'honors') renderHonors();
+  const renderers = {
+    projects: renderProjects,
+    education: renderEducation,
+    skillGroups: renderSkills,
+    experience: renderExperience,
+    honors: renderHonors
+  };
+  renderers[type]();
 }
 
 // Preview JSON
