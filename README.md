@@ -73,19 +73,15 @@ git push -u origin main
 
 | 配置项 | 说明 |
 |--------|------|
-| `profile` | 姓名、头像、电话、邮箱、个人简介 |
-| `stats` | 首页数字统计（荣誉数量、经历数等） |
-| `marquee` | 跑马灯滚动文字 |
-| `about` | 关于我区域文案 |
-| `education` | 教育经历（学校、分数、标签） |
-| `skills` | 技能条（名称、等级、百分比） |
-| `skillTags` | 技能标签云 |
-| `experience` | 经历时间线（标题、描述、标签） |
-| `certificates` | 证书信息与图片画廊 |
-| `honors` | 荣誉奖项图标网格 |
-| `game` | 游戏模块信息 |
+| `profile` | 姓名、求职意向、学校、专业、预计毕业年份、简介、电话、邮箱、GitHub |
+| `projects` | 项目（名称、简介、技术栈、仓库链接），显示在右侧最上方 |
+| `education` | 教育经历（学校、阶段、专业、时间）。未知项写 `TODO` |
+| `skillGroups` | 分组技能标签，不使用百分比 |
+| `experience` | 经历（标题、组织、日期、描述）。没有日期时保留 `TODO` |
+| `certificates` | 证书名称、机构、年份和图片。页面不展示证书编号 |
+| `honors` | 荣誉名称 |
+| `game` | 底部小作品链接（`tank-battle.html`） |
 | `footer` | 页脚版权信息 |
-| `theme` | 主题颜色配置 |
 
 ## 文件结构
 
@@ -107,7 +103,6 @@ github-resume/
 ## 技术栈
 
 - 纯前端（HTML + CSS + JavaScript），无需后端
-- Admin 面板通过 GitHub REST API 直接提交修改
-- Lucide 图标
-- Google Fonts（Space Grotesk + Inter + JetBrains Mono）
+- 样式和字体都在本地，不依赖 Tailwind、Google Fonts 或图标 CDN
+- Admin 面板通过 GitHub REST API 直接提交修改，可编辑项目、经历、证书等字段
 - GitHub Actions 自动部署
