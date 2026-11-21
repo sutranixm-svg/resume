@@ -5,14 +5,14 @@
     "version": "3.0"
   },
   "theme": {
-    "bg": "#0a0a0b",
-    "bg2": "#131316",
-    "surface": "#1a1a1f",
-    "border": "#2a2a30",
-    "text": "#f4f4f5",
-    "textDim": "#71717a",
-    "accent": "#b4ff39",
-    "accent2": "#ff5e3a"
+    "bg": "#f5f5f7",
+    "bg2": "#ffffff",
+    "surface": "#ffffff",
+    "border": "#d2d2d7",
+    "text": "#1d1d1f",
+    "textDim": "#5e5e64",
+    "accent": "#234237",
+    "accent2": "#8c4a32"
   },
   "profile": {
     "name": "陈芷锐",
@@ -61,19 +61,19 @@
         {
           "src": "assets/fitness-dorm.jpg",
           "srcset": "assets/fitness-dorm-720.jpg 720w, assets/fitness-dorm.jpg 1200w",
-          "sizes": "(max-width: 768px) 100vw, 320px",
+          "sizes": "(max-width: 860px) 92vw, 640px",
           "alt": "宿舍里健身，面部用表情遮挡"
         },
         {
           "src": "assets/fitness-gym.jpg",
           "srcset": "assets/fitness-gym-720.jpg 720w, assets/fitness-gym.jpg 1200w",
-          "sizes": "(max-width: 768px) 100vw, 320px",
+          "sizes": "(max-width: 860px) 92vw, 640px",
           "alt": "健身房里健身，手机挡住面部"
         },
         {
           "src": "assets/fitness-pullup.jpg",
           "srcset": "assets/fitness-pullup-720.jpg 720w, assets/fitness-pullup.jpg 1200w",
-          "sizes": "(max-width: 768px) 100vw, 320px",
+          "sizes": "(max-width: 860px) 92vw, 640px",
           "alt": "引体向上"
         }
       ]
