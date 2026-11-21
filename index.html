@@ -26,7 +26,7 @@ body { font-family:'Inter',sans-serif; overflow-x:hidden; -webkit-font-smoothing
 
 .cursor-dot{position:fixed;top:0;left:0;width:6px;height:6px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:99999;transition:width .3s,height .3s,background .3s;will-change:transform}
 .cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1px solid var(--text-dim);border-radius:50%;pointer-events:none;z-index:99998;transition:width .3s,height .3s,border-color .3s,background .3s;will-change:transform}
-.cursor-ring.hover{width:60px;height:60px;border-color:var(--accent);background:rgba(180,255,57,.05)}
+.cursor-ring.hover{width:60px;height:60px;border-color:var(--accent);background:var(--accent-06)}
 .cursor-dot.hover{width:12px;height:12px}
 @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
 
@@ -78,18 +78,18 @@ body { font-family:'Inter',sans-serif; overflow-x:hidden; -webkit-font-smoothing
 .btn-secondary:hover{border-color:var(--text-mid);background:var(--surface)}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(180,255,57,.06),transparent 40%);opacity:0;transition:opacity .35s;pointer-events:none}
-.card:hover{border-color:rgba(180,255,57,.3);transform:translateY(-3px)}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),var(--accent-06),transparent 40%);opacity:0;transition:opacity .35s;pointer-events:none}
+.card:hover{border-color:var(--accent-30);transform:translateY(-3px)}
 .card:hover::before{opacity:1}
 
-.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:500;background:rgba(180,255,57,.08);border:1px solid rgba(180,255,57,.2);color:var(--accent)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:500;background:var(--accent-08);border:1px solid var(--accent-20);color:var(--accent)}
 .pill .live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:livePulse 2s ease-in-out infinite}
 @keyframes livePulse{0%,100%{box-shadow:0 0 0 0 var(--accent-glow)}50%{box-shadow:0 0 0 5px transparent}}
 
 .s-label{font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim)}
 
 .timeline-line{position:absolute;left:7px;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--accent),var(--border),transparent)}
-.timeline-dot{position:absolute;left:4px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(180,255,57,.15);transition:all .3s}
+.timeline-dot{position:absolute;left:4px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-15);transition:all .3s}
 .timeline-dot::after{content:'';position:absolute;inset:-2px;border-radius:50%;border:1px solid var(--accent);animation:ringExpand 2.5s ease-out infinite;opacity:0}
 @keyframes ringExpand{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.5);opacity:0}}
 
@@ -209,7 +209,17 @@ body{text-rendering:optimizeLegibility}
   box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 36px rgba(0,0,0,.35);
   transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1),border-color .45s ease;
 }
-.card:hover{transform:translateY(-12px);border-color:rgba(180,255,57,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 28px 56px rgba(0,0,0,.55)}
+.card:hover{transform:translateY(-12px);border-color:var(--accent-30);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 28px 56px rgba(0,0,0,.55)}
+.text-zinc-600{color:#a1a1aa}
+.skip-link{position:absolute;left:12px;top:8px;z-index:200;transform:translateY(-160%);background:var(--accent);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600}
+.skip-link:focus{transform:none}
+.fitness-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fitness-frame{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:14px;border:1px solid var(--border);background:var(--surface);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 28px rgba(0,0,0,.28)}
+.fitness-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(max-width:768px){
+  .fitness-grid{grid-template-columns:1fr;gap:10px}
+  .nav-bar button{min-width:44px;min-height:44px}
+}
 .btn-primary,.btn-secondary{transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s cubic-bezier(.22,1,.36,1),background .35s ease,border-color .35s ease,color .35s ease}
 .btn-primary:hover{box-shadow:0 14px 30px rgba(0,0,0,.3),0 8px 20px var(--accent-glow)}
 .btn-secondary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.28)}
@@ -226,12 +236,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
   .cursor-dot,.cursor-ring{display:none!important}
   .mesh-blob,.marquee-track,.live-dot,.timeline-dot::after,.scroll-line::after{animation:none!important}
   .reveal,.stagger>*,.clip-reveal{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
-  .card,.cert-card,.btn-primary,.btn-secondary,.cert-img{transition:none!important}
-  .card:hover,.cert-card:hover,.btn-primary:hover,.btn-secondary:hover,.cert-card:hover .cert-img{transform:none!important}
+  .card,.cert-card,.btn-primary,.btn-secondary,.cert-img,.fitness-frame{transition:none!important}
+  .card:hover,.cert-card:hover,.btn-primary:hover,.btn-secondary:hover,.cert-card:hover .cert-img,.fitness-frame:hover{transform:none!important}
 }
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#app">跳到内容</a>
 
 <!-- Custom Cursor -->
 <div class="cursor-dot" id="cursorDot"></div>
@@ -247,15 +259,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <div class="noise"></div>
 
 <!-- Navigation -->
-<nav class="nav-bar" id="navBar">
+<nav class="nav-bar" id="navBar" aria-label="页面导航">
   <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#hero" class="flex items-center gap-2.5" id="navLogo"></a>
     <div class="hidden md:flex items-center gap-7" id="navLinks"></div>
     <div class="flex items-center gap-1">
-      <button onclick="window.print()" class="p-2 rounded-lg hover:bg-white/5 transition-colors" title="打印 / 导出PDF">
+      <button type="button" onclick="window.print()" class="p-2 rounded-lg hover:bg-white/5 transition-colors" title="打印 / 导出PDF" aria-label="打印 / 导出PDF">
         <i data-lucide="printer" class="w-4 h-4 text-zinc-400"></i>
       </button>
-      <button class="mobile-menu-btn p-2 rounded-lg hover:bg-white/5 transition-colors" onclick="toggleMobileMenu()" title="菜单">
+      <button type="button" class="mobile-menu-btn p-2 rounded-lg hover:bg-white/5 transition-colors" onclick="toggleMobileMenu()" title="菜单" aria-label="菜单" aria-controls="mobileMenu" aria-expanded="false">
         <i data-lucide="menu" class="w-5 h-5 text-zinc-300" id="menuIcon"></i>
       </button>
     </div>
@@ -271,7 +283,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 </nav>
 
 <!-- Content container -->
-<div id="app"></div>
+<main id="app"></main>
 
 <!-- Game Modal -->
 <div class="modal-overlay" id="gameModal" onclick="if(event.target.id==='gameModal') closeGame()">
@@ -345,7 +357,7 @@ async function init() {
 
 function applyTheme(t) {
   const style = document.getElementById('theme-style');
-  style.textContent = `:root{--bg:${t.bg};--bg-2:${t.bg2};--surface:${t.surface};--border:${t.border};--text:${t.text};--text-dim:${t.textDim};--text-mid:#a1a1aa;--accent:${t.accent};--accent-glow:${t.accent}66;--accent-2:${t.accent2}}body{background:var(--bg);color:var(--text)}`;
+  style.textContent = `:root{--bg:${t.bg};--bg-2:${t.bg2};--surface:${t.surface};--border:${t.border};--text:${t.text};--text-dim:${t.textDim};--text-mid:#a1a1aa;--accent:${t.accent};--accent-glow:${t.accent}66;--accent-2:${t.accent2};--accent-06:color-mix(in srgb,${t.accent} 6%,transparent);--accent-08:color-mix(in srgb,${t.accent} 8%,transparent);--accent-15:color-mix(in srgb,${t.accent} 15%,transparent);--accent-20:color-mix(in srgb,${t.accent} 20%,transparent);--accent-30:color-mix(in srgb,${t.accent} 30%,transparent)}body{background:var(--bg);color:var(--text)}`;
 }
 
 function el(tag, cls, html) {
@@ -502,6 +514,27 @@ function renderAbout(cfg) {
   grid.appendChild(card);
 
   inner.appendChild(grid);
+  if (cfg.fitness && cfg.fitness.photos && cfg.fitness.photos.length) {
+    const fit = el('div','mt-8');
+    fit.appendChild(el('p','text-sm font-medium text-zinc-100 mb-3', cfg.fitness.label));
+    const photos = el('div','fitness-grid');
+    cfg.fitness.photos.forEach(photo => {
+      const frame = el('div','fitness-frame');
+      const img = document.createElement('img');
+      img.src = photo.src;
+      img.alt = photo.alt || cfg.fitness.label;
+      if (photo.srcset) img.srcset = photo.srcset;
+      if (photo.sizes) img.sizes = photo.sizes;
+      img.width = 1200;
+      img.height = 1600;
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      frame.appendChild(img);
+      photos.appendChild(frame);
+    });
+    fit.appendChild(photos);
+    inner.appendChild(fit);
+  }
   section.appendChild(inner);
   app.appendChild(section);
 }
@@ -674,8 +707,8 @@ function renderCertificates(cfg) {
     const header = el('div','flex items-center gap-3 p-4 border-b border-zinc-800');
     header.style.background = 'rgba(255,255,255,0.02)';
     const iconBox = el('div','w-10 h-10 rounded-lg flex items-center justify-center shrink-0');
-    iconBox.style.background = 'rgba(180,255,57,0.08)';
-    iconBox.style.border = '1px solid rgba(180,255,57,0.2)';
+    iconBox.style.background = 'var(--accent-08)';
+    iconBox.style.border = '1px solid var(--accent-20)';
     const iconI = el('i','','');
     iconI.setAttribute('data-lucide', main.icon);
     iconI.style.color = 'var(--accent)';
@@ -736,7 +769,7 @@ function renderCertificates(cfg) {
     CONFIG.honors.forEach(h => {
       const card = el('div','card p-3 text-center');
       const iconWrap = el('div','w-8 h-8 mx-auto mb-2 rounded-lg flex items-center justify-center');
-      iconWrap.style.background = 'rgba(180,255,57,0.06)';
+      iconWrap.style.background = 'var(--accent-06)';
       const iconI = el('i','w-4 h-4');
       iconI.setAttribute('data-lucide', h.icon);
       iconI.style.color = 'var(--accent)';
@@ -806,7 +839,7 @@ function renderContact(p) {
   const phoneBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
   phoneBtn.onclick = () => copyText(p.phone);
   phoneBtn.innerHTML = `
-    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
+    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-06);">
       <i data-lucide="phone" class="w-4 h-4" style="color:var(--accent);"></i>
     </div>
     <div class="flex-1">
@@ -820,7 +853,7 @@ function renderContact(p) {
   const emailBtn = el('button','card flex items-center gap-4 p-5 text-left w-full');
   emailBtn.onclick = () => copyText(p.email);
   emailBtn.innerHTML = `
-    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(180,255,57,.06);">
+    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0" style="background:var(--accent-06);">
       <i data-lucide="mail" class="w-4 h-4" style="color:var(--accent);"></i>
     </div>
     <div class="flex-1">
@@ -1050,8 +1083,10 @@ function initNavScroll() {
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
   const icon = document.getElementById('menuIcon');
-  menu.classList.toggle('active');
-  if (menu.classList.contains('active')) {
+  const open = menu.classList.toggle('active');
+  const trigger = document.querySelector('.mobile-menu-btn');
+  if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) {
     icon.setAttribute('data-lucide', 'x');
   } else {
     icon.setAttribute('data-lucide', 'menu');

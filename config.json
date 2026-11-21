@@ -54,6 +54,29 @@
         { "label": "认证", "value": "AIT-高级" },
         { "label": "教育", "value": "对外经贸大学" }
       ]
+    },
+    "fitness": {
+      "label": "喜欢健身",
+      "photos": [
+        {
+          "src": "assets/fitness-dorm.jpg",
+          "srcset": "assets/fitness-dorm-720.jpg 720w, assets/fitness-dorm.jpg 1200w",
+          "sizes": "(max-width: 768px) 100vw, 320px",
+          "alt": "宿舍里健身，面部用表情遮挡"
+        },
+        {
+          "src": "assets/fitness-gym.jpg",
+          "srcset": "assets/fitness-gym-720.jpg 720w, assets/fitness-gym.jpg 1200w",
+          "sizes": "(max-width: 768px) 100vw, 320px",
+          "alt": "健身房里健身，手机挡住面部"
+        },
+        {
+          "src": "assets/fitness-pullup.jpg",
+          "srcset": "assets/fitness-pullup-720.jpg 720w, assets/fitness-pullup.jpg 1200w",
+          "sizes": "(max-width: 768px) 100vw, 320px",
+          "alt": "引体向上"
+        }
+      ]
     }
   },
   "education": [
