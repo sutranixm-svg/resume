@@ -27,7 +27,7 @@
   "stats": [
     { "value": 8, "suffix": "+", "label": "荣誉奖项" },
     { "value": 5, "suffix": "", "label": "经历板块" },
-    { "value": "849", "label": "中考分数 / 900", "highlight": true }
+    { "value": "AI+", "label": "核心发展方向", "highlight": true }
   ],
   "marquee": [
     { "text": "AI Trainer", "outline": false },
@@ -44,7 +44,7 @@
     "heading": "热爱科技，追求卓越。",
     "headingHighlight": "用数据驱动智能",
     "headingSuffix": "用行动证明价值。",
-    "description": "就读于对外经济贸易大学，持有达摩院人工智能高级训练师认证。从初中学习标兵到中考 849 分，从学生会生活部部长到省赛组织小组长 —— 每一步都在积累组织管理与技术能力，期待在 AI 领域持续深耕。",
+    "description": "就读于对外经济贸易大学，持有达摩院人工智能高级训练师认证。从初中学习标兵，到学生会生活部部长和省赛组织小组长 —— 每一步都在积累组织管理与技术能力，期待在 AI 领域持续深耕。",
     "card": {
       "avatar": "assets/avatar.jpg",
       "name": "陈芷锐",
@@ -89,8 +89,6 @@
     {
       "school": "绵阳中学",
       "level": "高中",
-      "score": "849 / 900",
-      "scoreLabel": "以 {score} 分成绩考入",
       "tags": ["三好学生", "优秀学生会干部"],
       "badge": "HIGH SCHOOL"
     },
