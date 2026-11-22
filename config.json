@@ -247,6 +247,33 @@
     { "icon": "trending-up", "title": "进步明星" },
     { "icon": "graduation-cap", "title": "学习明星" }
   ],
+  "projects": [
+    {
+      "title": "雅思单词",
+      "summary": "离线为主的雅思 / 托福词汇应用，Android 版本 1.9.4。词库 9277，其中精编 720 带离线发音。学习记录留在本机。",
+      "links": [
+        { "label": "源码", "href": "https://github.com/sutranixm-svg/ielts-words" },
+        { "label": "下载 1.9.4", "href": "https://github.com/sutranixm-svg/ielts-words/releases/download/v1.9.4/ielts-vocab-1.9.4.apk" }
+      ]
+    },
+    {
+      "title": "Vesper",
+      "summary": "黑胶音乐播放器。唱盘、波形和频谱来自正在播放的音频。网页可以试听，Windows 有 1.0.0 安装包和便携版。",
+      "links": [
+        { "label": "源码", "href": "https://github.com/sutranixm-svg/vesper-dragon-player" },
+        { "label": "在线试听", "href": "https://vesper-obsidian-player.hajybdalstarthmanylm.chatgpt.site/" },
+        { "label": "Windows 1.0.0", "href": "https://github.com/sutranixm-svg/vesper-dragon-player/releases/tag/v1.0.0" }
+      ]
+    },
+    {
+      "title": "AI 显存管家",
+      "summary": "Windows 本地工具，版本 1.0.1。查看显存和内存、一键清场、桌面悬浮球。不联网，没有网页版。",
+      "links": [
+        { "label": "源码", "href": "https://github.com/sutranixm-svg/ai-guardian-pro" },
+        { "label": "下载 1.0.1", "href": "https://github.com/sutranixm-svg/ai-guardian-pro/releases/download/v1.0.1/AIGuardianPro-windows-x64.zip" }
+      ]
+    }
+  ],
   "game": {
     "badge": "Cyber · Pixel",
     "title": "赛博坦克大战",

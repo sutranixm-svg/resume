@@ -63,6 +63,12 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,3.6rem);l
 .schools p{margin:4px 0 0;color:var(--muted)}
 .work-feature{display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:end;background:var(--paper);border-radius:28px;padding:clamp(24px,4vw,48px);box-shadow:var(--shadow)}
 .work-feature .btn{margin-top:22px}
+.projects{margin-top:8px}
+.project{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 28px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
+.project h3{margin:0 0 6px;font-family:var(--serif);font-weight:500;font-size:1.7rem;letter-spacing:-.03em}
+.project p{margin:0;color:var(--muted);max-width:40rem}
+.project-links{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.project-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;box-shadow:inset 0 0 0 1px var(--line)}
 .facts{list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .facts li{font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:-.03em;border-top:1px solid var(--line);padding-top:12px}
 .work-feature h3{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:500;letter-spacing:-.03em;margin:0 0 12px}
@@ -127,7 +133,8 @@ footer{padding:28px 0 48px;color:var(--faint);font-size:13px;border-top:1px soli
   .menu{position:absolute;left:0;right:0;top:64px;background:#fff;border-bottom:1px solid var(--line);padding:6px var(--pad) 14px}
   .menu.open{display:grid}
   .menu a{padding:14px 0;text-decoration:none;border-top:1px solid var(--line)}
-  .hero,.docs,.life-grid,.schools li,.path li,.skill,.evidence,.work-feature{grid-template-columns:1fr}
+  .hero,.docs,.life-grid,.schools li,.path li,.skill,.evidence,.work-feature,.project{grid-template-columns:1fr}
+  .project-links{justify-content:flex-start}
   .hero{padding-top:12px}
   .portrait{max-width:460px}
   .skill{grid-template-areas:"name" "level" "desc" "meter"}
@@ -257,6 +264,13 @@ function about(cfg){
   return s;
 }
 
+function projectCard(p){
+  const links = (p.links||[]).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}</a>`).join('');
+  return `<article class="project">
+    <div><h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p></div>
+    <div class="project-links">${links}</div>
+  </article>`;
+}
 function work(cfg){
   const s = el('section','wrap');
   s.id = 'work';
@@ -290,6 +304,7 @@ function work(cfg){
       </div>
       <ul class="facts">${(g.tags||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
     </article>
+    <div class="projects">${(cfg.projects||[]).map(projectCard).join('')}</div>
     <div class="skills reveal">${skills}</div>
     <div class="docs reveal">${docs}</div>
     <div class="certs">${certs}</div>`;
@@ -418,7 +433,9 @@ function bind(cfg){
   });
 }
 
+let lastFocus = null;
 function openGame(game){
+  lastFocus = document.activeElement;
   $('#modalTitle').textContent = game.title;
   const frame = $('#modalFrame');
   const img = $('#modalImg');
@@ -430,6 +447,7 @@ function openGame(game){
   $('#modalClose').focus();
 }
 function openImage(src, title){
+  lastFocus = document.activeElement;
   $('#modalTitle').textContent = title || '查看';
   const frame = $('#modalFrame');
   const img = $('#modalImg');
@@ -443,10 +461,13 @@ function openImage(src, title){
   $('#modalClose').focus();
 }
 function closeModal(){
+  const frame = $('#modalFrame');
+  try { frame.contentWindow && frame.contentWindow.postMessage({ type: 'tank-stop' }, '*'); } catch (e) {}
   $('#modal').classList.remove('open');
-  $('#modalFrame').src = '';
+  frame.src = 'about:blank';
   $('#modalImg').src = '';
   document.body.style.overflow = '';
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
 }
 
 init();
