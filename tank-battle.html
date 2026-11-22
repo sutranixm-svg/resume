@@ -17,10 +17,9 @@
     background-size: 20px 20px;
     display: flex; align-items:center; justify-content:center;
   }
-  /* 竖屏自动旋转 */
-  @media (orientation: portrait) and (max-width: 900px) {
-    html, body { width: 100vh; height: 100vw; overflow: hidden; }
-    body { transform: rotate(90deg); transform-origin: center center; position: absolute; top: 50%; left: 50%; margin-top: -50vw; margin-left: -50vh; }
+  @media (max-width: 900px) {
+    #canvasWrap { max-height: calc(100% - 230px); }
+    #title { letter-spacing: 1px; }
   }
   #gameContainer {
     position: relative; width: 100%; height: 100%;
@@ -158,7 +157,7 @@
   #skill-icon-pc-num { position: absolute; z-index: 3; text-shadow: 1px 1px 2px #000; }
   #skill-icon-pc-char { z-index: 2; }
 
-  @media (pointer: coarse) {
+  @media (pointer: coarse), (max-width: 900px) {
     #controls-overlay { display: flex; }
   }
 
@@ -230,6 +229,8 @@
   .option-card.map { min-height: 72px; }
   .option-card.mode { background: rgba(0,255,255,0.03); }
   .option-card.mode.selected { background: linear-gradient(135deg, #0ff, #00a0ff); color: #000; border-color: #fff; }
+  .option-card.unavailable { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.35); }
+  .option-card.unavailable:hover { transform: none; border-color: rgba(0,255,255,0.25); color: inherit; }
   .option-card.difficulty.easy.selected { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
   .option-card.difficulty.normal.selected { background: linear-gradient(135deg, #FFC107, #FF9800); }
   .option-card.difficulty.hard.selected { background: linear-gradient(135deg, #FF5722, #f44336); }
@@ -341,23 +342,23 @@
       <div class="select-group">
         <!-- 模式选择 -->
         <div class="select-row">
-          <div class="select-row-label">🎮 游戏模式 <span class="sub">选择本地/联机方式</span></div>
+          <div class="select-row-label">🎮 游戏模式 <span class="sub">本机游玩。互联网对战未实现</span></div>
           <div class="option-grid" id="modeGrid">
             <div class="option-card mode selected" data-mode="solo">
-              <div class="card-title">🎯 单人闯关</div>
-              <div class="card-desc">1P控制 · 20关<br>标准坦克大战</div>
+              <div class="card-title">🎯 单人</div>
+              <div class="card-desc">1P：WASD 移动<br>空格发射</div>
             </div>
             <div class="option-card mode" data-mode="local2p">
               <div class="card-title">👥 本地双人</div>
-              <div class="card-desc">同屏2P · 键盘双操<br>1P:WASD 2P:↑↓←→</div>
+              <div class="card-desc">同屏两台坦克<br>2P：方向键，Enter 发射</div>
             </div>
-            <div class="option-card mode" data-mode="host">
-              <div class="card-title">🌐 联机·主机</div>
-              <div class="card-desc">创建房间 · 同浏览器多标签<br>等待客机加入</div>
+            <div class="option-card mode unavailable" data-mode="host" aria-disabled="true">
+              <div class="card-title">🌐 互联网对战</div>
+              <div class="card-desc">未实现<br>不能联机</div>
             </div>
-            <div class="option-card mode" data-mode="join">
-              <div class="card-title">🔗 联机·客机</div>
-              <div class="card-desc">加入主机房间<br>同浏览器新标签打开</div>
+            <div class="option-card mode unavailable" data-mode="join" aria-disabled="true">
+              <div class="card-title">🔗 加入房间</div>
+              <div class="card-desc">未实现<br>不能联机</div>
             </div>
           </div>
           <div id="roomInfoBox" class="room-info hidden"></div>
@@ -404,14 +405,14 @@
             </div>
             <div class="option-card difficulty hell" data-diff="hell">
               <div class="card-title">☠️ 地狱</div>
-              <div class="card-desc">HP×3.0 · 超快生成<br>一命通关模式</div>
+              <div class="card-desc">敌人血量 ×3<br>生成更快、移动更快</div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="o-sub" style="margin-top:0;">
-        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / LShift</span> 闪避</div>
+        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / LShift</span> 闪避 · <span>P / Esc</span> 暂停</div>
         <div>🎮 <span>2P: 方向键</span> 移动 · <span>Enter</span> 发射 · <span>RShift</span> 闪避</div>
         <div>💎 道具：
           <span class="y">♥</span>回血
@@ -425,8 +426,7 @@
       </div>
       <button class="btn" id="startBtn">▶ 开 始 游 戏</button>
       <div class="desktop-hint">
-        提示：按 Q / Shift 释放【量子闪避】冲刺；联机采用 BroadcastChannel · 最佳分辨率 4:3<br>
-        真实互联网联机：将脚本末尾的 ws:// 注释打开，并配合附带的 Node.js WebSocket 服务端部署
+        提示：Q 或 Shift 是量子闪避。互联网对战未实现，只能在这一台设备上单人或同屏双人。
       </div>
     </div>
 
@@ -453,6 +453,13 @@
       </div>
       <button class="btn" id="restartBtn">再 来 一 局</button>
       <button class="btn secondary small" id="backTitleBtn">返回主菜单</button>
+    </div>
+
+    <div id="screen-pause" class="screen hidden">
+      <div class="o-title">暂 停</div>
+      <div class="o-sub">P 或 Esc 继续。切到别的窗口时会自动暂停，并松开按键。</div>
+      <button class="btn" id="resumeBtn" type="button">继 续</button>
+      <button class="btn secondary small" id="pauseRestartBtn" type="button">重新开始</button>
     </div>
   </div>
 
@@ -482,6 +489,10 @@
     if (!audioCtx) {
       try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
     }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+  }
+  function suspendAudio() {
+    if (audioCtx && audioCtx.state === 'running') audioCtx.suspend().catch(() => {});
   }
   function beep(freq, dur = 0.08, type = 'square', vol = 0.15, slide = 0) {
     if (!audioCtx || !audioOn) return;
@@ -688,6 +699,8 @@
     netChannel: null,
     netRole: null,      // 'host' | 'client' | null
     netFrameSync: 0,
+    paused: false,
+    transitioning: false,
   };
 
   // ============ Input ============
@@ -702,7 +715,23 @@
     ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
     Enter:'fire',
   };
+  function releaseInputs() {
+    state.keys = {};
+    state.keys2 = {};
+    document.querySelectorAll('#dpad .dpad-btn, #fireBtn').forEach(el => el.classList.remove('active'));
+  }
   window.addEventListener('keydown', e => {
+    if (e.repeat && (e.key === 'p' || e.key === 'P' || e.key === 'Escape')) return;
+    if (e.key === 'p' || e.key === 'P') {
+      if (state.running && !state.transitioning) setPaused(!state.paused);
+      e.preventDefault(); return;
+    }
+    if (e.key === 'Escape') {
+      if (state.paused) setPaused(false);
+      else if (state.running && !state.transitioning) setPaused(true);
+      e.preventDefault(); return;
+    }
+    if (state.paused) return;
     // LShift -> P1 skill, RShift -> P2 skill
     if (e.key === 'Shift') {
       if (e.location === 1 || e.location === 0) state.keys.skill = true;  // LShift 或 单Shift -> P1
@@ -721,21 +750,33 @@
     if (keyMapP1[e.key]) { state.keys[keyMapP1[e.key]] = false; e.preventDefault(); return; }
     if (keyMapP2[e.key]) { state.keys2[keyMapP2[e.key]] = false; e.preventDefault(); return; }
   });
-  function bindTouch(el, key) {
-    const set = v => { state.keys[key] = v; el.classList.toggle('active', v); };
-    ['touchstart','mousedown'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); initAudio(); set(true); }));
-    ['touchend','touchcancel','mouseup','mouseleave'].forEach(ev => el.addEventListener(ev, e => { e.preventDefault(); set(false); }));
+  function bindHold(el, set) {
+    const active = new Set();
+    const down = (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      e.preventDefault();
+      initAudio();
+      if (el.setPointerCapture) {
+        try { el.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      active.add(e.pointerId);
+      set(true);
+    };
+    const up = (e) => {
+      active.delete(e.pointerId);
+      if (active.size === 0) set(false);
+    };
+    el.addEventListener('pointerdown', down);
+    el.addEventListener('pointerup', up);
+    el.addEventListener('pointercancel', up);
   }
   document.querySelectorAll('#dpad .dpad-btn').forEach(el => {
-    if (el.classList.contains('up')) bindTouch(el, 'up');
-    if (el.classList.contains('down')) bindTouch(el, 'down');
-    if (el.classList.contains('left')) bindTouch(el, 'left');
-    if (el.classList.contains('right')) bindTouch(el, 'right');
+    const key = ['up','down','left','right'].find(name => el.classList.contains(name));
+    if (!key) return;
+    bindHold(el, v => { state.keys[key] = v; el.classList.toggle('active', v); });
   });
   const fireBtn = document.getElementById('fireBtn');
-  const setFire = (v) => { state.keys.fire = v; fireBtn.classList.toggle('active', v); };
-  ['touchstart','mousedown'].forEach(ev => fireBtn.addEventListener(ev, e => { e.preventDefault(); initAudio(); setFire(true); }));
-  ['touchend','touchcancel','mouseup','mouseleave'].forEach(ev => fireBtn.addEventListener(ev, e => { e.preventDefault(); setFire(false); }));
+  bindHold(fireBtn, v => { state.keys.fire = v; fireBtn.classList.toggle('active', v); });
   const skillBtn = document.getElementById('skillBtn');
   const skillPcBtn = document.getElementById('skill-icon-pc');
   function trySkill() {
@@ -744,9 +785,8 @@
     // P1优先（因为手机端按钮是P1的）；如果当前solo或local2p，触发P1闪避
     if (state.skillCD <= 0 && state.player) useSkill(state.player, 1);
   }
-  skillBtn.addEventListener('click', trySkill);
-  skillPcBtn.addEventListener('click', trySkill);
-  ['touchstart','mousedown'].forEach(ev => skillBtn.addEventListener(ev, e => e.preventDefault()));
+  skillBtn.addEventListener('pointerdown', e => { e.preventDefault(); trySkill(); });
+  skillPcBtn.addEventListener('pointerdown', e => { e.preventDefault(); trySkill(); });
 
   function useSkill(p, idx) {
     // Quantum Dash: dash forward in facing direction with invincibility + afterimages
@@ -1277,6 +1317,18 @@
       }
     }
 
+    // Keep both tanks out of walls. Map layouts can cover the lower corners.
+    const openSpawn = (tx, ty) => {
+      [[0, 0], [0, -1]].forEach(([dx, dy]) => {
+        const x = tx + dx, y = ty + dy;
+        if (x > 0 && x < COLS - 1 && y > 0 && y < ROWS - 1 && !(x === state.baseX && y === state.baseY)) {
+          state.walls[y][x] = null;
+        }
+      });
+    };
+    openSpawn(2, ROWS - 3);
+    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') openSpawn(COLS - 3, ROWS - 3);
+
     // Protective CZR walls around base
     const bx = state.baseX, by = state.baseY;
     [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([dx,dy])=>{
@@ -1305,7 +1357,6 @@
     state.player = new Tank(2, ROWS - 3, true);
     state.player.hp = Math.min(state.player.maxHp, hpKeep);
     state.player.bulletDmg = dmgKeep;
-    state.player.bulletDmg = 25;
     // P2 (local2p / host / join 模式)
     if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') {
       const hp2Keep = state.player2 ? state.player2.hp : 100;
@@ -1495,11 +1546,30 @@
 
   // ============ Loop ============
   let lastTime = 0;
+  let acc = 0;
+  let rafId = 0;
+  let ticks = 0;
+  let flowTimer = 0;
+  const STEP = 1000 / 60;
   function loop(ts) {
+    if (!lastTime) lastTime = ts;
+    let dt = ts - lastTime;
     lastTime = ts;
-    if (state.running) step();
+    if (dt < 0 || dt > 80) dt = dt < 0 ? 0 : 80;
+    if (state.running && !state.paused && !state.transitioning) {
+      acc += dt;
+      let n = 0;
+      while (acc >= STEP && n < 5) {
+        step();
+        acc -= STEP;
+        n++;
+      }
+    } else {
+      acc = 0;
+    }
     render();
-    requestAnimationFrame(loop);
+    ticks++;
+    rafId = requestAnimationFrame(loop);
   }
   function step() {
     if (state.skillCD > 0) state.skillCD--;
@@ -1667,34 +1737,70 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     if (id) document.getElementById(id).classList.remove('hidden');
   }
+  function clearFlow() {
+    clearTimeout(flowTimer);
+    flowTimer = 0;
+    state.transitioning = false;
+  }
+  function setPaused(on) {
+    if (!state.running) return;
+    state.paused = !!on;
+    if (state.paused) {
+      releaseInputs();
+      suspendAudio();
+      showScreen('screen-pause');
+    } else {
+      showScreen(null);
+      skillPcBtn.classList.add('show');
+      lastTime = 0;
+      acc = 0;
+      if (audioOn) initAudio();
+    }
+  }
   function startGame() {
     initAudio();
+    clearFlow();
+    state.paused = false;
     state.level = 1; state.score = 0; state.kills = 0; state.killStreak = 0;
     state.dashFrames = 0; state.afterimages = [];
+    state.player = null;
+    state.player2 = null;
     genLevel(1);
     state.running = true;
     showScreen(null);
     skillPcBtn.classList.add('show');
+    lastTime = 0;
+    acc = 0;
     updateHUD();
   }
   function nextLevel() {
+    if (state.transitioning || !state.running) return;
+    state.transitioning = true;
+    releaseInputs();
     state.level++;
     state.score += 500;
     sfx.win();
     showToast('🎉 第 ' + (state.level-1) + ' 关完成！ +500');
-    const keepHp = state.player ? state.player.hp : 100;
-    const keepDmg = state.player ? state.player.bulletDmg : 25;
-    setTimeout(() => {
-      state.player = { hp: Math.min(100, keepHp + 30), bulletDmg: keepDmg }; // temp preserve
+    if (state.player) state.player.hp = Math.min(state.player.maxHp, state.player.hp + 30);
+    clearTimeout(flowTimer);
+    flowTimer = setTimeout(() => {
+      flowTimer = 0;
+      state.transitioning = false;
+      if (!state.running) return;
       genLevel(state.level);
       updateHUD();
-    }, 1400);
+    }, 900);
   }
   function gameOver(win) {
+    if (!state.running) return;
     state.running = false;
+    state.paused = false;
+    clearFlow();
+    releaseInputs();
     skillPcBtn.classList.remove('show');
     if (win) sfx.win(); else sfx.lose();
-    setTimeout(() => {
+    clearTimeout(flowTimer);
+    flowTimer = setTimeout(() => {
       // Calc exp
       const baseExp = state.level * 30;
       const killExp = state.kills * 8;
@@ -1730,6 +1836,7 @@
     if (!grid) return;
     grid.querySelectorAll('.option-card').forEach(card => {
       card.addEventListener('click', () => {
+        if (card.classList.contains('unavailable')) return;
         grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         const val = card.getAttribute(attr);
@@ -1900,13 +2007,57 @@
   // Bind
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('restartBtn').addEventListener('click', startGame);
-  document.getElementById('backTitleBtn').addEventListener('click', () => { updateMedalUI(); showScreen('screen-title'); });
+  document.getElementById('resumeBtn').addEventListener('click', () => setPaused(false));
+  document.getElementById('pauseRestartBtn').addEventListener('click', startGame);
+  document.getElementById('backTitleBtn').addEventListener('click', () => {
+    state.running = false;
+    state.paused = false;
+    clearFlow();
+    releaseInputs();
+    updateMedalUI();
+    showScreen('screen-title');
+  });
+  window.addEventListener('blur', () => {
+    releaseInputs();
+    if (state.running && !state.paused) setPaused(true);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      releaseInputs();
+      if (state.running && !state.paused) setPaused(true);
+    }
+  });
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(rafId);
+    state.running = false;
+    releaseInputs();
+    if (audioCtx) { audioCtx.close().catch(() => {}); }
+  });
+  window.addEventListener('message', (e) => {
+    if (!e.data || e.data.type !== 'tank-stop') return;
+    cancelAnimationFrame(rafId);
+    state.running = false;
+    state.paused = false;
+    clearFlow();
+    releaseInputs();
+    if (audioCtx) { audioCtx.close().catch(() => {}); }
+  });
   document.addEventListener('click', initAudio, { once: true });
-  document.addEventListener('touchstart', initAudio, { once: true });
+  document.addEventListener('pointerdown', initAudio, { once: true });
+
+  if (location.hash === '#debug') {
+    window.__tank = {
+      get state() { return state; },
+      startGame,
+      setPaused,
+      get raf() { return rafId; },
+      get ticks() { return ticks; }
+    };
+  }
 
   // Boot
   render();
-  requestAnimationFrame(loop);
+  rafId = requestAnimationFrame(loop);
 })();
 </script>
 </body>
