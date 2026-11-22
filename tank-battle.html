@@ -229,6 +229,8 @@
   .option-card.map { min-height: 72px; }
   .option-card.mode { background: rgba(0,255,255,0.03); }
   .option-card.mode.selected { background: linear-gradient(135deg, #0ff, #00a0ff); color: #000; border-color: #fff; }
+  .option-card.unavailable { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.35); }
+  .option-card.unavailable:hover { transform: none; border-color: rgba(0,255,255,0.25); color: inherit; }
   .option-card.difficulty.easy.selected { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
   .option-card.difficulty.normal.selected { background: linear-gradient(135deg, #FFC107, #FF9800); }
   .option-card.difficulty.hard.selected { background: linear-gradient(135deg, #FF5722, #f44336); }
@@ -340,23 +342,23 @@
       <div class="select-group">
         <!-- 模式选择 -->
         <div class="select-row">
-          <div class="select-row-label">🎮 游戏模式 <span class="sub">选择本地/联机方式</span></div>
+          <div class="select-row-label">🎮 游戏模式 <span class="sub">本机游玩。互联网对战未实现</span></div>
           <div class="option-grid" id="modeGrid">
             <div class="option-card mode selected" data-mode="solo">
-              <div class="card-title">🎯 单人闯关</div>
-              <div class="card-desc">1P控制 · 20关<br>标准坦克大战</div>
+              <div class="card-title">🎯 单人</div>
+              <div class="card-desc">1P：WASD 移动<br>空格发射</div>
             </div>
             <div class="option-card mode" data-mode="local2p">
               <div class="card-title">👥 本地双人</div>
-              <div class="card-desc">同屏2P · 键盘双操<br>1P:WASD 2P:↑↓←→</div>
+              <div class="card-desc">同屏两台坦克<br>2P：方向键，Enter 发射</div>
             </div>
-            <div class="option-card mode" data-mode="host">
-              <div class="card-title">🌐 联机·主机</div>
-              <div class="card-desc">创建房间 · 同浏览器多标签<br>等待客机加入</div>
+            <div class="option-card mode unavailable" data-mode="host" aria-disabled="true">
+              <div class="card-title">🌐 互联网对战</div>
+              <div class="card-desc">未实现<br>不能联机</div>
             </div>
-            <div class="option-card mode" data-mode="join">
-              <div class="card-title">🔗 联机·客机</div>
-              <div class="card-desc">加入主机房间<br>同浏览器新标签打开</div>
+            <div class="option-card mode unavailable" data-mode="join" aria-disabled="true">
+              <div class="card-title">🔗 加入房间</div>
+              <div class="card-desc">未实现<br>不能联机</div>
             </div>
           </div>
           <div id="roomInfoBox" class="room-info hidden"></div>
@@ -403,7 +405,7 @@
             </div>
             <div class="option-card difficulty hell" data-diff="hell">
               <div class="card-title">☠️ 地狱</div>
-              <div class="card-desc">HP×3.0 · 超快生成<br>一命通关模式</div>
+              <div class="card-desc">敌人血量 ×3<br>生成更快、移动更快</div>
             </div>
           </div>
         </div>
@@ -424,8 +426,7 @@
       </div>
       <button class="btn" id="startBtn">▶ 开 始 游 戏</button>
       <div class="desktop-hint">
-        提示：按 Q / Shift 释放【量子闪避】冲刺；联机采用 BroadcastChannel · 最佳分辨率 4:3<br>
-        真实互联网联机：将脚本末尾的 ws:// 注释打开，并配合附带的 Node.js WebSocket 服务端部署
+        提示：Q 或 Shift 是量子闪避。互联网对战未实现，只能在这一台设备上单人或同屏双人。
       </div>
     </div>
 
@@ -1316,6 +1317,18 @@
       }
     }
 
+    // Keep both tanks out of walls. Map layouts can cover the lower corners.
+    const openSpawn = (tx, ty) => {
+      [[0, 0], [0, -1]].forEach(([dx, dy]) => {
+        const x = tx + dx, y = ty + dy;
+        if (x > 0 && x < COLS - 1 && y > 0 && y < ROWS - 1 && !(x === state.baseX && y === state.baseY)) {
+          state.walls[y][x] = null;
+        }
+      });
+    };
+    openSpawn(2, ROWS - 3);
+    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') openSpawn(COLS - 3, ROWS - 3);
+
     // Protective CZR walls around base
     const bx = state.baseX, by = state.baseY;
     [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]].forEach(([dx,dy])=>{
@@ -1823,6 +1836,7 @@
     if (!grid) return;
     grid.querySelectorAll('.option-card').forEach(card => {
       card.addEventListener('click', () => {
+        if (card.classList.contains('unavailable')) return;
         grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         const val = card.getAttribute(attr);
