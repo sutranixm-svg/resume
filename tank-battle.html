@@ -284,7 +284,104 @@
 
   #audio-toggle {
     position: absolute; top: 10px; right: 10px; z-index: 200;
-    background: none; border: none; font-size: 1.4rem; cursor: pointer;
+    width: 38px; height: 38px;
+    background: #11162a; border: 2px solid #0ff;
+    border-radius: 4px; font-size: 1.1rem; cursor: pointer;
+    box-shadow: 4px 4px 0 rgba(0,255,255,0.18);
+  }
+
+  /* PixelLab-style single-player presentation */
+  body {
+    background-color: #090b18;
+    background-image:
+      linear-gradient(rgba(0,255,255,0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,255,0.055) 1px, transparent 1px),
+      radial-gradient(circle at 50% 45%, rgba(124,77,255,0.10), transparent 42%);
+    background-size: 16px 16px, 16px 16px, 100% 100%;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 300;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 4px);
+  }
+  #gameContainer {
+    border: 2px solid rgba(0,255,255,0.18);
+    background: rgba(5,7,18,0.76);
+    box-shadow: inset 0 0 0 6px rgba(0,0,0,0.24), 0 18px 60px rgba(0,0,0,0.48);
+  }
+  #titleRow {
+    border-bottom: 2px solid rgba(0,255,255,0.12);
+  }
+  #title {
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 0 #321054, 0 0 12px rgba(0,255,255,0.35);
+  }
+  #hud {
+    border: 2px solid #0ff;
+    border-radius: 4px;
+    background:
+      linear-gradient(135deg, rgba(0,255,255,0.08), transparent 44%),
+      rgba(8,12,28,0.92);
+    box-shadow: 5px 5px 0 rgba(0,255,255,0.10), inset 0 0 18px rgba(0,255,255,0.05);
+  }
+  #healthBar {
+    border-radius: 2px;
+  }
+  #healthFill {
+    background: linear-gradient(90deg, #a20024 0 25%, #f55 25% 50%, #ff8b57 50% 75%, #ffd166 75%);
+  }
+  #canvasWrap {
+    border: 3px solid #0ff;
+    border-radius: 4px;
+    box-shadow: 8px 8px 0 rgba(240,0,255,0.16), 0 0 28px rgba(0,255,255,0.20);
+  }
+  canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  .screen {
+    background:
+      linear-gradient(rgba(5,5,21,0.92), rgba(5,5,21,0.96)),
+      repeating-linear-gradient(90deg, rgba(0,255,255,0.05) 0 2px, transparent 2px 16px);
+  }
+  .o-title {
+    text-shadow: 4px 4px 0 #321054;
+  }
+  .medal-bar {
+    border-radius: 4px;
+  }
+  .select-group {
+    gap: 10px;
+  }
+  .select-row-label {
+    border-left: 4px solid #0ff;
+    padding-left: 8px;
+  }
+  .option-card {
+    border-radius: 4px;
+    border-width: 2px;
+    box-shadow: 3px 3px 0 rgba(255,255,255,0.05);
+  }
+  .option-card:hover {
+    transform: translate(-1px, -1px);
+  }
+  .option-card.selected {
+    border-radius: 4px;
+    box-shadow: 5px 5px 0 rgba(255,255,255,0.18), 0 0 16px rgba(255,255,0,0.36);
+  }
+  .btn {
+    border: 2px solid #baffff;
+    border-radius: 4px;
+    box-shadow: 6px 6px 0 rgba(0,160,255,0.22), 0 0 18px rgba(0,255,255,0.24);
+  }
+  .btn.secondary {
+    border-color: #ff9af5;
+  }
+  .dpad-btn {
+    border-radius: 4px;
+  }
+  #fireBtn, #skillBtn {
+    border-radius: 6px;
   }
 </style>
 </head>
@@ -342,23 +439,11 @@
       <div class="select-group">
         <!-- 模式选择 -->
         <div class="select-row">
-          <div class="select-row-label">🎮 游戏模式 <span class="sub">本机游玩。互联网对战未实现</span></div>
+          <div class="select-row-label">🎮 游戏模式 <span class="sub">纯单人体验</span></div>
           <div class="option-grid" id="modeGrid">
             <div class="option-card mode selected" data-mode="solo">
               <div class="card-title">🎯 单人</div>
               <div class="card-desc">1P：WASD 移动<br>空格发射</div>
-            </div>
-            <div class="option-card mode" data-mode="local2p">
-              <div class="card-title">👥 本地双人</div>
-              <div class="card-desc">同屏两台坦克<br>2P：方向键，Enter 发射</div>
-            </div>
-            <div class="option-card mode unavailable" data-mode="host" aria-disabled="true">
-              <div class="card-title">🌐 互联网对战</div>
-              <div class="card-desc">未实现<br>不能联机</div>
-            </div>
-            <div class="option-card mode unavailable" data-mode="join" aria-disabled="true">
-              <div class="card-title">🔗 加入房间</div>
-              <div class="card-desc">未实现<br>不能联机</div>
             </div>
           </div>
           <div id="roomInfoBox" class="room-info hidden"></div>
@@ -413,7 +498,6 @@
 
       <div class="o-sub" style="margin-top:0;">
         <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / LShift</span> 闪避 · <span>P / Esc</span> 暂停</div>
-        <div>🎮 <span>2P: 方向键</span> 移动 · <span>Enter</span> 发射 · <span>RShift</span> 闪避</div>
         <div>💎 道具：
           <span class="y">♥</span>回血
           <span class="g">»</span>加速
@@ -426,15 +510,8 @@
       </div>
       <button class="btn" id="startBtn">▶ 开 始 游 戏</button>
       <div class="desktop-hint">
-        提示：Q 或 Shift 是量子闪避。互联网对战未实现，只能在这一台设备上单人或同屏双人。
+        提示：Q 或 Shift 是量子闪避。当前版本仅支持单人战斗。
       </div>
-    </div>
-
-    <!-- 2P HUD -->
-    <div id="p2Hud" class="p2-hud hidden">
-      <div class="player-label">🛸 P2 · 僚机</div>
-      <div>HP: <span id="p2HpVal">100</span></div>
-      <div class="p2-hp-bg"><div class="p2-hp-fill" id="p2HpFill" style="width:100%"></div></div>
     </div>
 
     <!-- 结算界面 -->
@@ -528,6 +605,7 @@
   // ============ Setup ============
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
   const TILE = 40;
   const COLS = 20;
   const ROWS = 15;
@@ -1366,7 +1444,6 @@
     } else {
       state.player2 = null;
     }
-    document.getElementById('p2Hud').classList.toggle('hidden', !state.player2);
     updateSkillUI();
   }
   function makeWall(breakable, czr = false) {
@@ -1525,21 +1602,6 @@
     } else {
       document.getElementById('hpVal').textContent = 'KIA';
       document.getElementById('healthFill').style.width = '0%';
-    }
-    if (state.player2) {
-      document.getElementById('p2Hud').classList.remove('hidden');
-      const hp = Math.max(0, state.player2.hp);
-      document.getElementById('p2HpVal').textContent = hp;
-      document.getElementById('p2HpFill').style.width = (hp / state.player2.maxHp * 100) + '%';
-    } else {
-      if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') {
-        // 模式有双人要求，但p2已经阵亡，显示KIA
-        document.getElementById('p2Hud').classList.remove('hidden');
-        document.getElementById('p2HpVal').textContent = 'KIA';
-        document.getElementById('p2HpFill').style.width = '0%';
-      } else {
-        document.getElementById('p2Hud').classList.add('hidden');
-      }
     }
     updateSkillUI();
   }
@@ -1844,11 +1906,7 @@
       });
     });
   }
-  bindOptionCards('modeGrid', 'data-mode', v => {
-    state.mode = v;
-    setupNetChannel();
-    updateRoomInfo();
-  });
+  state.mode = 'solo';
   bindOptionCards('mapGrid', 'data-map', v => { state.mapIndex = parseInt(v) || 0; });
   bindOptionCards('diffGrid', 'data-diff', v => { state.difficulty = v; });
 
