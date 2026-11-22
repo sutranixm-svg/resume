@@ -1,476 +1,790 @@
 <!DOCTYPE html>
-<html lang="zh-CN" translate="no">
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="google" content="notranslate">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>陈芷锐</title>
-<meta name="description" content="陈芷锐 · AI 训练师 · 喜欢健身">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#f5f5f7;
-  --paper:#ffffff;
-  --ink:#1d1d1f;
-  --muted:#5e5e64;
-  --faint:#6e6e73;
-  --line:#d2d2d7;
-  --accent:#234237;
-  --shadow:0 18px 50px rgba(29,29,31,.08);
-  --serif:"Noto Serif SC","Songti SC",serif;
-  --sans:"Inter","PingFang SC","Noto Sans SC",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,monospace;
-  --pad:clamp(20px,4vw,40px);
-  --max:1120px;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-a{color:inherit}
-button,a{font:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.skip{position:absolute;left:16px;top:12px;transform:translateY(-140%);background:var(--ink);color:#fff;padding:8px 14px;border-radius:999px;z-index:50}
-.skip:focus{transform:none}
-.wrap{width:min(var(--max),calc(100% - var(--pad)*2));margin:0 auto}
-.nav{position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 var(--pad);background:rgba(245,245,247,.82);backdrop-filter:saturate(140%) blur(18px);border-bottom:1px solid transparent}
-.nav.scrolled{background:rgba(255,255,255,.9);border-bottom-color:var(--line)}
-.word{font-family:var(--serif);font-weight:600;text-decoration:none;letter-spacing:-.03em}
-.nav-links{display:flex;gap:28px}
-.nav-links a{text-decoration:none;font-size:14px;color:var(--muted)}
-.nav-links a[aria-current="true"]{color:var(--ink)}
-.menu-btn{display:none;min-width:44px;min-height:44px;border:0;background:transparent;border-radius:10px}
-.menu{display:none}
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:28px 0 72px}
-.role{margin:0;color:var(--muted);font-size:14px;letter-spacing:.08em}
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(4.4rem,11vw,8.4rem);line-height:.92;letter-spacing:-.045em;margin:10px 0 18px}
-.lede{max-width:28rem;font-size:clamp(1.15rem,2vw,1.45rem);line-height:1.45;margin:0 0 28px}
-.actions{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;border:0;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
-.btn:hover{transform:translateY(-2px)}
-.portrait{margin:0;border-radius:28px;overflow:hidden;background:#e7e7ea;aspect-ratio:4/5;box-shadow:var(--shadow)}
-.portrait img{width:100%;height:100%;object-fit:cover;object-position:center 15%}
-section{padding:88px 0}
-.kicker{margin:0 0 14px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
-h2{font-family:var(--serif);font-weight:500;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.15;letter-spacing:-.03em;margin:0 0 18px}
-.prose{max-width:42rem;color:#2a2a2d;font-size:1.05rem}
-.schools{list-style:none;margin:48px 0 0;padding:0;border-top:1px solid var(--line)}
-.schools li{display:grid;grid-template-columns:minmax(140px,220px) 1fr;gap:24px;padding:22px 0;border-bottom:1px solid var(--line)}
-.schools strong{font-weight:600}
-.schools p{margin:4px 0 0;color:var(--muted)}
-.work-feature{display:grid;grid-template-columns:1.2fr .8fr;gap:36px;align-items:end;background:var(--paper);border-radius:28px;padding:clamp(24px,4vw,48px);box-shadow:var(--shadow)}
-.work-feature .btn{margin-top:22px}
-.projects{margin-top:8px}
-.project{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 28px;align-items:start;padding:22px 0;border-top:1px solid var(--line)}
-.project h3{margin:0 0 6px;font-family:var(--serif);font-weight:500;font-size:1.7rem;letter-spacing:-.03em}
-.project p{margin:0;color:var(--muted);max-width:40rem}
-.project-links{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
-.project-links a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;text-decoration:none;box-shadow:inset 0 0 0 1px var(--line)}
-.facts{list-style:none;margin:0;padding:0;display:grid;gap:14px}
-.facts li{font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,2rem);letter-spacing:-.03em;border-top:1px solid var(--line);padding-top:12px}
-.work-feature h3{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:500;letter-spacing:-.03em;margin:0 0 12px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
-.tags span{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 10px}
-.skills{margin:56px 0 0}
-.skill{display:grid;grid-template-columns:minmax(0,1fr) 200px;grid-template-areas:"name meter" "level meter" "desc meter";gap:2px 24px;padding:18px 0;border-top:1px solid var(--line)}
-.skill b{grid-area:name;font-weight:600}
-.skill em{grid-area:level;font-style:normal;color:var(--faint);font-family:var(--mono);font-size:12px}
-.skill p{grid-area:desc;margin:4px 0 0;color:var(--muted);font-size:14px}
-.meter{grid-area:meter;align-self:center;height:2px;background:#e3e3e6;border-radius:2px}
-.meter span{display:block;height:100%;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.22,1,.36,1)}
-.meter.in span{transform:scaleX(var(--p))}
-.docs{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:48px 0 8px}
-.doc{margin:0;background:var(--paper);border-radius:22px;overflow:hidden;border:1px solid var(--line);cursor:pointer;padding:0;text-align:left;color:inherit}
-.doc img{width:100%;height:340px;object-fit:contain;background:#f3f1ec}
-.doc figcaption{padding:14px 16px 16px;font-size:14px}
-.certs{margin-top:8px}
-.cert{width:100%;display:grid;grid-template-columns:92px 1fr auto;gap:16px;align-items:center;padding:16px 0;border:0;border-top:1px solid var(--line);background:transparent;text-align:left;cursor:pointer;color:inherit}
-.cert img{width:92px;height:68px;object-fit:contain;border-radius:8px;background:#f3f1ec}
-.cert small{color:var(--muted)}
-.cert code{font-family:var(--mono);font-size:12px;color:var(--faint)}
-.life-head{max-width:36rem}
-.life-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:28px;align-items:start}
-.life-side{display:grid;gap:16px}
-.shot{margin:0;border-radius:22px;overflow:hidden;background:#ececee}
-.shot img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center}
-.life-side .shot:last-child img{aspect-ratio:1/1;object-position:center 78%}
-.shot{transition:transform .5s cubic-bezier(.22,1,.36,1)}
-.shot:hover{transform:translateY(-6px)}
-.path{list-style:none;margin:8px 0 0;padding:0}
-.path li{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:26px 0;border-top:1px solid var(--line)}
-.path time{color:var(--faint);font-family:var(--mono);font-size:13px}
-.path h3{margin:0 0 4px;font-size:1.25rem}
-.path .org{margin:0 0 8px;color:var(--muted);font-size:14px}
-.path p{margin:0;max-width:40rem}
-.honors{margin:28px 0 0;color:var(--muted);max-width:40rem}
-.evidence{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
-.evidence .doc img{height:280px}
-.contact-links{display:grid;gap:12px;margin-top:28px}
-.contact-links a{display:flex;justify-content:space-between;align-items:center;gap:16px;text-decoration:none;background:var(--paper);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow)}
-.contact-links a:hover{transform:translateY(-3px)}
-.contact-links small{color:var(--faint)}
-.contact-links strong{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);font-weight:500}
-footer{padding:28px 0 48px;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
-.modal{position:fixed;inset:0;background:rgba(20,20,22,.46);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}
-.modal.open{display:flex}
-.sheet{width:min(1100px,100%);height:min(86vh,860px);background:var(--paper);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-.sheet header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
-.sheet iframe,.sheet img{width:100%;height:100%;border:0;object-fit:contain;background:#111;flex:1}
-.icon-btn{min-width:44px;min-height:44px;border:0;background:transparent;border-radius:10px;cursor:pointer}
-.js .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
-.js .reveal.in{opacity:1;transform:none}
-.js .portrait{transition-delay:.12s}
-.js .portrait img{transform:scale(1.05);transition:transform 1.3s cubic-bezier(.22,1,.36,1)}
-.js .portrait.in img{transform:none}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;padding:10px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:860px){
-  .nav-links{display:none}
-  .menu-btn{display:inline-flex;align-items:center;justify-content:center}
-  .menu{position:absolute;left:0;right:0;top:64px;background:#fff;border-bottom:1px solid var(--line);padding:6px var(--pad) 14px}
-  .menu.open{display:grid}
-  .menu a{padding:14px 0;text-decoration:none;border-top:1px solid var(--line)}
-  .hero,.docs,.life-grid,.schools li,.path li,.skill,.evidence,.work-feature,.project{grid-template-columns:1fr}
-  .project-links{justify-content:flex-start}
-  .hero{padding-top:12px}
-  .portrait{max-width:460px}
-  .skill{grid-template-areas:"name" "level" "desc" "meter"}
-  .meter{height:3px;margin-top:10px}
-  .doc img{height:220px}
-  .contact-links a{align-items:flex-start;flex-direction:column}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .js .reveal,.js .portrait img,.btn,.contact-links a,.meter span,.shot{transition:none;transform:none;opacity:1}
-  .meter span{transform:scaleX(var(--p))}
-  .btn:hover,.contact-links a:hover,.shot:hover{transform:none}
-}
-@media print{
-  .nav,.menu-btn,.modal,.toast,.actions{display:none!important}
-  .js .reveal{opacity:1!important;transform:none!important}
-  body{background:#fff}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈芷锐 · Portfolio</title>
+  <meta name="description" content="陈芷锐 · AI Trainer · 个人作品集">
+  <meta name="theme-color" content="#0b0d12">
+  <link rel="icon" href="assets/avatar.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --bg-soft: #11141b;
+      --card: rgba(20, 23, 31, 0.88);
+      --card-strong: #171a22;
+      --text: #f5f7fb;
+      --muted: #9ba3b4;
+      --quiet: #697184;
+      --line: rgba(255, 255, 255, 0.09);
+      --accent: #b4ff39;
+      --accent-2: #ff7657;
+      --blue: #79a8ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(circle at 78% 8%, rgba(180,255,57,.07), transparent 22rem),
+        radial-gradient(circle at 12% 38%, rgba(121,168,255,.055), transparent 24rem),
+        var(--bg);
+      color: var(--text);
+      font-family: "DM Sans", "Noto Sans SC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body.modal-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img { max-width: 100%; }
+    ::selection { background: var(--accent); color: #10120d; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .shell { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+
+    .nav {
+      position: fixed;
+      z-index: 50;
+      top: 18px;
+      left: 50%;
+      width: min(1120px, calc(100% - 48px));
+      height: 58px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 8px 10px 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(11, 13, 18, .72);
+      backdrop-filter: blur(18px) saturate(130%);
+      box-shadow: 0 10px 38px rgba(0,0,0,.14);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: var(--accent); color: #11150b;
+      font-family: "Space Grotesk", sans-serif;
+    }
+    .nav-links { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+    .nav-link {
+      padding: 10px 11px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      transition: .2s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text); background: rgba(255,255,255,.055); }
+    .icon-btn {
+      width: 40px; height: 40px; border: 1px solid var(--line);
+      border-radius: 12px; background: transparent; color: var(--muted);
+      display: grid; place-items: center; cursor: pointer;
+    }
+    .icon-btn:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .mobile-toggle { display: none; }
+
+    main { overflow: hidden; }
+    .section { position: relative; padding: 112px 0; }
+    .section + .section { border-top: 1px solid var(--line); }
+    .section-head {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 24px; margin-bottom: 34px;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--accent); font-size: 12px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+    .section-title {
+      margin: 10px 0 0; font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      font-size: clamp(38px, 5vw, 62px); line-height: 1.05; letter-spacing: -.045em;
+    }
+    .section-copy { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.8; }
+
+    .hero {
+      min-height: 820px;
+      height: min(920px, 100svh);
+      display: flex; align-items: center;
+      padding: 112px 0 70px;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: minmax(0, 1.38fr) minmax(320px, .62fr);
+      align-items: center; gap: 56px;
+    }
+    .status-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+    .status {
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 34px; padding: 7px 12px;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255,255,255,.035); color: var(--muted); font-size: 12px;
+    }
+    .status.live { color: var(--accent); border-color: rgba(180,255,57,.24); background: rgba(180,255,57,.07); }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px rgba(180,255,57,.7); }
+    .hero h1 {
+      margin: 0;
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      font-size: clamp(74px, 10vw, 138px);
+      line-height: .82;
+      letter-spacing: -.075em;
+    }
+    .hero-role {
+      margin: 22px 0 18px;
+      color: var(--accent);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+    .hero-bio { max-width: 650px; margin: 0; color: var(--muted); font-size: 17px; line-height: 1.85; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .button {
+      min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 12px 18px; border: 1px solid var(--line); border-radius: 13px;
+      background: var(--card); color: var(--text); cursor: pointer;
+      font-size: 14px; font-weight: 700; transition: .22s ease;
+    }
+    .button:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.18); background: var(--card-strong); }
+    .button.primary { background: var(--accent); color: #10130b; border-color: var(--accent); }
+    .button.primary:hover { box-shadow: 0 14px 38px rgba(180,255,57,.16); background: var(--accent); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 36px; }
+    .stat { min-height: 98px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.025); }
+    .stat-value { display: block; font-family: "Space Grotesk", sans-serif; font-size: 29px; line-height: 1; }
+    .stat-label { display: block; margin-top: 10px; color: var(--quiet); font-size: 11px; }
+    .portrait-wrap { position: relative; }
+    .portrait {
+      position: relative; aspect-ratio: 4 / 5; width: 100%; overflow: hidden;
+      border: 1px solid var(--line); border-radius: 32px;
+      background: linear-gradient(145deg, #1b202b, #10131a);
+      box-shadow: var(--shadow);
+    }
+    .portrait img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.88) contrast(1.02); }
+    .portrait::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 58%, rgba(7,9,13,.74)); pointer-events: none;
+    }
+    .portrait-meta { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 18px; }
+    .portrait-meta strong { display: block; font-size: 16px; }
+    .portrait-meta span { display: block; margin-top: 5px; color: #cbd1dc; font-size: 12px; }
+
+    .marquee {
+      overflow: hidden; border-block: 1px solid var(--line);
+      background: rgba(255,255,255,.018);
+    }
+    .marquee-track { display: flex; width: max-content; padding: 16px 0; animation: ticker 38s linear infinite; }
+    .marquee span {
+      display: inline-flex; align-items: center; gap: 18px;
+      margin-right: 18px; color: var(--muted); font-size: 13px; white-space: nowrap;
+    }
+    .marquee span::after { content: "◆"; color: var(--accent); font-size: 7px; }
+    @keyframes ticker { to { transform: translateX(-50%); } }
+
+    .about-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 18px; }
+    .card {
+      border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--card); box-shadow: 0 12px 34px rgba(0,0,0,.12);
+    }
+    .about-main { padding: clamp(28px, 5vw, 48px); }
+    .about-main h3 {
+      max-width: 720px; margin: 0 0 22px;
+      font-family: "Space Grotesk", "Noto Sans SC", sans-serif;
+      font-size: clamp(29px, 4vw, 48px); line-height: 1.12; letter-spacing: -.04em;
+    }
+    .about-main h3 span { color: var(--accent); }
+    .about-main p { max-width: 720px; margin: 0; color: var(--muted); line-height: 1.9; }
+    .profile-card { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
+    .profile-card-top { display: flex; align-items: center; gap: 12px; }
+    .mini-avatar { width: 54px; height: 54px; border-radius: 16px; object-fit: cover; }
+    .profile-card strong { display: block; }
+    .profile-card small { color: var(--muted); }
+    .info-list { margin: 24px 0 0; display: grid; gap: 10px; }
+    .info-row { display: flex; justify-content: space-between; gap: 16px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; }
+    .info-row span:first-child { color: var(--quiet); }
+
+    .education-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .education-card { padding: 24px; min-height: 170px; transition: .25s ease; }
+    .education-card:hover, .project-card:hover, .skill-card:hover { transform: translateY(-4px); border-color: rgba(180,255,57,.22); }
+    .education-top { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .education-card h3 { margin: 0; font-size: 18px; }
+    .education-card .level { margin: 8px 0 18px; color: var(--muted); font-size: 13px; }
+    .education-card .score { color: var(--accent); font-family: "Space Grotesk", sans-serif; font-size: 23px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: rgba(255,255,255,.025); font-size: 11px; }
+
+    .skill-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .skill-card { padding: 22px; transition: .25s ease; }
+    .skill-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .skill-name { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; }
+    .skill-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: rgba(180,255,57,.07); color: var(--accent); }
+    .skill-level { color: var(--quiet); font-size: 11px; }
+    .skill-track { height: 5px; margin: 18px 0 10px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); }
+    .skill-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--blue)); transform-origin: left; transform: scaleX(0); transition: transform 1s cubic-bezier(.22,1,.36,1); }
+    .skill-card.visible .skill-fill { transform: scaleX(var(--width)); }
+    .skill-desc { color: var(--quiet); font-size: 12px; }
+    .skill-tags { margin-top: 20px; }
+
+    .timeline { display: grid; gap: 12px; }
+    .experience-card { display: grid; grid-template-columns: 180px 1fr; gap: 24px; padding: 24px; }
+    .experience-card time { color: var(--quiet); font-size: 12px; }
+    .experience-card h3 { margin: 0 0 6px; font-size: 18px; }
+    .experience-card .org { color: var(--accent); font-size: 12px; }
+    .experience-card p { margin: 12px 0 0; color: var(--muted); line-height: 1.75; }
+    .experience-card .tags { margin-top: 14px; }
+
+    .certificate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .certificate-card { overflow: hidden; cursor: pointer; transition: .25s ease; }
+    .certificate-card:hover { transform: translateY(-5px); border-color: rgba(180,255,57,.25); }
+    .certificate-image { height: 210px; overflow: hidden; border-bottom: 1px solid var(--line); background: #e9eaed; }
+    .certificate-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .certificate-card:hover .certificate-image img { transform: scale(1.025); }
+    .certificate-body { padding: 18px; }
+    .certificate-body h3 { margin: 0; font-size: 15px; line-height: 1.45; }
+    .certificate-body p { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 14px; }
+    .gallery-card { height: 260px; padding: 0; overflow: hidden; cursor: zoom-in; }
+    .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
+    .honors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+    .honor { min-height: 86px; display: grid; place-items: center; text-align: center; padding: 12px; color: var(--muted); font-size: 12px; }
+
+    .contact-panel {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      padding: clamp(28px, 5vw, 48px);
+    }
+    .contact-copy h2 { margin: 0 0 16px; font-family: "Space Grotesk", "Noto Sans SC", sans-serif; font-size: clamp(42px, 7vw, 72px); line-height: 1; letter-spacing: -.055em; }
+    .contact-copy h2 span { color: var(--accent); }
+    .contact-copy p { max-width: 460px; color: var(--muted); line-height: 1.8; }
+    .contact-actions { display: grid; align-content: end; gap: 10px; }
+    .contact-action { width: 100%; justify-content: space-between; }
+
+    .game-card { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; overflow: hidden; }
+    .game-copy { padding: clamp(28px, 5vw, 48px); }
+    .game-copy h3 { margin: 12px 0; font-size: 32px; }
+    .game-copy p { color: var(--muted); line-height: 1.8; }
+    .game-preview {
+      min-height: 300px; display: grid; place-items: center;
+      background: linear-gradient(135deg, rgba(180,255,57,.12), rgba(121,168,255,.08));
+      border-left: 1px solid var(--line);
+    }
+    .game-grid { width: 180px; aspect-ratio: 1; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; transform: rotate(-8deg); }
+    .game-grid i { border: 1px solid rgba(255,255,255,.12); border-radius: 12px; background: rgba(255,255,255,.055); }
+    .game-grid i:nth-child(3n) { background: var(--accent); opacity: .75; }
+
+    .footer { display: flex; justify-content: space-between; gap: 20px; padding: 30px 0 44px; color: var(--quiet); font-size: 12px; border-top: 1px solid var(--line); }
+
+    .modal {
+      position: fixed; z-index: 100; inset: 0; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+      background: rgba(4,5,8,.88); backdrop-filter: blur(14px);
+    }
+    .modal.open { display: flex; }
+    .modal-panel { width: min(960px, 100%); max-height: 92vh; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--card-strong); box-shadow: var(--shadow); }
+    .modal-head { height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px 0 18px; border-bottom: 1px solid var(--line); }
+    .modal-head strong { font-size: 14px; }
+    .modal-body { height: calc(92vh - 58px); display: grid; place-items: center; padding: 18px; }
+    .modal-body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .game-modal .modal-panel { width: min(1180px, 100%); }
+    .game-modal iframe { width: 100%; height: calc(92vh - 58px); border: 0; background: #000; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .toast {
+      position: fixed; z-index: 120; left: 50%; bottom: 24px; transform: translate(-50%, 20px);
+      padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px;
+      background: var(--text); color: var(--bg); opacity: 0; pointer-events: none;
+      font-size: 13px; transition: .25s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 900px) {
+      .shell, .nav { width: min(100% - 32px, 1120px); }
+      .nav { top: 10px; }
+      .nav-links {
+        position: fixed; top: 78px; left: 16px; right: 16px;
+        display: none; flex-direction: column; align-items: stretch;
+        padding: 10px; border: 1px solid var(--line); border-radius: 16px;
+        background: rgba(11,13,18,.96);
+      }
+      .nav-links.open { display: flex; }
+      .nav-link { padding: 12px; }
+      .mobile-toggle { display: grid; }
+      .hero { height: auto; min-height: 760px; padding-top: 120px; }
+      .hero-grid { grid-template-columns: 1fr 280px; gap: 24px; }
+      .hero h1 { font-size: clamp(64px, 12vw, 100px); }
+      .certificate-grid { grid-template-columns: repeat(2, 1fr); }
+      .education-grid, .skill-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      .shell, .nav { width: calc(100% - 24px); }
+      .nav { height: 54px; border-radius: 16px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .brand-name { max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .nav-links { top: 72px; left: 12px; right: 12px; }
+      .section { padding: 82px 0; }
+      .section-head { align-items: start; flex-direction: column; }
+      .section-title { font-size: 38px; }
+      .hero { min-height: auto; padding: 104px 0 52px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: clamp(58px, 20vw, 86px); }
+      .hero-role { margin-top: 18px; }
+      .hero-bio { font-size: 15px; }
+      .stats { gap: 7px; }
+      .stat { min-height: 86px; padding: 12px 10px; }
+      .stat-value { font-size: 24px; }
+      .portrait-wrap { max-width: 360px; margin-inline: auto; }
+      .about-grid, .contact-panel, .game-card { grid-template-columns: 1fr; }
+      .education-grid, .skill-grid, .certificate-grid, .honors-grid { grid-template-columns: 1fr; }
+      .experience-card { grid-template-columns: 1fr; gap: 8px; }
+      .certificate-image { height: 230px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-card { height: 220px; }
+      .game-preview { border-left: 0; border-top: 1px solid var(--line); }
+      .footer { flex-direction: column; }
+      .button { min-height: 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media print {
+      .nav, .marquee, .hero-actions, .modal, .toast, .game-preview, .game-card .button { display: none !important; }
+      body { background: #fff; color: #111; }
+      .section, .hero { min-height: auto; height: auto; padding: 28px 0; break-inside: avoid; }
+      .card, .stat, .status { background: #fff; border-color: #ddd; box-shadow: none; }
+      .portrait { box-shadow: none; }
+      .reveal { opacity: 1; transform: none; }
+      @page { size: A4; margin: 12mm; }
+    }
+  </style>
 </head>
 <body>
-<a class="skip" href="#about">跳到内容</a>
-<header class="nav" id="nav">
-  <a class="word" href="#top">陈芷锐</a>
-  <nav class="nav-links" aria-label="页面导航">
-    <a href="#about">关于</a>
-    <a href="#work">作品</a>
-    <a href="#life">生活</a>
-    <a href="#experience">经历</a>
-    <a href="#contact">联系</a>
+  <nav class="nav" aria-label="主导航">
+    <a class="brand" href="#hero" aria-label="返回顶部">
+      <span class="brand-mark" id="brandMark">C</span>
+      <span class="brand-name" id="brandName">陈芷锐</span>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a class="nav-link" href="#about">关于</a>
+      <a class="nav-link" href="#education">教育</a>
+      <a class="nav-link" href="#skills">技能</a>
+      <a class="nav-link" href="#experience">经历</a>
+      <a class="nav-link" href="#certificates">证书</a>
+      <a class="nav-link" href="#contact">联系</a>
+    </div>
+    <button class="icon-btn" id="printBtn" type="button" title="打印或导出 PDF" aria-label="打印或导出 PDF">PDF</button>
+    <button class="icon-btn mobile-toggle" id="mobileToggle" type="button" aria-label="展开菜单">菜单</button>
   </nav>
-  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="菜单">
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 4.5h14M2 9h14M2 13.5h14" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-  </button>
-  <div class="menu" id="menu">
-    <a href="#about">关于</a>
-    <a href="#work">作品</a>
-    <a href="#life">生活</a>
-    <a href="#experience">经历</a>
-    <a href="#contact">联系</a>
-  </div>
-</header>
-<div id="top"></div>
-<main id="app"></main>
-<div class="toast" id="toast" role="status"></div>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="sheet">
-    <header>
-      <strong id="modalTitle">查看</strong>
-      <button class="icon-btn" type="button" id="modalClose" aria-label="关闭">关闭</button>
-    </header>
-    <iframe id="modalFrame" title="作品" hidden></iframe>
-    <img id="modalImg" alt="" hidden>
-  </div>
-</div>
-<script>
-document.documentElement.classList.add('js');
-const $ = (s, r=document) => r.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function el(tag, cls){ const n=document.createElement(tag); if(cls) n.className=cls; return n; }
-function thumb(src){
-  if(!src) return '';
-  const base = src.split('/').pop().replace(/\.(png|jpe?g|webp)$/i,'');
-  return `assets/thumbs/${base}.jpg`;
-}
 
-async function init(){
-  const res = await fetch('config.json');
-  const cfg = await res.json();
-  document.title = cfg.site.title || cfg.profile.name;
-  const meta = document.querySelector('meta[name="description"]');
-  if(meta && cfg.site.description) meta.content = cfg.site.description;
-  applyTheme(cfg.theme);
-  render(cfg);
-  bind(cfg);
-}
+  <main id="app"></main>
 
-function applyTheme(t){
-  if(!t) return;
-  const map = {bg:'--bg',surface:'--paper',text:'--ink',textDim:'--muted',border:'--line',accent:'--accent'};
-  for(const [k,v] of Object.entries(map)){
-    if(t[k]) document.documentElement.style.setProperty(v, t[k]);
-  }
-}
-
-function render(cfg){
-  const app = $('#app');
-  app.append(hero(cfg), about(cfg), work(cfg), life(cfg), experience(cfg), contact(cfg), footer(cfg));
-  observe();
-}
-
-function hero(cfg){
-  const p = cfg.profile;
-  const s = el('section','hero wrap');
-  s.innerHTML = `
-    <div class="reveal">
-      <p class="role">${esc(cfg.about.card.role || p.title)}</p>
-      <h1>${esc(p.name)}</h1>
-      <p class="lede">专注于 AI 模型训练与智能体开发。<br>喜欢健身。</p>
-      <div class="actions">
-        <a class="btn" href="#work">看作品</a>
-        <a class="btn ghost" href="#contact">联系</a>
+  <div class="modal" id="certificateModal" role="dialog" aria-modal="true" aria-label="证书查看">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <strong id="certificateTitle">证书查看</strong>
+        <button class="icon-btn" type="button" onclick="closeCertificate()">关闭</button>
       </div>
+      <div class="modal-body"><img id="certificateImage" src="" alt="证书大图"></div>
     </div>
-    <figure class="portrait reveal">
-      <img src="${esc(p.avatar)}" alt="${esc(p.name)}">
-    </figure>`;
-  return s;
-}
+  </div>
+  <div class="modal game-modal" id="gameModal" role="dialog" aria-modal="true" aria-label="游戏作品">
+    <div class="modal-panel">
+      <div class="modal-head">
+        <strong id="gameTitle">作品展示</strong>
+        <button class="icon-btn" type="button" onclick="closeGame()">关闭</button>
+      </div>
+      <iframe id="gameFrame" title="游戏作品" src=""></iframe>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
 
-function about(cfg){
-  const s = el('section','wrap');
-  s.id = 'about';
-  const schools = cfg.education.map(item => {
-    const bits = [item.level, item.pill && item.pill.label].filter(Boolean);
-    let score = '';
-    if(item.score){
-      score = (item.scoreLabel || '{score}').replace('{score}', item.score);
+  <script>
+    let CONFIG = null;
+    const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[char]);
+    const el = (tag, className, html) => {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (html !== undefined) node.innerHTML = html;
+      return node;
+    };
+
+    async function init() {
+      try {
+        const response = await fetch("config.json");
+        if (!response.ok) throw new Error("config");
+        CONFIG = await response.json();
+      } catch (error) {
+        document.getElementById("app").innerHTML = '<div class="shell section"><h1>内容加载失败</h1><p>请确认 config.json 可以访问。</p></div>';
+        return;
+      }
+
+      applyTheme(CONFIG.theme);
+      document.title = CONFIG.site?.title || CONFIG.profile?.name || "Portfolio";
+      document.querySelector('meta[name="description"]').setAttribute("content", CONFIG.site?.description || "");
+      document.getElementById("brandName").textContent = CONFIG.profile.name;
+      document.getElementById("brandMark").textContent = CONFIG.profile.name?.[0] || "C";
+
+      const app = document.getElementById("app");
+      app.appendChild(renderHero(CONFIG));
+      app.appendChild(renderMarquee(CONFIG.marquee || []));
+      app.appendChild(renderAbout(CONFIG.about || {}));
+      app.appendChild(renderEducation(CONFIG.education || []));
+      app.appendChild(renderSkills(CONFIG.skills || [], CONFIG.skillTags || []));
+      app.appendChild(renderExperience(CONFIG.experience || []));
+      app.appendChild(renderCertificates(CONFIG.certificates || {}, CONFIG.honors || []));
+      app.appendChild(renderGame(CONFIG.game || {}));
+      app.appendChild(renderContact(CONFIG.profile || {}, CONFIG.footer || {}));
+      setupReveal();
     }
-    const tags = (item.tags||[]).join(' · ');
-    return `<li><div><strong>${esc(item.school)}</strong></div><div><p>${esc(bits.join(' · '))}</p>${score?`<p>${esc(score)}</p>`:''}${tags?`<p>${esc(tags)}</p>`:''}</div></li>`;
-  }).join('');
-  s.innerHTML = `
-    <h2 class="reveal">${esc(cfg.about.heading)}<br>${esc(cfg.about.headingHighlight)}，${esc(cfg.about.headingSuffix)}</h2>
-    <p class="prose reveal">${esc(cfg.about.description)}</p>
-    <ul class="schools reveal">${schools}</ul>`;
-  return s;
-}
 
-function projectCard(p){
-  const links = (p.links||[]).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener noreferrer">${esc(l.label)}</a>`).join('');
-  return `<article class="project">
-    <div><h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p></div>
-    <div class="project-links">${links}</div>
-  </article>`;
-}
-function work(cfg){
-  const s = el('section','wrap');
-  s.id = 'work';
-  const g = cfg.game;
-  const skills = cfg.skills.map(sk => `
-    <div class="skill">
-      <b>${esc(sk.name)}</b>
-      <em>${esc(sk.level)}</em>
-      <p>${esc(sk.desc)}</p>
-      <div class="meter" style="--p:${Number(sk.width)||0}%"><span></span></div>
-    </div>`).join('');
-  const docs = (cfg.certificates.cards||[]).slice(0,2).map(item => `
-    <button class="doc" type="button" data-img="${esc(item.img)}" data-title="${esc(item.title)}">
-      <img src="${esc(thumb(item.img))}" alt="${esc(item.title)}">
-      <figcaption>${esc(item.title)}${item.issuer?`<br><small>${esc(item.issuer)}</small>`:''}</figcaption>
-    </button>`).join('');
-  const certs = (cfg.certificates.cards||[]).map(c => `
-    <button class="cert" type="button" data-img="${esc(c.img)}" data-title="${esc(c.title)}">
-      <img src="${esc(thumb(c.img))}" alt="">
-      <span><b>${esc(c.title)}</b><br><small>${esc(c.issuer)}</small></span>
-      <code>${esc(((c.details||[]).find(d=>d.mono)||{}).value||'')}</code>
-    </button>`).join('');
-  s.innerHTML = `
-    <h2 class="reveal">作品</h2>
-    <p class="prose reveal">${esc(cfg.profile.bio)}</p>
-    <article class="work-feature reveal">
-      <div>
-        <h3>${esc(g.title)}</h3>
-        <p>${esc(g.description)}</p>
-        <button class="btn" type="button" id="play">${esc(g.button)}</button>
-      </div>
-      <ul class="facts">${(g.tags||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul>
-    </article>
-    <div class="projects">${(cfg.projects||[]).map(projectCard).join('')}</div>
-    <div class="skills reveal">${skills}</div>
-    <div class="docs reveal">${docs}</div>
-    <div class="certs">${certs}</div>`;
-  return s;
-}
+    function applyTheme(theme = {}) {
+      const root = document.documentElement;
+      if (theme.bg) root.style.setProperty("--bg", theme.bg);
+      if (theme.bg2) root.style.setProperty("--bg-soft", theme.bg2);
+      if (theme.surface) root.style.setProperty("--card", theme.surface);
+      if (theme.text) root.style.setProperty("--text", theme.text);
+      if (theme.textDim) root.style.setProperty("--muted", theme.textDim);
+      if (theme.accent) root.style.setProperty("--accent", theme.accent);
+      if (theme.accent2) root.style.setProperty("--accent-2", theme.accent2);
+    }
 
-function life(cfg){
-  const s = el('section','wrap');
-  s.id = 'life';
-  const photos = (cfg.about.fitness && cfg.about.fitness.photos) || [];
-  const order = [2,1,0].map(i => photos[i]).filter(Boolean);
-  const [main, ...rest] = order;
-  const fig = photo => photo ? `<figure class="shot"><img src="${esc(photo.src)}" srcset="${esc(photo.srcset||'')}" sizes="${esc(photo.sizes||'(max-width:860px) 100vw, 36vw')}" alt="${esc(photo.alt||'喜欢健身')}"></figure>` : '';
-  s.innerHTML = `
-    <div class="life-head">
-      <h2 class="reveal">${esc((cfg.about.fitness && cfg.about.fitness.label) || '喜欢健身')}</h2>
-    </div>
-    <div class="life-grid reveal">
-      ${fig(main)}
-      <div class="life-side">${rest.map(fig).join('')}</div>
-    </div>`;
-  return s;
-}
+    function renderHero(config) {
+      const profile = config.profile || {};
+      const section = el("section", "hero");
+      section.id = "hero";
+      section.innerHTML = `
+        <div class="shell hero-grid reveal">
+          <div>
+            <div class="status-row">
+              <span class="status live"><span class="status-dot"></span>${escapeHtml(profile.status || "可联系")}</span>
+              ${(profile.badges || []).map(badge => `<span class="status">${escapeHtml(badge)}</span>`).join("")}
+            </div>
+            <h1>${escapeHtml(profile.name || "")}</h1>
+            <p class="hero-role">${escapeHtml(profile.title || "")}</p>
+            <p class="hero-bio">${escapeHtml(profile.bio || "")}</p>
+            <div class="hero-actions">
+              <a class="button primary" href="mailto:${escapeHtml(profile.email || "")}">发送邮件</a>
+              <button class="button" type="button" data-copy="${escapeHtml(profile.phone || "")}" data-label="电话">复制电话</button>
+              <a class="button" href="#certificates">查看证书</a>
+            </div>
+            <div class="stats">
+              ${(config.stats || []).map(stat => `
+                <div class="stat">
+                  <span class="stat-value">${escapeHtml(stat.value)}${escapeHtml(stat.suffix || "")}</span>
+                  <span class="stat-label">${escapeHtml(stat.label)}</span>
+                </div>`).join("")}
+            </div>
+          </div>
+          <div class="portrait-wrap">
+            <div class="portrait">
+              <img src="${escapeHtml(profile.avatar || "")}" alt="${escapeHtml(profile.name || "")}">
+              <div class="portrait-meta">
+                <strong>${escapeHtml(profile.name || "")}</strong>
+                <span>${escapeHtml(profile.title || "")} · 中国</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      section.querySelectorAll("[data-copy]").forEach(button => {
+        button.addEventListener("click", () => copyText(button.dataset.copy, button.dataset.label));
+      });
+      return section;
+    }
 
-function experience(cfg){
-  const s = el('section','wrap');
-  s.id = 'experience';
-  const items = cfg.experience.map(item => {
-    let desc = esc(item.description);
-    if(item.highlight) desc = desc.replace(esc(item.highlight), `<strong>${esc(item.highlight)}</strong>`);
-    return `<li>
-      <time>${esc(item.date||'')}</time>
-      <div>
-        <h3>${esc(item.title)}</h3>
-        <p class="org">${esc(item.org)}${item.pill?` · ${esc(item.pill.label)}`:''}</p>
-        <p>${desc}</p>
-      </div>
-    </li>`;
-  }).join('');
-  const honors = (cfg.honors||[]).map(h=>esc(h.title)).join(' · ');
-  const evidence = (cfg.certificates.gallery||[]).map(item => `
-    <button class="doc" type="button" data-img="${esc(item.img)}" data-title="${esc(item.title)}">
-      <img src="${esc(thumb(item.img))}" alt="${esc(item.title)}">
-      <figcaption>${esc(item.title)}</figcaption>
-    </button>`).join('');
-  s.innerHTML = `
-    <h2 class="reveal">经历</h2>
-    <ul class="path">${items}</ul>
-    <p class="honors reveal">${honors}</p>
-    <div class="evidence reveal">${evidence}</div>`;
-  return s;
-}
+    function renderMarquee(items) {
+      const marquee = el("div", "marquee");
+      const track = el("div", "marquee-track");
+      const content = items.map(item => `<span>${escapeHtml(item.text)}</span>`).join("");
+      track.innerHTML = content + content;
+      marquee.appendChild(track);
+      return marquee;
+    }
 
-function contact(cfg){
-  const s = el('section','wrap');
-  s.id = 'contact';
-  const p = cfg.profile;
-  s.innerHTML = `
-    <h2 class="reveal">联系</h2>
-    <p class="prose reveal">${esc(p.status)}</p>
-    <div class="contact-links reveal">
-      <a href="tel:${esc(p.phone)}"><span><small>电话</small><br><strong>${esc(p.phone)}</strong></span><span>拨打</span></a>
-      <a href="mailto:${esc(p.email)}"><span><small>邮箱</small><br><strong>${esc(p.email)}</strong></span><span>写信</span></a>
-    </div>`;
-  return s;
-}
+    function sectionHead(label, title, copy = "") {
+      const head = el("div", "section-head");
+      head.innerHTML = `
+        <div><span class="eyebrow">${escapeHtml(label)}</span><h2 class="section-title">${escapeHtml(title)}</h2></div>
+        ${copy ? `<p class="section-copy">${escapeHtml(copy)}</p>` : ""}`;
+      return head;
+    }
 
-function footer(cfg){
-  const f = el('footer','wrap');
-  f.textContent = cfg.footer.copyright || '';
-  return f;
-}
+    function renderAbout(config) {
+      const section = el("section", "section");
+      section.id = "about";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("About", "个人简介"));
+      const grid = el("div", "about-grid reveal");
+      grid.innerHTML = `
+        <article class="card about-main">
+          <h3>${escapeHtml(config.heading || "")}<br><span>${escapeHtml(config.headingHighlight || "")}</span> ${escapeHtml(config.headingSuffix || "")}</h3>
+          <p>${escapeHtml(config.description || "")}</p>
+        </article>
+        <aside class="card profile-card">
+          <div>
+            <div class="profile-card-top">
+              <img class="mini-avatar" src="${escapeHtml(config.card?.avatar || CONFIG.profile.avatar)}" alt="${escapeHtml(config.card?.name || CONFIG.profile.name)}">
+              <div><strong>${escapeHtml(config.card?.name || CONFIG.profile.name)}</strong><small>${escapeHtml(config.card?.role || "")}</small></div>
+            </div>
+            <div class="info-list">
+              ${(config.card?.info || []).map(info => `<div class="info-row"><span>${escapeHtml(info.label)}</span><span>${escapeHtml(info.value)}</span></div>`).join("")}
+            </div>
+          </div>
+        </aside>`;
+      shell.appendChild(grid);
+      section.appendChild(shell);
+      return section;
+    }
 
-function observe(){
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const nodes = [...document.querySelectorAll('.reveal, .meter')];
-  if(reduce){
-    nodes.forEach(n => n.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if(!e.isIntersecting) return;
-      requestAnimationFrame(() => requestAnimationFrame(() => e.target.classList.add('in')));
-      io.unobserve(e.target);
+    function renderEducation(items) {
+      const section = el("section", "section");
+      section.id = "education";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("Education", "教育经历"));
+      const grid = el("div", "education-grid reveal");
+      items.forEach(item => {
+        const card = el("article", "card education-card");
+        card.innerHTML = `
+          <div class="education-top">
+            <h3>${escapeHtml(item.school)}</h3>
+            ${item.pill ? `<span class="tag" style="color:${escapeHtml(item.pill.color)}">${escapeHtml(item.pill.label)}</span>` : (item.badge ? `<span class="tag">${escapeHtml(item.badge)}</span>` : "")}
+          </div>
+          ${item.score ? `<p class="level"><span class="score">${escapeHtml(item.score)}</span> 分</p>` : `<p class="level">${escapeHtml(item.level || "")}</p>`}
+          ${item.tags?.length ? `<div class="tags">${item.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : ""}`;
+        grid.appendChild(card);
+      });
+      shell.appendChild(grid);
+      section.appendChild(shell);
+      return section;
+    }
+
+    function renderSkills(skills, tags) {
+      const section = el("section", "section");
+      section.id = "skills";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("Skills", "核心能力"));
+      const grid = el("div", "skill-grid reveal");
+      skills.forEach(skill => {
+        const card = el("article", "card skill-card");
+        card.style.setProperty("--width", String((skill.width || 0) / 100));
+        card.innerHTML = `
+          <div class="skill-top">
+            <div class="skill-name"><span class="skill-icon">${escapeHtml(skill.icon?.[0]?.toUpperCase() || "A")}</span>${escapeHtml(skill.name)}</div>
+            <span class="skill-level">${escapeHtml(skill.level)}</span>
+          </div>
+          <div class="skill-track"><div class="skill-fill"></div></div>
+          <div class="skill-desc">${escapeHtml(skill.desc)}</div>`;
+        grid.appendChild(card);
+      });
+      shell.appendChild(grid);
+      if (tags.length) {
+        const tagWrap = el("div", "tags skill-tags reveal");
+        tags.forEach(tag => tagWrap.appendChild(el("span", "tag", escapeHtml(tag))));
+        shell.appendChild(tagWrap);
+      }
+      section.appendChild(shell);
+      return section;
+    }
+
+    function renderExperience(items) {
+      const section = el("section", "section");
+      section.id = "experience";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("Experience", "实践经历"));
+      const timeline = el("div", "timeline reveal");
+      items.forEach(item => {
+        const card = el("article", "card experience-card");
+        card.innerHTML = `
+          <div><time>${escapeHtml(item.date || "长期")}</time></div>
+          <div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <span class="org">${escapeHtml(item.org || "")}</span>
+            <p>${escapeHtml(item.description || "")}</p>
+            ${item.tags?.length ? `<div class="tags">${item.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : ""}
+          </div>`;
+        timeline.appendChild(card);
+      });
+      shell.appendChild(timeline);
+      section.appendChild(shell);
+      return section;
+    }
+
+    function renderCertificates(certificates, honors) {
+      const section = el("section", "section");
+      section.id = "certificates";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("Certificates", "证书与荣誉"));
+      const cards = certificates.cards || [];
+      const grid = el("div", "certificate-grid reveal");
+      cards.forEach(cert => {
+        const card = el("article", "card certificate-card");
+        card.innerHTML = `
+          <div class="certificate-image"><img src="${escapeHtml(cert.img)}" alt="${escapeHtml(cert.title)}"></div>
+          <div class="certificate-body"><h3>${escapeHtml(cert.title)}</h3><p>${escapeHtml(cert.issuer)}</p></div>`;
+        card.addEventListener("click", () => openCertificate(cert.img, cert.title));
+        grid.appendChild(card);
+      });
+      shell.appendChild(grid);
+
+      if (certificates.gallery?.length) {
+        const gallery = el("div", "gallery-grid reveal");
+        certificates.gallery.forEach(item => {
+          const card = el("article", "card gallery-card");
+          card.innerHTML = `<img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.title)}">`;
+          card.addEventListener("click", () => openCertificate(item.img, item.title));
+          gallery.appendChild(card);
+        });
+        shell.appendChild(gallery);
+      }
+      if (honors.length) {
+        const honorGrid = el("div", "honors-grid reveal");
+        honors.forEach(honor => honorGrid.appendChild(el("article", "card honor", escapeHtml(honor.title))));
+        shell.appendChild(honorGrid);
+      }
+      section.appendChild(shell);
+      return section;
+    }
+
+    function renderGame(game) {
+      if (!game.title) return el("div");
+      const section = el("section", "section");
+      section.id = "play";
+      const shell = el("div", "shell");
+      shell.appendChild(sectionHead("Game", "互动作品"));
+      const card = el("div", "card game-card reveal");
+      card.innerHTML = `
+        <div class="game-copy">
+          <span class="status">${escapeHtml(game.badge || "Interactive")}</span>
+          <h3>${escapeHtml(game.title)}</h3>
+          <p>${escapeHtml(game.description)}</p>
+          <div class="tags">${(game.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>
+          <button class="button primary" type="button" style="margin-top:18px" id="openGameBtn">${escapeHtml(game.button || "进入作品")}</button>
+        </div>
+        <div class="game-preview" aria-hidden="true"><div class="game-grid">${"<i></i>".repeat(16)}</div></div>`;
+      card.querySelector("#openGameBtn").addEventListener("click", openGame);
+      shell.appendChild(card);
+      section.appendChild(shell);
+      return section;
+    }
+
+    function renderContact(profile, footer) {
+      const section = el("section", "section");
+      section.id = "contact";
+      const shell = el("div", "shell");
+      const panel = el("div", "card contact-panel reveal");
+      panel.innerHTML = `
+        <div class="contact-copy">
+          <span class="eyebrow">Contact</span>
+          <h2>让我们<span>聊聊</span>。</h2>
+          <p>欢迎交流 AI 训练、智能体开发、活动组织与项目协作机会。</p>
+        </div>
+        <div class="contact-actions">
+          <button class="button contact-action" type="button" data-copy="${escapeHtml(profile.phone || "")}" data-label="电话"><span>电话</span><strong>${escapeHtml(profile.phone || "")}</strong></button>
+          <button class="button contact-action" type="button" data-copy="${escapeHtml(profile.email || "")}" data-label="邮箱"><span>邮箱</span><strong>${escapeHtml(profile.email || "")}</strong></button>
+        </div>`;
+      panel.querySelectorAll("[data-copy]").forEach(button => {
+        button.addEventListener("click", () => copyText(button.dataset.copy, button.dataset.label));
+      });
+      shell.appendChild(panel);
+      const foot = el("footer", "footer");
+      foot.innerHTML = `<span>${escapeHtml(footer.copyright || "")}</span><a href="admin.html">内容管理</a>`;
+      shell.appendChild(foot);
+      section.appendChild(shell);
+      return section;
+    }
+
+    function setupReveal() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll(".reveal, .skill-card").forEach(node => observer.observe(node));
+
+      const sections = [...document.querySelectorAll("main section[id]")];
+      const links = [...document.querySelectorAll(".nav-link")];
+      window.addEventListener("scroll", () => {
+        let current = "hero";
+        sections.forEach(section => {
+          if (window.scrollY >= section.offsetTop - 180) current = section.id;
+        });
+        links.forEach(link => link.classList.toggle("active", link.getAttribute("href") === "#" + current));
+      }, { passive: true });
+    }
+
+    async function copyText(text, label) {
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(`${label}已复制`);
+      } catch {
+        const input = document.createElement("textarea");
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+        showToast(`${label}已复制`);
+      }
+    }
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function openCertificate(src, title) {
+      document.getElementById("certificateImage").src = src;
+      document.getElementById("certificateTitle").textContent = title || "证书查看";
+      document.getElementById("certificateModal").classList.add("open");
+      document.body.classList.add("modal-open");
+    }
+    function closeCertificate() {
+      document.getElementById("certificateModal").classList.remove("open");
+      document.getElementById("certificateImage").src = "";
+      document.body.classList.remove("modal-open");
+    }
+    function openGame() {
+      document.getElementById("gameTitle").textContent = CONFIG.game?.title || "作品展示";
+      document.getElementById("gameFrame").src = CONFIG.game?.src || "tank-battle.html";
+      document.getElementById("gameModal").classList.add("open");
+      document.body.classList.add("modal-open");
+    }
+    function closeGame() {
+      document.getElementById("gameModal").classList.remove("open");
+      document.getElementById("gameFrame").src = "";
+      document.body.classList.remove("modal-open");
+    }
+
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+    document.getElementById("mobileToggle").addEventListener("click", () => {
+      document.getElementById("navLinks").classList.toggle("open");
     });
-  }, {threshold:0.18});
-  nodes.forEach(n => io.observe(n));
-}
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", () => document.getElementById("navLinks").classList.remove("open"));
+    });
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target !== modal) return;
+        if (modal.id === "certificateModal") closeCertificate();
+        if (modal.id === "gameModal") closeGame();
+      });
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") { closeCertificate(); closeGame(); }
+    });
 
-function bind(cfg){
-  const nav = $('#nav');
-  const menu = $('#menu');
-  const btn = $('.menu-btn');
-  btn.addEventListener('click', () => {
-    const open = menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    menu.classList.remove('open');
-    btn.setAttribute('aria-expanded','false');
-  }));
-  const links = [...document.querySelectorAll('.nav-links a')];
-  const sections = ['about','work','life','experience','contact'].map(id => document.getElementById(id));
-  const onScroll = () => {
-    nav.classList.toggle('scrolled', window.scrollY > 8);
-    let current = '';
-    sections.forEach(sec => { if(sec && window.scrollY >= sec.offsetTop - 120) current = sec.id; });
-    links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#'+current ? 'true' : 'false'));
-  };
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
-
-  $('#play').addEventListener('click', () => openGame(cfg.game));
-  document.body.addEventListener('click', e => {
-    const t = e.target.closest('[data-img]');
-    if(t) openImage(t.dataset.img, t.dataset.title);
-  });
-  $('#modalClose').addEventListener('click', closeModal);
-  $('#modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal(); });
-  document.addEventListener('keydown', e => {
-    if(e.key!=='Escape') return;
-    closeModal();
-    menu.classList.remove('open');
-    btn.setAttribute('aria-expanded','false');
-  });
-}
-
-let lastFocus = null;
-function openGame(game){
-  lastFocus = document.activeElement;
-  $('#modalTitle').textContent = game.title;
-  const frame = $('#modalFrame');
-  const img = $('#modalImg');
-  img.hidden = true;
-  frame.hidden = false;
-  frame.src = game.src;
-  $('#modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  $('#modalClose').focus();
-}
-function openImage(src, title){
-  lastFocus = document.activeElement;
-  $('#modalTitle').textContent = title || '查看';
-  const frame = $('#modalFrame');
-  const img = $('#modalImg');
-  frame.hidden = true;
-  frame.src = '';
-  img.hidden = false;
-  img.src = thumb(src);
-  img.alt = title || '';
-  $('#modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  $('#modalClose').focus();
-}
-function closeModal(){
-  const frame = $('#modalFrame');
-  try { frame.contentWindow && frame.contentWindow.postMessage({ type: 'tank-stop' }, '*'); } catch (e) {}
-  $('#modal').classList.remove('open');
-  frame.src = 'about:blank';
-  $('#modalImg').src = '';
-  document.body.style.overflow = '';
-  if (lastFocus && lastFocus.focus) lastFocus.focus();
-}
-
-init();
-</script>
+    init();
+  </script>
 </body>
 </html>
