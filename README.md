@@ -2,6 +2,8 @@
 
 一个基于 `config.json` 配置驱动的动态个人简历网站。**只需编辑 `config.json` 文件即可更新全部内容**，无需改动任何代码。
 
+**在线访问：<https://sutranixm-svg.github.io/resume/>**
+
 内置 **Admin 管理面板**，可在浏览器中直接编辑内容并自动提交部署。
 
 ## 快速开始
