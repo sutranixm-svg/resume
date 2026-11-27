@@ -2,7 +2,7 @@
   "site": {
     "title": "陈芷锐 · Portfolio",
     "description": "陈芷锐 · AI训练师 · 达摩院人工智能高级训练师",
-    "version": "3.0"
+    "version": "3.1"
   },
   "theme": {
     "bg": "#f5f5f7",
@@ -158,6 +158,7 @@
         "icon": "bot",
         "pill": { "label": "高级认证", "color": "#f59e0b" },
         "img": "assets/cert-ai-senior.jpg",
+        "thumb": "assets/thumbs/cert-ai-senior.jpg",
         "details": [
           { "label": "证书编号", "value": "AIT260810000555000105", "mono": true },
           { "label": "有效期至", "value": "2027-08-10", "mono": true },
@@ -171,6 +172,7 @@
         "icon": "bot",
         "pill": { "label": "基础认证", "color": "#3b82f6" },
         "img": "assets/cert-ai-junior.png",
+        "thumb": "assets/thumbs/cert-ai-junior.jpg",
         "details": [
           { "label": "认证级别", "value": "初级", "mono": true },
           { "label": "颁证机构", "value": "阿里巴巴·橙点同学", "span": 2 },
@@ -183,6 +185,7 @@
         "icon": "sparkles",
         "pill": { "label": "讯飞认证", "color": "#b4ff39" },
         "img": "assets/cert-iflytek-agent.jpg",
+        "thumb": "assets/thumbs/cert-iflytek-agent.jpg",
         "details": [
           { "label": "证书编号", "value": "XFAGENT465566", "mono": true },
           { "label": "有效期至", "value": "2028-09-13", "mono": true },
@@ -196,6 +199,7 @@
         "icon": "sparkles",
         "pill": { "label": "讯飞认证", "color": "#b4ff39" },
         "img": "assets/cert-iflytek-prompt.jpg",
+        "thumb": "assets/thumbs/cert-iflytek-prompt.jpg",
         "details": [
           { "label": "证书编号", "value": "XFPROMPT957206", "mono": true },
           { "label": "有效期至", "value": "2028-09-13", "mono": true },
@@ -209,6 +213,7 @@
         "icon": "terminal",
         "pill": { "label": "联合认证", "color": "#ff5e3a" },
         "img": "assets/cert-datawhale-marscode.jpg",
+        "thumb": "assets/thumbs/cert-datawhale-marscode.jpg",
         "details": [
           { "label": "证书编号", "value": "AICODING09092", "mono": true },
           { "label": "颁证日期", "value": "2026-09-13", "mono": true },
@@ -222,6 +227,7 @@
         "icon": "database",
         "pill": { "label": "实训认证", "color": "#3b82f6" },
         "img": "assets/cert-aliyun-bigdata.jpg",
+        "thumb": "assets/thumbs/cert-aliyun-bigdata.jpg",
         "details": [
           { "label": "证书编号", "value": "CDALY2025081401330", "mono": true },
           { "label": "实训时间", "value": "2026.09.03 - 09.09", "mono": true },
@@ -231,8 +237,8 @@
       }
     ],
     "gallery": [
-      { "img": "assets/photo-extra-2.jpg", "title": "佐证图片", "sub": "点击查看" },
-      { "img": "assets/photo-extra-3.jpg", "title": "佐证图片", "sub": "点击查看" }
+      { "img": "assets/photo-extra-2.jpg", "thumb": "assets/thumbs/photo-extra-2.jpg", "title": "佐证图片", "sub": "点击查看" },
+      { "img": "assets/photo-extra-3.jpg", "thumb": "assets/thumbs/photo-extra-3.jpg", "title": "佐证图片", "sub": "点击查看" }
     ]
   },
   "honors": [
@@ -270,18 +276,25 @@
         { "label": "源码", "href": "https://github.com/sutranixm-svg/ai-guardian-pro" },
         { "label": "下载 1.0.1", "href": "https://github.com/sutranixm-svg/ai-guardian-pro/releases/download/v1.0.1/AIGuardianPro-windows-x64.zip" }
       ]
+    },
+    {
+      "title": "元一AI短剧",
+      "summary": "短剧制作用的多智能体配置。1 个总控加 4 个专业角色，50 条提示词覆盖剧本、美术资产、分镜和剪辑。可以只拿提示词去外部平台生成，也可以选配即梦、可灵、百炼或本地引擎。",
+      "links": [
+        { "label": "源码", "href": "https://github.com/sutranixm-svg/short-drama-studio" }
+      ]
     }
   ],
   "game": {
     "badge": "Cyber · Pixel",
     "title": "赛博坦克大战",
-    "description": "欢迎来到我的数字作品集隐藏关卡。由我参与开发的纯前端 HTML 单人游戏，可选四张地图和四档难度。",
-    "tags": ["4张地图", "4档难度", "纯单人模式", "像素界面"],
+    "description": "欢迎来到我的数字作品集隐藏关卡。纯前端 HTML 游戏，可选四张地图和四档难度，可以单人，也可以在同一台设备上同屏双人。没有网络对战。",
+    "tags": ["4张地图", "4档难度", "同屏双人", "像素界面"],
     "button": "进入游戏",
     "src": "tank-battle.html"
   },
   "footer": {
     "copyright": "© 2026 陈芷锐 · All Rights Reserved",
-    "note": "Portfolio v3.0 · Built with vibe"
+    "note": "Portfolio v3.1 · Built with vibe"
   }
 }

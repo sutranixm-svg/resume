@@ -8,7 +8,7 @@
 <title>赛博坦克大战 · 浪尖儿大学社区</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { width:100vw; height:100vh; overflow:hidden; font-family:'Courier New', monospace; color:#0ff; user-select:none; -webkit-user-select:none; touch-action:none; }
+  html, body { width:100%; height:100%; height:100dvh; overflow:hidden; font-family:'Courier New', monospace; color:#0ff; user-select:none; -webkit-user-select:none; touch-action:none; }
   body {
     background: #0a0a1a;
     background-image:
@@ -158,16 +158,32 @@
   #skill-icon-pc-char { z-index: 2; }
 
   @media (pointer: coarse), (max-width: 900px) {
-    #controls-overlay { display: flex; }
+    body.playing #controls-overlay { display: flex; }
   }
+  #dpad, #fireBtn, #skillBtn, #pauseBtn { touch-action: none; }
+  #stick {
+    position: absolute; left: 50%; top: 50%; width: 28px; height: 28px;
+    margin: -14px 0 0 -14px; border-radius: 50%; pointer-events: none;
+    background: rgba(0,255,255,0.28); border: 2px solid #0ff;
+    box-shadow: 0 0 12px rgba(0,255,255,0.45);
+  }
+  #pauseBtn {
+    display: none; margin-left: 4px; padding: 4px 10px; border-radius: 4px;
+    border: 2px solid #0ff; background: rgba(0,255,255,0.08); color: #0ff;
+    font: inherit; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;
+  }
+  body.playing #pauseBtn { display: inline-flex; align-items: center; }
+  #audio-toggle { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); }
 
   /* 屏幕叠加 */
   .screen {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
+    position: fixed; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    background: rgba(5,5,21,0.96); z-index: 100;
-    overflow-y: auto; padding: 14px;
+    background: rgba(5,5,21,0.96); z-index: 180;
+    overflow-y: auto; padding: max(18px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+    touch-action: pan-y; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
   }
+  .hidden { display: none !important; }
   .screen.hidden { display: none !important; }
   .o-title {
     font-size: clamp(24px, 5vw, 48px);
@@ -341,9 +357,10 @@
   }
   .screen {
     background:
-      linear-gradient(rgba(5,5,21,0.92), rgba(5,5,21,0.96)),
+      linear-gradient(rgba(5,5,21,0.97), rgba(5,5,21,0.985)),
       repeating-linear-gradient(90deg, rgba(0,255,255,0.05) 0 2px, transparent 2px 16px);
   }
+  #screen-title { justify-content: flex-start; padding-top: 28px; }
   .o-title {
     text-shadow: 4px 4px 0 #321054;
   }
@@ -383,10 +400,16 @@
   #fireBtn, #skillBtn {
     border-radius: 6px;
   }
+  @media (max-height: 520px) {
+    body.playing #titleRow { display: none; }
+    body.playing #hud { margin-bottom: 2px; padding: 4px 8px; }
+    body.playing #canvasWrap { max-height: calc(100% - 150px); }
+  }
+  #controls-overlay { padding-bottom: env(safe-area-inset-bottom); }
 </style>
 </head>
 <body>
-<button id="audio-toggle">🔊</button>
+<button id="audio-toggle" type="button" aria-pressed="true" aria-label="关闭声音">🔊</button>
 
 <div id="gameContainer">
   <div id="titleRow">
@@ -404,6 +427,7 @@
     <div class="hud-item"><span class="hud-label">击杀</span><span class="hud-value gold" id="killVal">0</span></div>
     <div class="hud-item"><span class="hud-label">分数</span><span class="hud-value" id="scoreVal">0</span></div>
     <div class="hud-item"><span class="hud-label">技能</span><span class="hud-value" id="skillVal">就绪</span></div>
+    <button id="pauseBtn" type="button" aria-label="暂停">暂停</button>
   </div>
 
   <div id="canvasWrap">
@@ -417,10 +441,14 @@
 
     <div id="powerupToast"></div>
 
-    <div id="skill-icon-pc">
+    <div id="skill-icon-pc" role="button" aria-label="量子闪避">
       <div id="skill-icon-pc-mask"></div>
       <span id="skill-icon-pc-char">闪</span>
       <span id="skill-icon-pc-num"></span>
+    </div>
+    <div id="p2hud" class="p2-hud" hidden>
+      <div class="player-label">P2 <span id="p2hpText">100</span></div>
+      <div class="p2-hp-bg"><div class="p2-hp-fill" id="p2hp"></div></div>
     </div>
 
     <!-- 开始界面 -->
@@ -439,11 +467,15 @@
       <div class="select-group">
         <!-- 模式选择 -->
         <div class="select-row">
-          <div class="select-row-label">🎮 游戏模式 <span class="sub">纯单人体验</span></div>
+          <div class="select-row-label">🎮 游戏模式 <span class="sub">同一台设备，没有网络对战</span></div>
           <div class="option-grid" id="modeGrid">
-            <div class="option-card mode selected" data-mode="solo">
+            <div class="option-card mode selected" data-mode="solo" role="button" tabindex="0">
               <div class="card-title">🎯 单人</div>
               <div class="card-desc">1P：WASD 移动<br>空格发射</div>
+            </div>
+            <div class="option-card mode" data-mode="local2p" role="button" tabindex="0">
+              <div class="card-title">👥 同屏双人</div>
+              <div class="card-desc">1P 用 WASD<br>2P 用方向键</div>
             </div>
           </div>
           <div id="roomInfoBox" class="room-info hidden"></div>
@@ -497,7 +529,8 @@
       </div>
 
       <div class="o-sub" style="margin-top:0;">
-        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / LShift</span> 闪避 · <span>P / Esc</span> 暂停</div>
+        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / 左 Shift</span> 闪避 · <span>P / Esc</span> 暂停</div>
+        <div>👥 <span>2P: 方向键</span> 移动 · <span>回车</span> 发射 · <span>右 Shift</span> 闪避</div>
         <div>💎 道具：
           <span class="y">♥</span>回血
           <span class="g">»</span>加速
@@ -506,11 +539,12 @@
           <span class="y">✦</span>强化弹
           <span class="p">☢</span>清场
         </div>
-        <div style="margin-top:6px;">🏆 摧毁带<span class="y">CZR</span>标记的障碍物可获得道具，保卫基地！</div>
+        <div style="margin-top:6px;">🏆 摧毁带<span class="y">CZR</span>标记的障碍物可获得道具。敌方炮弹打中基地会直接失败。</div>
+        <div>同屏双人共用这一台设备的键盘。没有网络对战。</div>
       </div>
       <button class="btn" id="startBtn">▶ 开 始 游 戏</button>
       <div class="desktop-hint">
-        提示：Q 或 Shift 是量子闪避。当前版本仅支持单人战斗。
+        提示：Q 或左 Shift 是 1P 闪避，右 Shift 是 2P 闪避。切到别的窗口会自动暂停。
       </div>
     </div>
 
@@ -541,19 +575,20 @@
   </div>
 
   <div id="controls-overlay">
-    <div id="dpad">
-      <div class="dpad-btn up">▲</div>
-      <div class="dpad-btn left">◀</div>
-      <div class="dpad-btn right">▶</div>
-      <div class="dpad-btn down">▼</div>
+    <div id="dpad" role="group" aria-label="移动摇杆">
+      <div class="dpad-btn up" aria-hidden="true">▲</div>
+      <div class="dpad-btn left" aria-hidden="true">◀</div>
+      <div class="dpad-btn right" aria-hidden="true">▶</div>
+      <div class="dpad-btn down" aria-hidden="true">▼</div>
+      <div id="stick"></div>
     </div>
     <div class="btn-group-right">
-      <div id="skillBtn">
+      <div id="skillBtn" role="button" aria-label="量子闪避">
         <div id="skill-cd-mask"></div>
         <span id="skill-char">闪</span>
         <span id="skill-cd-num"></span>
       </div>
-      <div id="fireBtn">FIRE</div>
+      <div id="fireBtn" role="button" aria-label="开火">FIRE</div>
     </div>
   </div>
 </div>
@@ -599,7 +634,9 @@
   document.getElementById('audio-toggle').addEventListener('click', function() {
     audioOn = !audioOn;
     this.textContent = audioOn ? '🔊' : '🔇';
-    if (audioOn) initAudio();
+    this.setAttribute('aria-pressed', audioOn ? 'true' : 'false');
+    this.setAttribute('aria-label', audioOn ? '关闭声音' : '打开声音');
+    if (audioOn) initAudio(); else suspendAudio();
   });
 
   // ============ Setup ============
@@ -779,6 +816,7 @@
     netFrameSync: 0,
     paused: false,
     transitioning: false,
+    fireLatch: false,
   };
 
   // ============ Input ============
@@ -796,7 +834,10 @@
   function releaseInputs() {
     state.keys = {};
     state.keys2 = {};
+    state.fireLatch = false;
     document.querySelectorAll('#dpad .dpad-btn, #fireBtn').forEach(el => el.classList.remove('active'));
+    const stick = document.getElementById('stick');
+    if (stick) stick.style.transform = 'translate(0px, 0px)';
   }
   window.addEventListener('keydown', e => {
     if (e.repeat && (e.key === 'p' || e.key === 'P' || e.key === 'Escape')) return;
@@ -816,7 +857,11 @@
       if (e.location === 2) state.keys2.skill = true;                      // RShift -> P2
       e.preventDefault(); return;
     }
-    if (keyMapP1[e.key]) { state.keys[keyMapP1[e.key]] = true; e.preventDefault(); return; }
+    if (keyMapP1[e.key]) {
+      state.keys[keyMapP1[e.key]] = true;
+      if (keyMapP1[e.key] === 'fire') state.fireLatch = true;
+      e.preventDefault(); return;
+    }
     if (keyMapP2[e.key]) { state.keys2[keyMapP2[e.key]] = true; e.preventDefault(); return; }
   });
   window.addEventListener('keyup', e => {
@@ -848,13 +893,56 @@
     el.addEventListener('pointerup', up);
     el.addEventListener('pointercancel', up);
   }
-  document.querySelectorAll('#dpad .dpad-btn').forEach(el => {
-    const key = ['up','down','left','right'].find(name => el.classList.contains(name));
-    if (!key) return;
-    bindHold(el, v => { state.keys[key] = v; el.classList.toggle('active', v); });
+  const dpad = document.getElementById('dpad');
+  const stick = document.getElementById('stick');
+  const padPointers = new Set();
+  function setMoveDir(dir) {
+    ['up', 'down', 'left', 'right'].forEach(name => {
+      state.keys[name] = name === dir;
+      const btn = dpad.querySelector('.' + name);
+      if (btn) btn.classList.toggle('active', name === dir);
+    });
+    dpad.setAttribute('aria-label', dir ? ('移动：' + ({ up:'上', down:'下', left:'左', right:'右' })[dir]) : '移动摇杆');
+  }
+  function dirFromPad(e) {
+    const rect = dpad.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+    const max = Math.max(16, rect.width / 2);
+    const nx = Math.max(-1, Math.min(1, x / max));
+    const ny = Math.max(-1, Math.min(1, y / max));
+    if (stick) stick.style.transform = `translate(${nx * 22}px, ${ny * 22}px)`;
+    if (Math.hypot(x, y) < 14) return null;
+    return Math.abs(x) > Math.abs(y) ? (x > 0 ? 'right' : 'left') : (y > 0 ? 'down' : 'up');
+  }
+  dpad.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    initAudio();
+    try { dpad.setPointerCapture(e.pointerId); } catch (err) {}
+    padPointers.add(e.pointerId);
+    setMoveDir(dirFromPad(e));
   });
+  dpad.addEventListener('pointermove', e => {
+    if (!padPointers.has(e.pointerId)) return;
+    e.preventDefault();
+    setMoveDir(dirFromPad(e));
+  });
+  const endPad = e => {
+    padPointers.delete(e.pointerId);
+    if (padPointers.size === 0) {
+      setMoveDir(null);
+      if (stick) stick.style.transform = 'translate(0px, 0px)';
+    }
+  };
+  dpad.addEventListener('pointerup', endPad);
+  dpad.addEventListener('pointercancel', endPad);
   const fireBtn = document.getElementById('fireBtn');
-  bindHold(fireBtn, v => { state.keys.fire = v; fireBtn.classList.toggle('active', v); });
+  bindHold(fireBtn, v => {
+    state.keys.fire = v;
+    if (v) state.fireLatch = true;
+    fireBtn.classList.toggle('active', v);
+  });
   const skillBtn = document.getElementById('skillBtn');
   const skillPcBtn = document.getElementById('skill-icon-pc');
   function trySkill() {
@@ -878,7 +966,8 @@
       state.skillCD2 = state.skillMaxCD;
     }
     sfx.skill();
-    showToast(idx === 1 ? '⚡ P1 量子闪避！' : '💜 P2 量子闪避！');
+    const who = state.mode === 'local2p' ? (idx === 1 ? 'P1 ' : 'P2 ') : '';
+    showToast((idx === 1 ? '⚡ ' : '💜 ') + who + '量子闪避');
     updateSkillUI();
   }
   function updateSkillUI() {
@@ -960,9 +1049,26 @@
     faceDir(dir) {
       if (this.dir !== dir) {
         this.dir = dir;
-        if (dir === 0 || dir === Math.PI) this.x = this.gx * TILE + TILE/2;
-        else this.y = this.gy * TILE + TILE/2;
+        const vertical = dir === 0 || dir === Math.PI;
+        const nx = vertical ? this.gx * TILE + TILE / 2 : this.x;
+        const ny = vertical ? this.y : this.gy * TILE + TILE / 2;
+        if (this.canMoveTo(nx, ny)) { this.x = nx; this.y = ny; }
       }
+    }
+    drive(dir, sp) {
+      const vertical = dir === 0 || dir === Math.PI;
+      const center = (vertical ? this.gx : this.gy) * TILE + TILE / 2;
+      const pos = vertical ? this.x : this.y;
+      const delta = center - pos;
+      this.dir = dir;
+      let budget = sp;
+      if (Math.abs(delta) > 0.8) {
+        const step = Math.sign(delta) * Math.min(Math.abs(delta), budget);
+        const before = vertical ? this.x : this.y;
+        const moved = vertical ? this.tryMove(step, 0) : this.tryMove(0, step);
+        if (moved) budget -= Math.abs((vertical ? this.x : this.y) - before);
+      }
+      if (budget > 0.2) this.tryMove(Math.sin(dir) * budget, -Math.cos(dir) * budget);
     }
     update(idx = 1) {
       if (this.cooldown > 0) this.cooldown--;
@@ -988,12 +1094,17 @@
           }
           this.tryMove(Math.sin(dir)*sp, -Math.cos(dir)*sp);
         } else {
-          if (keys.up)         { this.faceDir(0);         this.tryMove(0, -sp); }
-          else if (keys.down)  { this.faceDir(Math.PI);   this.tryMove(0, sp); }
-          else if (keys.left)  { this.faceDir(-Math.PI/2);this.tryMove(-sp, 0); }
-          else if (keys.right) { this.faceDir(Math.PI/2); this.tryMove(sp, 0); }
+          let dir = null;
+          if (keys.up) dir = 0;
+          else if (keys.down) dir = Math.PI;
+          else if (keys.left) dir = -Math.PI / 2;
+          else if (keys.right) dir = Math.PI / 2;
+          if (dir !== null) this.drive(dir, sp);
         }
-        if (keys.fire && this.cooldown <= 0) this.shoot(rate);
+        if ((keys.fire || (idx === 1 && state.fireLatch)) && this.cooldown <= 0) {
+          this.shoot(rate);
+          if (idx === 1) state.fireLatch = false;
+        }
         if (keys.skill) {
           if (idx === 1 && state.skillCD <= 0) useSkill(this, 1);
           if (idx === 2 && state.skillCD2 <= 0) useSkill(this, 2);
@@ -1003,21 +1114,26 @@
         this.moveTimer--;
         if (this.moveTimer <= 0) {
           const dirs = [0, Math.PI, -Math.PI/2, Math.PI/2];
-          // 选择最近的玩家作为追击目标
           const targets = [state.player, state.player2].filter(Boolean);
-          let nearest = state.player; let nd = Infinity;
+          let nearest = null; let nd = Infinity;
           for (const t of targets) {
             const dx = t.x - this.x, dy = t.y - this.y; const d = dx*dx+dy*dy;
             if (d < nd) { nd = d; nearest = t; }
           }
-          if (nearest && Math.random() < 0.45) {
-            const dx = nearest.x - this.x, dy = nearest.y - this.y;
-            if (Math.abs(dx) > Math.abs(dy)) this.targetDir = dx > 0 ? Math.PI/2 : -Math.PI/2;
-            else this.targetDir = dy > 0 ? Math.PI : 0;
-          } else {
-            this.targetDir = dirs[Math.floor(Math.random()*4)];
+          const gx = nearest ? nearest.x : state.baseX * TILE + TILE / 2;
+          const gy = nearest ? nearest.y : state.baseY * TILE + TILE / 2;
+          let best = dirs[0], bestScore = -Infinity;
+          for (const dir of dirs) {
+            const vx = Math.sin(dir), vy = -Math.cos(dir);
+            const open = this.canMoveTo(this.x + vx * 8, this.y + vy * 8);
+            const dist = (this.x + vx * TILE - gx) ** 2 + (this.y + vy * TILE - gy) ** 2;
+            let score = open ? (1400000 - dist) : (-dist);
+            if (dir === this.dir && open) score += 9000;
+            score += Math.random() * 160000;
+            if (score > bestScore) { bestScore = score; best = dir; }
           }
-          this.moveTimer = 30 + Math.floor(Math.random()*60);
+          this.targetDir = best;
+          this.moveTimer = 18 + Math.floor(Math.random() * 36);
         }
         this.faceDir(this.targetDir);
         const mv = this.tryMove(Math.sin(this.dir)*this.speed, -Math.cos(this.dir)*this.speed);
@@ -1204,8 +1320,13 @@
           updateHUD(); handled = true;
         }
         if (handled) {
-          // 两个玩家都死了才判定失败
-          if (!state.player && !state.player2) gameOver(false);
+          if (!state.player && !state.player2) gameOver(false, 'down');
+          return false;
+        }
+        const cellX = Math.floor(this.x / TILE), cellY = Math.floor(this.y / TILE);
+        if (cellX === state.baseX && cellY === state.baseY) {
+          spawnExplosion(state.baseX * TILE + TILE / 2, state.baseY * TILE + TILE / 2);
+          gameOver(false, 'base');
           return false;
         }
       }
@@ -1405,7 +1526,16 @@
       });
     };
     openSpawn(2, ROWS - 3);
-    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') openSpawn(COLS - 3, ROWS - 3);
+    if (state.mode === 'local2p') openSpawn(COLS - 3, ROWS - 3);
+    const clearPad = (tx, ty) => {
+      [[0, 0], [0, 1]].forEach(([dx, dy]) => {
+        const x = tx + dx, y = ty + dy;
+        if (x > 0 && x < COLS - 1 && y > 0 && y < ROWS - 1 && !(x === state.baseX && y === state.baseY)) {
+          state.walls[y][x] = null;
+        }
+      });
+    };
+    [[1, 1], [Math.floor(COLS / 2), 1], [COLS - 2, 1]].forEach(([x, y]) => clearPad(x, y));
 
     // Protective CZR walls around base
     const bx = state.baseX, by = state.baseY;
@@ -1413,6 +1543,7 @@
       const xx = bx+dx, yy = by+dy;
       if (xx > 0 && xx < COLS-1 && yy > 0 && yy < ROWS-1) state.walls[yy][xx] = makeWall(true, true);
     });
+    state.walls[by][bx] = null;
 
     // 难度参数影响
     const d = DIFFICULTY[state.difficulty] || DIFFICULTY.normal;
@@ -1435,8 +1566,7 @@
     state.player = new Tank(2, ROWS - 3, true);
     state.player.hp = Math.min(state.player.maxHp, hpKeep);
     state.player.bulletDmg = dmgKeep;
-    // P2 (local2p / host / join 模式)
-    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') {
+    if (state.mode === 'local2p') {
       const hp2Keep = state.player2 ? state.player2.hp : 100;
       state.player2 = new Tank(COLS - 3, ROWS - 3, true);
       state.player2.hp = Math.min(state.player2.maxHp, hp2Keep);
@@ -1463,6 +1593,8 @@
     for (const [sx,sy] of spots.sort(()=>Math.random()-0.5)) {
       const px = sx*TILE+TILE/2, py = sy*TILE+TILE/2;
       const s = TILE*0.75/2;
+      const blocked = wallAt(sx, sy);
+      if (blocked && blocked.solid) continue;
       let free = true;
       const r = { x:px-s, y:py-s, w:TILE*0.75, h:TILE*0.75 };
       for (const e of state.enemies) if (rectHit(r, e.rect())) { free = false; break; }
@@ -1603,6 +1735,16 @@
       document.getElementById('hpVal').textContent = 'KIA';
       document.getElementById('healthFill').style.width = '0%';
     }
+    const p2 = document.getElementById('p2hud');
+    if (p2) {
+      const showP2 = state.mode === 'local2p' && state.running;
+      p2.hidden = !showP2;
+      if (showP2) {
+        const hp = state.player2 ? Math.max(0, Math.round(state.player2.hp)) : 0;
+        document.getElementById('p2hpText').textContent = state.player2 ? hp : 'KIA';
+        document.getElementById('p2hp').style.width = (state.player2 ? (hp / state.player2.maxHp * 100) : 0) + '%';
+      }
+    }
     updateSkillUI();
   }
 
@@ -1675,7 +1817,7 @@
       const dx = e.x - bx, dy = e.y - by;
       if (Math.sqrt(dx*dx+dy*dy) < TILE*0.85) {
         spawnExplosion(bx, by);
-        gameOver(false);
+        gameOver(false, 'touch');
         return;
       }
     }
@@ -1798,6 +1940,7 @@
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     if (id) document.getElementById(id).classList.remove('hidden');
+    document.body.classList.toggle('playing', !!(state.running && !state.paused && !id));
   }
   function clearFlow() {
     clearTimeout(flowTimer);
@@ -1853,14 +1996,16 @@
       updateHUD();
     }, 900);
   }
-  function gameOver(win) {
+  function gameOver(win, reason) {
     if (!state.running) return;
     state.running = false;
     state.paused = false;
     clearFlow();
     releaseInputs();
+    showScreen(null);
     skillPcBtn.classList.remove('show');
     if (win) sfx.win(); else sfx.lose();
+    const endReason = reason || '';
     clearTimeout(flowTimer);
     flowTimer = setTimeout(() => {
       // Calc exp
@@ -1874,7 +2019,8 @@
       saveProfile();
       // Populate
       document.getElementById('go-title-en').textContent = win ? 'VICTORY' : 'GAME OVER';
-      document.getElementById('go-title').textContent = win ? '胜 利' : '失 败';
+      const failTitle = endReason === 'base' ? '基地被毁' : (endReason === 'touch' ? '基地失守' : '失 败');
+      document.getElementById('go-title').textContent = win ? '胜 利' : failTitle;
       document.getElementById('go-title-en').style.backgroundImage = win
         ? 'linear-gradient(90deg,#0f0,#0ff,#ff0,#0f0)'
         : 'linear-gradient(90deg,#f00,#f0f,#f55,#f00)';
@@ -1897,16 +2043,24 @@
     const grid = document.getElementById(containerId);
     if (!grid) return;
     grid.querySelectorAll('.option-card').forEach(card => {
-      card.addEventListener('click', () => {
+      if (!card.hasAttribute('role')) card.setAttribute('role', 'button');
+      if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
+      const choose = () => {
         if (card.classList.contains('unavailable')) return;
         grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
-        const val = card.getAttribute(attr);
-        onChange(val);
+        onChange(card.getAttribute(attr));
+      };
+      card.addEventListener('click', choose);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(); }
       });
     });
   }
   state.mode = 'solo';
+  bindOptionCards('modeGrid', 'data-mode', v => {
+    if (v === 'solo' || v === 'local2p') state.mode = v;
+  });
   bindOptionCards('mapGrid', 'data-map', v => { state.mapIndex = parseInt(v) || 0; });
   bindOptionCards('diffGrid', 'data-diff', v => { state.difficulty = v; });
 
@@ -1985,84 +2139,12 @@
     }
   }
 
-  // ============ WebSocket 真实互联网联机（预留接口） ============
-  // 取消下方注释即可启用真实WebSocket联机（需要同时部署 Node.js 服务端）
-  // --------------------------------------------------------------------
-  // const WS_URL = 'ws://your-server.com:8787';   // 替换为你的服务器地址
-  // let wsSocket = null;
-  // function connectWebSocket(role, roomId) {
-  //   try {
-  //     wsSocket = new WebSocket(WS_URL);
-  //     wsSocket.onopen = () => {
-  //       console.log('[WS] 已连接');
-  //       wsSocket.send(JSON.stringify({ type: role === 'host' ? 'create_room' : 'join_room', roomId }));
-  //       state.netRole = role;
-  //     };
-  //     wsSocket.onmessage = (ev) => {
-  //       const msg = JSON.parse(ev.data);
-  //       // 数据格式与 BroadcastChannel 保持一致 (sync/input/host_ack/join_ping)
-  //       if (msg.type === 'sync' && state.running) {
-  //         if (msg.p1 && state.player) applyPackedTank(state.player, msg.p1);
-  //         if (msg.enemies) msg.enemies.forEach((p, i) => state.enemies[i] && applyPackedTank(state.enemies[i], p));
-  //         if (msg.bullets) state.bullets = msg.bullets.map(b => new Bullet(b.x, b.y, b.vx, b.vy, b.fromPlayer));
-  //       } else if (msg.type === 'input' && state.player2 && state.running) {
-  //         applyPackedTank(state.player2, msg.p2);
-  //       }
-  //     };
-  //     wsSocket.onerror = (err) => console.warn('[WS] 错误', err);
-  //     wsSocket.onclose = () => console.warn('[WS] 断开');
-  //   } catch(e) { console.warn('[WS] 连接失败', e); }
-  // }
-  // function wsSend(obj) {
-  //   if (wsSocket && wsSocket.readyState === 1) wsSocket.send(JSON.stringify(obj));
-  // }
-  // // 在 step() 函数中，将 state.netChannel.postMessage 替换为 wsSend 即可
-  // --------------------------------------------------------------------
-  // Node.js WebSocket 服务端示例 (保存为 server.js 后执行 `npm i ws && node server.js`)：
-  // --------------------------------------------------------------------
-  // const WebSocket = require('ws');
-  // const wss = new WebSocket.Server({ port: 8787 });
-  // const rooms = {};
-  // wss.on('connection', (ws) => {
-  //   let currentRoom = null, myRole = null;
-  //   ws.on('message', (raw) => {
-  //     try {
-  //       const msg = JSON.parse(raw);
-  //       if (msg.type === 'create_room') {
-  //         const id = msg.roomId || ('ROOM_' + Math.random().toString(36).slice(2,8));
-  //         rooms[id] = { host: ws, client: null };
-  //         currentRoom = id; myRole = 'host';
-  //         ws.send(JSON.stringify({ type: 'room_created', roomId: id }));
-  //       } else if (msg.type === 'join_room') {
-  //         const room = rooms[msg.roomId];
-  //         if (room && !room.client) {
-  //           room.client = ws; currentRoom = msg.roomId; myRole = 'client';
-  //           ws.send(JSON.stringify({ type: 'joined', roomId: msg.roomId }));
-  //           room.host.send(JSON.stringify({ type: 'client_joined' }));
-  //           room.host.send(JSON.stringify({ type: 'join_ping' }));
-  //         } else {
-  //           ws.send(JSON.stringify({ type: 'error', reason: '房间不存在或已满' }));
-  //         }
-  //       } else {
-  //         // 转发游戏内同步消息
-  //         const room = rooms[currentRoom];
-  //         if (!room) return;
-  //         const target = myRole === 'host' ? room.client : room.host;
-  //         if (target && target.readyState === 1) target.send(JSON.stringify(msg));
-  //       }
-  //     } catch(e) {}
-  //   });
-  //   ws.on('close', () => {
-  //     if (currentRoom && rooms[currentRoom]) {
-  //       if (myRole === 'host') { delete rooms[currentRoom]; }
-  //       else { rooms[currentRoom].client = null; rooms[currentRoom].host && rooms[currentRoom].host.send(JSON.stringify({ type: 'client_left' })); }
-  //     }
-  //   });
-  // });
-  // console.log('[WS Server] 监听 :8787');
-  // --------------------------------------------------------------------
+  // Internet play is not implemented.
 
   // Bind
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (state.running && !state.transitioning) setPaused(!state.paused);
+  });
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('restartBtn').addEventListener('click', startGame);
   document.getElementById('resumeBtn').addEventListener('click', () => setPaused(false));
@@ -2106,8 +2188,11 @@
   if (location.hash === '#debug') {
     window.__tank = {
       get state() { return state; },
-      startGame,
-      setPaused,
+      startGame, setPaused, step, genLevel, nextLevel, wallAt,
+      TILE, COLS, ROWS,
+      fireBullet(fromPlayer, x, y, vx, vy) {
+        state.bullets.push(new Bullet(x, y, vx, vy, fromPlayer, 20));
+      },
       get raf() { return rafId; },
       get ticks() { return ticks; }
     };

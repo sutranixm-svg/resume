@@ -863,7 +863,8 @@ function addMarquee() {
 function collectMarquee() {
   document.querySelectorAll('[data-marquee]').forEach(el => {
     const i = parseInt(el.dataset.idx);
-    CONFIG.marquee[i][el.dataset.marquee] = el.value === 'true';
+    const key = el.dataset.marquee;
+    CONFIG.marquee[i][key] = key === 'outline' ? el.value === 'true' : el.value;
   });
 }
 
