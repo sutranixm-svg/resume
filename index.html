@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>陈芷锐 · Portfolio</title>
   <meta name="description" content="陈芷锐 · AI Trainer · 个人作品集">
-  <meta name="theme-color" content="#0b0d12">
+  <meta name="theme-color" content="#f5f5f7">
   <link rel="icon" href="assets/avatar.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --menu: rgba(11, 13, 18, .96);
       --bg: #0b0d12;
       --bg-soft: #11141b;
       --card: rgba(20, 23, 31, 0.88);
@@ -151,6 +152,10 @@
       font-size: 14px; font-weight: 700; transition: .22s ease;
     }
     .button:hover { transform: translateY(-2px); border-color: rgba(255,255,255,.18); background: var(--card-strong); }
+    .hero-bio, .about-main h3, .game-copy p, .section-copy, .contact-copy h2 { text-wrap: balance; }
+    .contact-copy h2 { margin-top: 14px; }
+    .nav-tools { display: flex; align-items: center; gap: 8px; }
+    .nav-tools .icon-btn, .modal-head .icon-btn { width: auto; min-width: 40px; padding: 0 12px; white-space: nowrap; }
     .button.primary { background: var(--accent); color: #10130b; border-color: var(--accent); }
     .button.primary:hover { box-shadow: 0 14px 38px rgba(180,255,57,.16); background: var(--accent); }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 36px; }
@@ -222,6 +227,7 @@
     .skill-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .skill-name { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; }
     .skill-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: rgba(180,255,57,.07); color: var(--accent); }
+    .skill-icon svg, .honor svg { width: 18px; height: 18px; display: block; }
     .skill-level { color: var(--quiet); font-size: 11px; }
     .skill-track { height: 5px; margin: 18px 0 10px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); }
     .skill-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--blue)); transform-origin: left; transform: scaleX(0); transition: transform 1s cubic-bezier(.22,1,.36,1); }
@@ -237,20 +243,36 @@
     .experience-card p { margin: 12px 0 0; color: var(--muted); line-height: 1.75; }
     .experience-card .tags { margin-top: 14px; }
 
-    .certificate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .certificate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
     .certificate-card { overflow: hidden; cursor: pointer; transition: .25s ease; }
     .certificate-card:hover { transform: translateY(-5px); border-color: rgba(180,255,57,.25); }
-    .certificate-image { height: 210px; overflow: hidden; border-bottom: 1px solid var(--line); background: #e9eaed; }
-    .certificate-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
-    .certificate-card:hover .certificate-image img { transform: scale(1.025); }
+    .certificate-image {
+      position: relative; height: 340px; overflow: hidden;
+      border-bottom: 1px solid var(--line); background: #f4f1ea;
+    }
+    .certificate-image img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: contain; object-position: center; background: #f4f1ea;
+    }
+    .certificate-body h3 { text-wrap: balance; }
+    .cert-note { margin: 8px 0 0; color: var(--quiet); font-size: 12px; line-height: 1.65; }
+    .certificate-card, .gallery-card, .fitness-grid button { font: inherit; color: inherit; text-align: left; }
     .certificate-body { padding: 18px; }
+    .certificate-body .tag { display: inline-flex; margin-bottom: 8px; }
     .certificate-body h3 { margin: 0; font-size: 15px; line-height: 1.45; }
     .certificate-body p { margin: 8px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
     .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 14px; }
-    .gallery-card { height: 260px; padding: 0; overflow: hidden; cursor: zoom-in; }
-    .gallery-card img { width: 100%; height: 100%; object-fit: cover; }
-    .honors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
-    .honor { min-height: 86px; display: grid; place-items: center; text-align: center; padding: 12px; color: var(--muted); font-size: 12px; }
+    .gallery-card { height: 280px; padding: 0; overflow: hidden; cursor: zoom-in; background: #f4f1ea; }
+    .gallery-card img { width: 100%; height: 100%; object-fit: contain; background: #f4f1ea; }
+    .honors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .honor { min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 12px; color: var(--muted); font-size: 12px; }
+    .stat.highlight { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+    .stat.highlight .stat-value { color: var(--accent); }
+    .skip {
+      position: absolute; left: 16px; top: -48px; z-index: 80;
+      padding: 8px 12px; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 700;
+    }
+    .skip:focus { top: 12px; }
 
     .contact-panel {
       display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
@@ -277,7 +299,7 @@
 
     .footer { display: flex; justify-content: space-between; gap: 20px; padding: 30px 0 44px; color: var(--quiet); font-size: 12px; border-top: 1px solid var(--line); }
 
-    .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .project-card { min-height: 230px; display: flex; flex-direction: column; padding: 24px; }
     .project-card h3 { margin: 0; font-size: 20px; }
     .project-card p { flex: 1; margin: 14px 0 18px; color: var(--muted); line-height: 1.75; }
@@ -288,6 +310,8 @@
     .fitness-grid img { width: 100%; height: 100%; object-fit: cover; }
 
     [data-theme="light"] {
+      --menu: #ffffff;
+      --quiet: #4d5058;
       --bg: #f5f5f7;
       --bg-soft: #ffffff;
       --card: rgba(255, 255, 255, 0.92);
@@ -330,6 +354,20 @@
     [data-theme="light"] .icon-btn:hover {
       background: rgba(29,29,31,.055);
     }
+    [data-theme="light"] .skill-track { background: rgba(29,29,31,.10); }
+    [data-theme="light"] .education-card:hover,
+    [data-theme="light"] .project-card:hover,
+    [data-theme="light"] .skill-card:hover,
+    [data-theme="light"] .certificate-card:hover {
+      border-color: rgba(35,66,55,.28);
+    }
+    [data-theme="light"] .game-grid i {
+      border-color: rgba(29,29,31,.12);
+      background: rgba(35,66,55,.06);
+    }
+    [data-theme="light"] .game-grid i:nth-child(3n) { background: var(--accent); opacity: .9; }
+    html[data-theme="light"] { color-scheme: light; }
+    html[data-theme="dark"] { color-scheme: dark; }
 
     .modal {
       position: fixed; z-index: 100; inset: 0; display: none;
@@ -340,8 +378,8 @@
     .modal-panel { width: min(960px, 100%); max-height: 92vh; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--card-strong); box-shadow: var(--shadow); }
     .modal-head { height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px 0 18px; border-bottom: 1px solid var(--line); }
     .modal-head strong { font-size: 14px; }
-    .modal-body { height: calc(92vh - 58px); display: grid; place-items: center; padding: 18px; }
-    .modal-body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .modal-body { height: calc(92vh - 58px); display: flex; align-items: center; justify-content: center; padding: 18px; overflow: auto; }
+    .modal-body img { min-width: 0; min-height: 0; width: auto; height: auto; max-width: 100%; max-height: calc(92vh - 120px); object-fit: contain; }
     .game-modal .modal-panel { width: min(1180px, 100%); }
     .game-modal iframe { width: 100%; height: calc(92vh - 58px); border: 0; background: #000; }
 
@@ -362,9 +400,10 @@
         position: fixed; top: 78px; left: 16px; right: 16px;
         display: none; flex-direction: column; align-items: stretch;
         padding: 10px; border: 1px solid var(--line); border-radius: 16px;
-        background: rgba(11,13,18,.96);
+        background: var(--menu);
       }
-      .nav-links.open { display: flex; }
+      .nav-links.open { display: flex; box-shadow: 0 18px 40px rgba(29,29,31,.12); }
+      .nav-tools { margin-left: auto; }
       .nav-link { padding: 12px; }
       .mobile-toggle { display: grid; }
       .hero { height: auto; min-height: 760px; padding-top: 120px; }
@@ -372,7 +411,9 @@
       .hero h1 { font-size: clamp(64px, 12vw, 100px); }
       .certificate-grid { grid-template-columns: repeat(2, 1fr); }
       .education-grid, .skill-grid { grid-template-columns: 1fr 1fr; }
-      .project-grid { grid-template-columns: 1fr 1fr; }
+      .game-modal { padding: 0; }
+      .game-modal .modal-panel { width: 100%; height: 100dvh; max-height: none; border-radius: 0; }
+      .game-modal iframe { height: calc(100dvh - 58px); }
     }
     @media (max-width: 680px) {
       .shell, .nav { width: calc(100% - 24px); }
@@ -393,10 +434,13 @@
       .stat-value { font-size: 24px; }
       .portrait-wrap { max-width: 360px; margin-inline: auto; }
       .about-grid, .contact-panel, .game-card { grid-template-columns: 1fr; }
-      .education-grid, .skill-grid, .certificate-grid, .honors-grid { grid-template-columns: 1fr; }
+      .education-grid, .skill-grid, .certificate-grid { grid-template-columns: 1fr; }
       .project-grid { grid-template-columns: 1fr; }
+      .game-modal { padding: 0; }
+      .game-modal .modal-panel { width: 100%; height: 100dvh; max-height: none; border-radius: 0; }
+      .game-modal iframe { height: calc(100dvh - 58px); }
       .experience-card { grid-template-columns: 1fr; gap: 8px; }
-      .certificate-image { height: 230px; }
+      .honors-grid { grid-template-columns: repeat(2, 1fr); }
       .gallery-grid { grid-template-columns: 1fr; }
       .gallery-card { height: 220px; }
       .game-preview { border-left: 0; border-top: 1px solid var(--line); }
@@ -420,6 +464,7 @@
   </style>
 </head>
 <body>
+  <a class="skip" href="#app">跳到内容</a>
   <nav class="nav" aria-label="主导航">
     <a class="brand" href="#hero" aria-label="返回顶部">
       <span class="brand-mark" id="brandMark">C</span>
@@ -432,10 +477,13 @@
       <a class="nav-link" href="#skills">技能</a>
       <a class="nav-link" href="#experience">经历</a>
       <a class="nav-link" href="#certificates">证书</a>
+      <a class="nav-link" href="#play">游戏</a>
       <a class="nav-link" href="#contact">联系</a>
     </div>
-    <button class="icon-btn" id="printBtn" type="button" title="打印或导出 PDF" aria-label="打印或导出 PDF">PDF</button>
-    <button class="icon-btn mobile-toggle" id="mobileToggle" type="button" aria-label="展开菜单">菜单</button>
+    <div class="nav-tools">
+      <button class="icon-btn" id="printBtn" type="button" title="打印或导出 PDF" aria-label="打印或导出 PDF">PDF</button>
+      <button class="icon-btn mobile-toggle" id="mobileToggle" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="navLinks">菜单</button>
+    </div>
   </nav>
 
   <main id="app"></main>
@@ -517,6 +565,38 @@
       if (theme.textDim) root.style.setProperty("--muted", theme.textDim);
       if (theme.accent) root.style.setProperty("--accent", theme.accent);
       if (theme.accent2) root.style.setProperty("--accent-2", theme.accent2);
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta && theme.bg) themeMeta.setAttribute("content", theme.bg);
+    }
+
+    const ICON_PATHS = {
+      cpu: '<rect x="7" y="7" width="10" height="10" rx="1"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>',
+      users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="3"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+      presentation: '<path d="M3 4h18v12H3zM8 21h8M12 16v5"/>',
+      target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+      star: '<path d="m12 3 2.2 5.2 5.6.5-4.3 3.6 1.3 5.5L12 15.8 7.2 17.8 8.5 12.3 4.2 8.7l5.6-.5z"/>',
+      medal: '<circle cx="12" cy="15" r="5"/><path d="M8.5 3.5h2.2L12 8l1.3-4.5h2.2L13 10"/>',
+      "shield-check": '<path d="M12 3 5 6v6c0 4 3 6.5 7 8 4-1.5 7-4 7-8V6z"/><path d="m9 12 2 2 4-4"/>',
+      "book-open": '<path d="M12 6C10 4.6 7.5 4 5 4v14c2.5 0 5 .6 7 2 2-1.4 4.5-2 7-2V4c-2.5 0-5 .6-7 2zM12 6v14"/>',
+      award: '<circle cx="12" cy="9" r="5"/><path d="m8.5 13.2-1.4 6.8 4.9-2.4 4.9 2.4-1.4-6.8"/>',
+      flame: '<path d="M12 3s5 4.2 5 9a5 5 0 0 1-10 0c0-2 1.4-3.4 2.2-4.8 1 1.6 2 2.2 2.8 2.2 0-2.6 0-6.4 0-6.4z"/>',
+      "trending-up": '<path d="M3 17 9 11l4 4 8-8M14 7h7v7"/>',
+      "graduation-cap": '<path d="m2 9 10-5 10 5-10 5zM6 11.2V16c1.8 1.6 10.2 1.6 12 0v-4.8"/>'
+    };
+    function iconSvg(name) {
+      const body = ICON_PATHS[name];
+      if (!body) return `<span>${escapeHtml(String(name || "A").slice(0, 1).toUpperCase())}</span>`;
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+    }
+    function armCard(node, action) {
+      node.tabIndex = 0;
+      node.setAttribute("role", "button");
+      node.addEventListener("click", action);
+      node.addEventListener("keydown", event => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        action();
+      });
     }
 
     function renderHero(config) {
@@ -540,7 +620,7 @@
             </div>
             <div class="stats">
               ${(config.stats || []).map(stat => `
-                <div class="stat">
+                <div class="stat${stat.highlight ? " highlight" : ""}">
                   <span class="stat-value">${escapeHtml(stat.value)}${escapeHtml(stat.suffix || "")}</span>
                   <span class="stat-label">${escapeHtml(stat.label)}</span>
                 </div>`).join("")}
@@ -551,7 +631,7 @@
               <img src="${escapeHtml(profile.avatar || "")}" alt="${escapeHtml(profile.name || "")}">
               <div class="portrait-meta">
                 <strong>${escapeHtml(profile.name || "")}</strong>
-                <span>${escapeHtml(profile.title || "")} · 中国</span>
+                <span>${escapeHtml(config.about?.card?.role || profile.title || "")}</span>
               </div>
             </div>
           </div>
@@ -564,6 +644,7 @@
 
     function renderMarquee(items) {
       const marquee = el("div", "marquee");
+      marquee.setAttribute("aria-hidden", "true");
       const track = el("div", "marquee-track");
       const content = items.map(item => `<span>${escapeHtml(item.text)}</span>`).join("");
       track.innerHTML = content + content;
@@ -603,7 +684,7 @@
               <div class="fitness-grid">
                 ${config.fitness.photos.map(photo => `
                   <button type="button" data-photo="${escapeHtml(photo.src)}" data-photo-title="${escapeHtml(photo.alt || config.fitness.label || "健身照片")}">
-                    <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.alt || "")}">
+                    <img src="${escapeHtml(photo.src)}" ${photo.srcset ? `srcset="${escapeHtml(photo.srcset)}" sizes="${escapeHtml(photo.sizes || "100vw")}"` : ""} alt="${escapeHtml(photo.alt || "")}" loading="lazy" decoding="async">
                   </button>`).join("")}
               </div>` : ""}
           </div>
@@ -674,7 +755,7 @@
         card.style.setProperty("--width", String((skill.width || 0) / 100));
         card.innerHTML = `
           <div class="skill-top">
-            <div class="skill-name"><span class="skill-icon">${escapeHtml(skill.icon?.[0]?.toUpperCase() || "A")}</span>${escapeHtml(skill.name)}</div>
+            <div class="skill-name"><span class="skill-icon">${iconSvg(skill.icon)}</span>${escapeHtml(skill.name)}</div>
             <span class="skill-level">${escapeHtml(skill.level)}</span>
           </div>
           <div class="skill-track"><div class="skill-fill"></div></div>
@@ -702,7 +783,7 @@
         card.innerHTML = `
           <div><time>${escapeHtml(item.date || "长期")}</time></div>
           <div>
-            <h3>${escapeHtml(item.title)}</h3>
+            <h3>${escapeHtml(item.title)}${item.pill ? ` <span class="tag">${escapeHtml(item.pill.label)}</span>` : ""}</h3>
             <span class="org">${escapeHtml(item.org || "")}</span>
             <p>${escapeHtml(item.description || "")}</p>
             ${item.tags?.length ? `<div class="tags">${item.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : ""}
@@ -724,9 +805,9 @@
       cards.forEach(cert => {
         const card = el("article", "card certificate-card");
         card.innerHTML = `
-          <div class="certificate-image"><img src="${escapeHtml(cert.img)}" alt="${escapeHtml(cert.title)}"></div>
-          <div class="certificate-body"><h3>${escapeHtml(cert.title)}</h3><p>${escapeHtml(cert.issuer)}</p></div>`;
-        card.addEventListener("click", () => openCertificate(cert.img, cert.title));
+          <div class="certificate-image"><img src="${escapeHtml(cert.thumb || cert.img)}" alt="${escapeHtml(cert.title)}" loading="lazy" decoding="async"></div>
+          <div class="certificate-body">${cert.pill ? `<span class="tag">${escapeHtml(cert.pill.label)}</span>` : ""}<h3>${escapeHtml(cert.title)}</h3><p>${escapeHtml(cert.issuer)}</p>${cert.note ? `<p class="cert-note">${escapeHtml(cert.note)}</p>` : ""}</div>`;
+        armCard(card, () => openCertificate(cert.img, cert.title));
         grid.appendChild(card);
       });
       shell.appendChild(grid);
@@ -735,15 +816,15 @@
         const gallery = el("div", "gallery-grid reveal");
         certificates.gallery.forEach(item => {
           const card = el("article", "card gallery-card");
-          card.innerHTML = `<img src="${escapeHtml(item.img)}" alt="${escapeHtml(item.title)}">`;
-          card.addEventListener("click", () => openCertificate(item.img, item.title));
+          card.innerHTML = `<img src="${escapeHtml(item.thumb || item.img)}" alt="${escapeHtml(item.title)}" loading="lazy" decoding="async">`;
+          armCard(card, () => openCertificate(item.img, item.title));
           gallery.appendChild(card);
         });
         shell.appendChild(gallery);
       }
       if (honors.length) {
         const honorGrid = el("div", "honors-grid reveal");
-        honors.forEach(honor => honorGrid.appendChild(el("article", "card honor", escapeHtml(honor.title))));
+        honors.forEach(honor => honorGrid.appendChild(el("article", "card honor", `${iconSvg(honor.icon)}<span>${escapeHtml(honor.title)}</span>`)));
         shell.appendChild(honorGrid);
       }
       section.appendChild(shell);
@@ -763,7 +844,10 @@
           <h3>${escapeHtml(game.title)}</h3>
           <p>${escapeHtml(game.description)}</p>
           <div class="tags">${(game.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>
-          <button class="button primary" type="button" style="margin-top:18px" id="openGameBtn">${escapeHtml(game.button || "进入作品")}</button>
+          <div class="hero-actions">
+            <button class="button primary" type="button" id="openGameBtn">${escapeHtml(game.button || "进入作品")}</button>
+            <a class="button" href="${escapeHtml(game.src || "tank-battle.html")}" target="_blank" rel="noopener noreferrer">新窗口打开</a>
+          </div>
         </div>
         <div class="game-preview" aria-hidden="true"><div class="game-grid">${"<i></i>".repeat(16)}</div></div>`;
       card.querySelector("#openGameBtn").addEventListener("click", openGame);
@@ -792,7 +876,7 @@
       });
       shell.appendChild(panel);
       const foot = el("footer", "footer");
-      foot.innerHTML = `<span>${escapeHtml(footer.copyright || "")}</span><a href="admin.html">内容管理</a>`;
+      foot.innerHTML = `<span>${escapeHtml(footer.copyright || "")}</span><span>${escapeHtml(footer.note || "")}</span><a href="admin.html">内容管理</a>`;
       shell.appendChild(foot);
       section.appendChild(shell);
       return section;
@@ -810,13 +894,17 @@
 
       const sections = [...document.querySelectorAll("main section[id]")];
       const links = [...document.querySelectorAll(".nav-link")];
-      window.addEventListener("scroll", () => {
-        let current = "hero";
-        sections.forEach(section => {
+      const markNav = () => {
+        const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40;
+        let current = sections[0]?.id || "hero";
+        if (nearBottom) current = sections[sections.length - 1].id;
+        else sections.forEach(section => {
           if (window.scrollY >= section.offsetTop - 180) current = section.id;
         });
         links.forEach(link => link.classList.toggle("active", link.getAttribute("href") === "#" + current));
-      }, { passive: true });
+      };
+      window.addEventListener("scroll", markNav, { passive: true });
+      markNav();
     }
 
     async function copyText(text, label) {
@@ -842,35 +930,49 @@
       showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
+    let lastFocus = null;
     function openCertificate(src, title) {
+      lastFocus = document.activeElement;
       document.getElementById("certificateImage").src = src;
       document.getElementById("certificateTitle").textContent = title || "证书查看";
       document.getElementById("certificateModal").classList.add("open");
       document.body.classList.add("modal-open");
+      document.querySelector("#certificateModal .icon-btn").focus();
     }
     function closeCertificate() {
       document.getElementById("certificateModal").classList.remove("open");
       document.getElementById("certificateImage").src = "";
-      document.body.classList.remove("modal-open");
+      if (!document.getElementById("gameModal").classList.contains("open")) document.body.classList.remove("modal-open");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
     function openGame() {
+      lastFocus = document.activeElement;
       document.getElementById("gameTitle").textContent = CONFIG.game?.title || "作品展示";
       document.getElementById("gameFrame").src = CONFIG.game?.src || "tank-battle.html";
       document.getElementById("gameModal").classList.add("open");
       document.body.classList.add("modal-open");
+      document.querySelector("#gameModal .icon-btn").focus();
     }
     function closeGame() {
+      const frame = document.getElementById("gameFrame");
+      try { frame.contentWindow?.postMessage({ type: "tank-stop" }, "*"); } catch (error) {}
       document.getElementById("gameModal").classList.remove("open");
-      document.getElementById("gameFrame").src = "";
-      document.body.classList.remove("modal-open");
+      frame.src = "";
+      if (!document.getElementById("certificateModal").classList.contains("open")) document.body.classList.remove("modal-open");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
     }
 
     document.getElementById("printBtn").addEventListener("click", () => window.print());
     document.getElementById("mobileToggle").addEventListener("click", () => {
-      document.getElementById("navLinks").classList.toggle("open");
+      const links = document.getElementById("navLinks");
+      const open = links.classList.toggle("open");
+      document.getElementById("mobileToggle").setAttribute("aria-expanded", open ? "true" : "false");
     });
     document.querySelectorAll(".nav-link").forEach(link => {
-      link.addEventListener("click", () => document.getElementById("navLinks").classList.remove("open"));
+      link.addEventListener("click", () => {
+        document.getElementById("navLinks").classList.remove("open");
+        document.getElementById("mobileToggle").setAttribute("aria-expanded", "false");
+      });
     });
     document.querySelectorAll(".modal").forEach(modal => {
       modal.addEventListener("click", event => {

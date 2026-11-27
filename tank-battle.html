@@ -5,393 +5,291 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="screen-orientation" content="landscape">
 <meta name="x5-orientation" content="landscape">
-<title>赛博坦克大战 · 浪尖儿大学社区</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>战术坦克 · 浪尖儿大学社区</title>
 <style>
+  :root {
+    --bg: #141712;
+    --bg-2: #1c2118;
+    --panel: rgba(22, 26, 20, 0.92);
+    --ink: #e4dcc8;
+    --muted: #9a927f;
+    --quiet: #6f6a5c;
+    --line: rgba(196, 168, 106, 0.55);
+    --line-dim: rgba(168, 176, 150, 0.22);
+    --amber: #d6b15a;
+    --olive: #9aaf72;
+    --danger: #c4523a;
+    --steel: #8d97a0;
+    --font-ui: "Barlow Condensed", "Arial Narrow", "Noto Sans SC", sans-serif;
+    --font-mono: "Share Tech Mono", "Courier New", monospace;
+  }
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { width:100vw; height:100vh; overflow:hidden; font-family:'Courier New', monospace; color:#0ff; user-select:none; -webkit-user-select:none; touch-action:none; }
+  html, body {
+    width:100%; height:100%; height:100dvh; overflow:hidden;
+    font-family: var(--font-mono); color: var(--ink);
+    user-select:none; -webkit-user-select:none; touch-action:none;
+  }
   body {
-    background: #0a0a1a;
-    background-image:
-      linear-gradient(rgba(0,255,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,255,0.04) 1px, transparent 1px);
-    background-size: 20px 20px;
-    display: flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(154,175,114,0.08), transparent 28rem),
+      radial-gradient(circle at 80% 80%, rgba(214,177,90,0.05), transparent 24rem),
+      linear-gradient(rgba(168,176,150,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,176,150,0.05) 1px, transparent 1px),
+      var(--bg);
+    background-size: auto, auto, 28px 28px, 28px 28px, auto;
+    display:flex; align-items:center; justify-content:center;
   }
-  @media (max-width: 900px) {
-    #canvasWrap { max-height: calc(100% - 230px); }
-    #title { letter-spacing: 1px; }
+  body::after {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:300;
+    background: repeating-linear-gradient(180deg, rgba(228,220,200,0.035) 0 1px, transparent 1px 4px);
   }
+  button, .option-card, .btn { font-family: var(--font-ui); }
   #gameContainer {
-    position: relative; width: 100%; height: 100%;
-    max-width: 1200px; max-height: 800px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 6px 10px;
+    position:relative; width:100%; height:100%;
+    max-width:1200px; max-height:800px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:8px 12px;
+    background: rgba(12,14,11,0.55);
+    border: 1px solid var(--line-dim);
   }
   #titleRow {
-    width: 100%; display: flex; justify-content: space-between; align-items: center;
-    padding: 2px 6px 6px; flex-wrap: wrap; gap: 4px;
+    width:100%; display:flex; justify-content:space-between; align-items:baseline;
+    padding:2px 4px 8px; gap:8px; border-bottom:1px solid var(--line-dim);
   }
   #title {
-    font-size: clamp(16px, 2.2vw, 26px); font-weight: bold; letter-spacing: 3px;
-    background: linear-gradient(90deg, #f0f, #0ff, #ff0, #f0f);
-    background-size: 300% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shine 4s linear infinite;
-    text-shadow: 0 0 10px rgba(255,0,255,0.4);
+    font-family: var(--font-ui); font-weight:700; letter-spacing:0.16em;
+    font-size: clamp(18px, 2.4vw, 28px); color: var(--amber); text-transform:uppercase;
   }
-  @keyframes shine { to { background-position: 300% center; } }
   #subtitle {
-    font-size: clamp(10px, 1.2vw, 13px); color: #ff6ec7;
-    text-shadow: 0 0 6px #ff6ec7; letter-spacing: 3px;
+    font-size: clamp(10px, 1.2vw, 12px); color: var(--muted);
+    letter-spacing:0.18em; text-transform:uppercase;
   }
   #hud {
-    width: 100%; display: flex; justify-content: space-between; align-items: center;
-    padding: 6px 12px; margin-bottom: 6px; gap: 8px; flex-wrap: wrap;
-    background: rgba(10,10,40,0.75);
-    border: 1px solid #0ff; border-radius: 10px;
-    box-shadow: 0 0 18px rgba(0,255,255,0.25), inset 0 0 15px rgba(0,255,255,0.06);
-    position: relative; z-index: 5;
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    gap:8px; flex-wrap:wrap; margin:8px 0; padding:7px 10px;
+    background: var(--panel); border:1px solid var(--line-dim); position:relative; z-index:5;
   }
-  .hud-item { display: flex; align-items: center; gap: 6px; font-size: clamp(11px, 1.3vw, 14px); white-space: nowrap; }
-  .hud-label { color: #888; font-size: 0.9em; }
-  .hud-value { color: #0ff; font-weight: bold; text-shadow: 0 0 5px #0ff; }
-  .hud-value.danger { color: #f55; text-shadow: 0 0 5px #f55; }
-  .hud-value.gold { color: #ff0; text-shadow: 0 0 5px #ff0; }
-  .hud-value.pink { color: #f0f; text-shadow: 0 0 5px #f0f; }
-  #healthBarContainer { flex: 1; min-width: 110px; display: flex; align-items: center; gap: 6px; }
+  #hud::before, #hud::after {
+    content:""; position:absolute; width:10px; height:10px; pointer-events:none;
+  }
+  #hud::before { top:-1px; left:-1px; border-top:1px solid var(--amber); border-left:1px solid var(--amber); }
+  #hud::after { bottom:-1px; right:-1px; border-bottom:1px solid var(--amber); border-right:1px solid var(--amber); }
+  .hud-item { display:flex; align-items:baseline; gap:6px; font-size: clamp(11px, 1.3vw, 13px); white-space:nowrap; }
+  .hud-label { color: var(--quiet); letter-spacing:0.12em; font-family: var(--font-ui); font-size:11px; text-transform:uppercase; }
+  .hud-value { color: var(--ink); font-weight:700; }
+  .hud-value.danger { color: var(--danger); }
+  .hud-value.gold, .hud-value.pink { color: var(--amber); }
+  #healthBarContainer { flex:1; min-width:120px; display:flex; align-items:center; gap:6px; }
   #healthBar {
-    flex: 1; height: 14px; background: rgba(255,50,50,0.15);
-    border: 1px solid #f55; border-radius: 8px; overflow: hidden; position: relative;
-    box-shadow: inset 0 0 5px rgba(255,0,0,0.3);
+    flex:1; height:8px; background: rgba(196,82,58,0.18);
+    border:1px solid rgba(196,82,58,0.55); overflow:hidden;
   }
   #healthFill {
-    height: 100%;
-    background: linear-gradient(90deg, #f00 0%, #ff3333 50%, #ff7777 100%);
-    box-shadow: 0 0 10px #f55; transition: width 0.3s ease; width: 100%;
+    height:100%; width:100%; transition: width 0.25s linear;
+    background: linear-gradient(90deg, #8d3a2c, #d6b15a);
   }
   #canvasWrap {
-    position: relative; width: 100%; aspect-ratio: 4 / 3; max-height: calc(100% - 180px);
-    border: 2px solid #f0f; border-radius: 10px;
-    box-shadow: 0 0 25px rgba(255,0,255,0.45), inset 0 0 40px rgba(255,0,255,0.08);
-    overflow: hidden;
+    position:relative; width:100%; aspect-ratio:4/3; max-height: calc(100% - 168px);
+    border:1px solid var(--line); overflow:hidden; background:#10130e;
   }
-  canvas { display: block; width: 100%; height: 100%; background: #050515; }
+  #canvasWrap .corner { position:absolute; width:14px; height:14px; z-index:4; pointer-events:none; }
+  #canvasWrap .corner.tl { top:6px; left:6px; border-top:1px solid var(--amber); border-left:1px solid var(--amber); }
+  #canvasWrap .corner.tr { top:6px; right:6px; border-top:1px solid var(--amber); border-right:1px solid var(--amber); }
+  #canvasWrap .corner.bl { bottom:6px; left:6px; border-bottom:1px solid var(--amber); border-left:1px solid var(--amber); }
+  #canvasWrap .corner.br { bottom:6px; right:6px; border-bottom:1px solid var(--amber); border-right:1px solid var(--amber); }
+  #canvasWrap::before {
+    content:""; position:absolute; left:16px; top:16px; width:58px; height:58px; z-index:3; pointer-events:none;
+    border:1px solid rgba(214,177,90,0.35); border-radius:50%;
+    background:
+      linear-gradient(rgba(214,177,90,0.45), rgba(214,177,90,0.45)) center/1px 100% no-repeat,
+      linear-gradient(rgba(214,177,90,0.45), rgba(214,177,90,0.45)) center/100% 1px no-repeat;
+  }
+  canvas { display:block; width:100%; height:100%; background:#10130e; image-rendering:pixelated; image-rendering:crisp-edges; }
   #bgText {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: clamp(24px, 7vw, 80px); font-weight: bold;
-    color: rgba(255,0,255,0.07); pointer-events: none; white-space: nowrap;
-    letter-spacing: 8px; text-shadow: 0 0 40px rgba(255,0,255,0.12); z-index: 0;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-family: var(--font-ui); font-size: clamp(28px, 6vw, 72px); letter-spacing:0.28em;
+    color: rgba(228,220,200,0.045); pointer-events:none; white-space:nowrap; z-index:0;
   }
-  /* 击杀播报 */
   #kill-broadcast {
-    position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%) scale(0);
-    z-index: 50; pointer-events: none; text-align: center;
-    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    position:absolute; top:38%; left:50%; transform:translate(-50%,-50%) scale(0);
+    z-index:50; pointer-events:none; text-align:center;
+    transition: transform 0.22s ease;
   }
   #kill-broadcast.show { transform: translate(-50%,-50%) scale(1); }
   .kb-main {
-    font-size: clamp(28px, 5vw, 56px); font-weight: bold; letter-spacing: 3px;
-    text-shadow: 3px 3px 0 #000, 0 0 25px currentColor;
+    font-family: var(--font-ui); font-size: clamp(26px, 4.5vw, 48px); letter-spacing:0.14em;
+    color: var(--amber); text-shadow: 0 2px 0 #000;
   }
-  .kb-sub { font-size: clamp(12px, 1.6vw, 18px); color: #FFC107; text-shadow: 2px 2px 0 #000; margin-top: 4px; }
-
-  /* 虚拟控制 */
+  .kb-sub { font-size: clamp(12px, 1.5vw, 16px); color: var(--olive); margin-top:4px; }
   #controls-overlay {
-    width: 100%; margin-top: 10px;
-    display: none; justify-content: space-between; align-items: flex-end;
-    padding: 0 8px; position: relative; z-index: 5;
+    width:100%; margin-top:10px; display:none; justify-content:space-between; align-items:flex-end;
+    padding:0 4px; position:relative; z-index:5; padding-bottom: env(safe-area-inset-bottom);
   }
-  #dpad {
-    width: clamp(100px, 16vw, 140px); height: clamp(100px, 16vw, 140px); position: relative;
-  }
+  #dpad { width: clamp(112px, 18vw, 148px); height: clamp(112px, 18vw, 148px); position:relative; }
   .dpad-btn {
-    position: absolute; width: clamp(34px, 5.2vw, 46px); height: clamp(34px, 5.2vw, 46px);
-    background: rgba(0,255,255,0.14);
-    border: 2px solid #0ff; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: #0ff; font-size: clamp(16px, 2.2vw, 22px); font-weight: bold;
-    box-shadow: 0 0 12px rgba(0,255,255,0.3);
-    transition: all 0.08s;
+    position:absolute; width: clamp(36px, 5.4vw, 46px); height: clamp(36px, 5.4vw, 46px);
+    background: rgba(28,33,24,0.9); border:1px solid var(--line); color: var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-ui); font-size:16px;
   }
-  .dpad-btn:active, .dpad-btn.active { background: rgba(0,255,255,0.55); transform: scale(0.92); }
-  #dpad .up    { top: 0;    left: 50%; transform: translateX(-50%); }
-  #dpad .down  { bottom: 0; left: 50%; transform: translateX(-50%); }
-  #dpad .left  { top: 50%;  left: 0;    transform: translateY(-50%); }
-  #dpad .right { top: 50%;  right: 0;   transform: translateY(-50%); }
-  #dpad .up:active, #dpad .up.active    { transform: translateX(-50%) scale(0.92); }
-  #dpad .down:active, #dpad .down.active  { transform: translateX(-50%) scale(0.92); }
-  #dpad .left:active, #dpad .left.active  { transform: translateY(-50%) scale(0.92); }
-  #dpad .right:active, #dpad .right.active { transform: translateY(-50%) scale(0.92); }
-  .btn-group-right { display: flex; gap: 10px; align-items: flex-end; }
+  .dpad-btn.active { background: rgba(214,177,90,0.28); color: #1a160d; }
+  #dpad .up { top:0; left:50%; transform:translateX(-50%); }
+  #dpad .down { bottom:0; left:50%; transform:translateX(-50%); }
+  #dpad .left { top:50%; left:0; transform:translateY(-50%); }
+  #dpad .right { top:50%; right:0; transform:translateY(-50%); }
+  #dpad .up.active { transform:translateX(-50%); }
+  #dpad .down.active { transform:translateX(-50%); }
+  #dpad .left.active { transform:translateY(-50%); }
+  #dpad .right.active { transform:translateY(-50%); }
+  .btn-group-right { display:flex; gap:10px; align-items:flex-end; }
+  #fireBtn, #skillBtn, #skill-icon-pc {
+    border-radius:2px; color: var(--ink); font-family: var(--font-ui); font-weight:700; letter-spacing:0.08em;
+    display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  }
   #fireBtn {
-    width: clamp(60px, 10vw, 86px); height: clamp(60px, 10vw, 86px); border-radius: 50%;
-    background: linear-gradient(135deg, #ff006e, #f0f); border: 3px solid #fff;
-    color: #fff; font-size: clamp(12px, 1.6vw, 16px); font-weight: bold;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 25px #f0f, inset 0 0 18px rgba(255,255,255,0.25);
-    transition: all 0.08s; text-shadow: 0 0 6px #fff;
+    width: clamp(72px, 12vw, 92px); height: clamp(72px, 12vw, 92px);
+    background: #3a241f; border:1px solid var(--danger); color:#f2d2c8;
   }
-  #fireBtn:active { transform: scale(0.9); box-shadow: 0 0 35px #f0f; }
-  #skillBtn {
-    width: clamp(50px, 8.5vw, 72px); height: clamp(50px, 8.5vw, 72px); border-radius: 50%;
-    background: linear-gradient(135deg, #7c4dff, #536dfe); border: 3px solid #b388ff;
-    color: #fff; font-size: clamp(12px, 1.5vw, 15px); font-weight: bold;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 20px #7c4dff; position: relative; overflow: hidden;
-    transition: all 0.08s;
+  #fireBtn.active { background:#6a3328; }
+  #skillBtn, #skill-icon-pc {
+    width: clamp(56px, 9vw, 72px); height: clamp(56px, 9vw, 72px);
+    background:#243024; border:1px solid var(--olive); color: var(--olive);
   }
-  #skillBtn:active { transform: scale(0.9); }
-  #skillBtn.disabled { opacity: 0.45; filter: grayscale(0.5); }
-  #skill-cd-mask { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.65); transition: height 0.1s linear; height: 0; }
-  #skill-cd-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.1em; font-weight: bold; color: #fff; z-index: 3; text-shadow: 1px 1px 2px #000; }
-  #skill-char { z-index: 2; position: relative; }
-
-  #skill-icon-pc {
-    position: absolute; bottom: 16px; right: 16px; width: 58px; height: 58px; border-radius: 50%;
-    background: linear-gradient(135deg, #7c4dff, #536dfe); border: 3px solid #b388ff;
-    display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 6;
-    box-shadow: 0 0 18px #7c4dff; overflow: hidden; font-size: 20px; font-weight: bold; color: #fff;
+  #skill-icon-pc { display:none !important; }
+  #skillBtn.disabled, #skill-icon-pc.disabled { opacity:0.45; }
+  #skill-cd-mask, #skill-icon-pc-mask {
+    position:absolute; left:0; bottom:0; width:100%; height:0; background: rgba(0,0,0,0.55);
   }
-  #skill-icon-pc.show { display: flex; }
-  #skill-icon-pc.disabled { opacity: 0.5; filter: grayscale(0.5); }
-  #skill-icon-pc-mask { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.6); z-index: 1; }
-  #skill-icon-pc-num { position: absolute; z-index: 3; text-shadow: 1px 1px 2px #000; }
-  #skill-icon-pc-char { z-index: 2; }
-
-  @media (pointer: coarse), (max-width: 900px) {
-    #controls-overlay { display: flex; }
+  #skill-cd-num, #skill-icon-pc-num {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    z-index:3; color: var(--ink);
   }
-
-  /* 屏幕叠加 */
-  .screen {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    background: rgba(5,5,21,0.96); z-index: 100;
-    overflow-y: auto; padding: 14px;
+  #skill-char, #skill-icon-pc-char { position:relative; z-index:2; }
+  #stick {
+    position:absolute; left:50%; top:50%; width:22px; height:22px; margin:-11px 0 0 -11px;
+    background: var(--amber); pointer-events:none;
   }
-  .screen.hidden { display: none !important; }
-  .o-title {
-    font-size: clamp(24px, 5vw, 48px);
-    background: linear-gradient(90deg, #0ff, #f0f, #ff0, #0ff);
-    background-size: 300% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: shine 2.5s linear infinite; letter-spacing: 5px; margin-bottom: 10px;
-    text-align: center;
+  #pauseBtn {
+    display:none; margin-left:4px; padding:4px 10px; cursor:pointer;
+    border:1px solid var(--line); background:transparent; color: var(--amber);
+    font: inherit; font-family: var(--font-ui); letter-spacing:0.14em;
   }
-  .o-title.en { font-size: clamp(20px, 3.5vw, 36px); letter-spacing: 4px; }
-  .o-sub { color: #aaa; font-size: clamp(11px, 1.4vw, 14px); line-height: 1.9; margin-bottom: 18px; text-align: center; }
-  .o-sub span { color: #0ff; }
-  .o-sub .g { color: #4CAF50; }
-  .o-sub .y { color: #FFC107; }
-  .o-sub .p { color: #f0f; }
-
-  /* 勋章经验条 */
-  .medal-bar {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(0,0,0,0.55); padding: 8px 14px; border-radius: 22px;
-    border: 2px solid #FFC107; margin-bottom: 14px; min-width: 260px;
-    box-shadow: 0 0 14px rgba(255,193,7,0.3);
-  }
-  .medal-icon { font-size: 1.7em; filter: drop-shadow(0 0 4px #ff0); }
-  .medal-info { flex: 1; }
-  .medal-name { font-size: 0.9rem; color: #FFC107; font-weight: bold; letter-spacing: 1px; }
-  .exp-bar-bg { width: 100%; height: 8px; background: #222; border-radius: 4px; overflow: hidden; margin-top: 3px; }
-  .exp-bar-fill { height: 100%; background: linear-gradient(90deg, #FFC107, #FF9800, #FF5722); transition: width 0.5s; }
-  .exp-text { font-size: 0.65rem; color: #aaa; margin-top: 2px; }
-
-  .btn {
-    padding: 11px 28px;
-    background: linear-gradient(135deg, #0ff, #00a0ff);
-    border: none; border-radius: 28px; color: #000;
-    font-size: clamp(13px, 1.6vw, 16px); font-weight: bold; cursor: pointer;
-    box-shadow: 0 0 22px #0ff; letter-spacing: 3px;
-    transition: all 0.18s; font-family: inherit;
-  }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 0 32px #0ff; }
-  .btn:active { transform: translateY(0); }
-  .btn.secondary { background: linear-gradient(135deg, #f0f, #ff006e); box-shadow: 0 0 22px #f0f; margin-top: 10px; }
-  .btn.small { padding: 6px 16px; font-size: 0.85rem; letter-spacing: 1.5px; }
-
-  /* ====== 地图/难度/模式 选择器 ====== */
-  .select-group { display: flex; flex-direction: column; gap: 14px; margin: 14px 0; max-width: 640px; width: 100%; }
-  .select-row { display: flex; flex-direction: column; gap: 6px; }
-  .select-row-label { color: #0ff; font-weight: bold; letter-spacing: 2px; font-size: 0.9rem; text-shadow: 0 0 6px #0ff; }
-  .select-row-label .sub { color: #aaa; font-weight: normal; font-size: 0.75rem; letter-spacing: 0; margin-left: 6px; text-shadow: none; }
-  .option-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
-  .option-card {
-    padding: 10px 8px; border-radius: 10px; text-align: center; cursor: pointer;
-    background: rgba(255,255,255,0.03); border: 2px solid #333;
-    transition: all 0.18s; color: #aaa;
-  }
-  .option-card:hover { border-color: #0ff; color: #fff; transform: translateY(-2px); }
-  .option-card.selected { border-color: #ff0; color: #000; background: linear-gradient(135deg, #ff0, #ff9800); box-shadow: 0 0 16px rgba(255,255,0,0.5); font-weight: bold; }
-  .option-card .card-title { font-size: 0.9rem; letter-spacing: 1px; }
-  .option-card .card-desc { font-size: 0.68rem; margin-top: 3px; line-height: 1.4; opacity: 0.8; }
-  .option-card.selected .card-desc { opacity: 1; color: #444; }
-  .option-card.map { min-height: 72px; }
-  .option-card.mode { background: rgba(0,255,255,0.03); }
-  .option-card.mode.selected { background: linear-gradient(135deg, #0ff, #00a0ff); color: #000; border-color: #fff; }
-  .option-card.unavailable { opacity: 0.55; cursor: not-allowed; filter: grayscale(0.35); }
-  .option-card.unavailable:hover { transform: none; border-color: rgba(0,255,255,0.25); color: inherit; }
-  .option-card.difficulty.easy.selected { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
-  .option-card.difficulty.normal.selected { background: linear-gradient(135deg, #FFC107, #FF9800); }
-  .option-card.difficulty.hard.selected { background: linear-gradient(135deg, #FF5722, #f44336); }
-  .option-card.difficulty.hell.selected { background: linear-gradient(135deg, #7c4dff, #f0f); color: #fff; }
-  .room-info { background: rgba(255,0,255,0.08); border: 1px dashed #f0f; padding: 8px 14px; border-radius: 8px; color: #f0f; font-size: 0.8rem; letter-spacing: 1px; }
-  .room-info.wait { animation: blink 0.8s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0.35; } }
-  .p2-hud {
-    background: rgba(240,0,240,0.65); border: 2px solid #f0f;
-    position: absolute; top: 8px; right: 8px; z-index: 15;
-    padding: 4px 10px; border-radius: 10px; font-size: 0.75rem; color: #fff; min-width: 140px; pointer-events: none;
-    box-shadow: 0 0 14px #f0f;
-  }
-  .p2-hud .player-label { color: #ffea00; font-weight: bold; letter-spacing: 1px; }
-  .p2-hp-bg { width: 100%; height: 7px; background: #222; border-radius: 3px; overflow: hidden; margin-top: 3px; }
-  .p2-hp-fill { height: 100%; background: linear-gradient(90deg, #f0f, #ff006e); transition: width 0.2s; }
-
-  .desktop-hint { color: #666; font-size: clamp(10px, 1.2vw, 12px); margin-top: 14px; line-height: 1.7; text-align: center; }
-  @media (pointer: coarse) { .desktop-hint { display: none; } #skill-icon-pc { display: none !important; } }
-  @media (pointer: fine) { #skill-icon-pc.show { display: flex; } }
-
-  /* 结算 */
-  .go-exp-box {
-    background: rgba(255,193,7,0.08); border: 2px solid #FFC107; border-radius: 12px;
-    padding: 12px 22px; margin: 12px 0; min-width: 260px;
-    box-shadow: 0 0 18px rgba(255,193,7,0.15);
-  }
-  .go-exp-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin: 4px 0; color: #ccc; }
-  .go-exp-row.v { color: #fff; }
-  .go-exp-total {
-    font-size: 1.1rem; color: #FFC107; font-weight: bold;
-    border-top: 1px solid #555; padding-top: 8px; margin-top: 8px;
-  }
-  .go-levelup { color: #4CAF50; font-size: 1rem; margin: 8px 0; animation: levelupGlow 1s infinite; }
-  @keyframes levelupGlow { 0%,100% { text-shadow: 0 0 5px #4CAF50; } 50% { text-shadow: 0 0 20px #4CAF50, 0 0 30px #8BC34A; } }
-  .go-medal-show { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0; font-size: 1.05rem; }
-  .powerup-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 420px; margin: 8px 0; }
-  .pu-item { font-size: 0.7rem; padding: 4px 6px; border-radius: 6px; background: rgba(255,255,255,0.04); text-align: center; }
-
-  #powerupToast {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    padding: 10px 22px; background: rgba(255,255,0,0.15);
-    border: 2px solid #ff0; border-radius: 10px; color: #ff0;
-    font-size: clamp(13px, 1.8vw, 17px); font-weight: bold;
-    text-shadow: 0 0 8px #ff0; box-shadow: 0 0 20px rgba(255,255,0,0.5);
-    z-index: 5; pointer-events: none; transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-    white-space: nowrap; letter-spacing: 1px;
-  }
-  #powerupToast.show { transform: translate(-50%, -50%) scale(1); }
-
+  body.playing #pauseBtn { display:inline-flex; align-items:center; }
   #audio-toggle {
-    position: absolute; top: 10px; right: 10px; z-index: 200;
-    width: 38px; height: 38px;
-    background: #11162a; border: 2px solid #0ff;
-    border-radius: 4px; font-size: 1.1rem; cursor: pointer;
-    box-shadow: 4px 4px 0 rgba(0,255,255,0.18);
+    position:absolute; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right));
+    z-index:200; width:40px; height:36px; cursor:pointer;
+    background: var(--bg-2); border:1px solid var(--line); color: var(--amber); border-radius:0;
   }
-
-  /* PixelLab-style single-player presentation */
-  body {
-    background-color: #090b18;
-    background-image:
-      linear-gradient(rgba(0,255,255,0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,255,0.055) 1px, transparent 1px),
-      radial-gradient(circle at 50% 45%, rgba(124,77,255,0.10), transparent 42%);
-    background-size: 16px 16px, 16px 16px, 100% 100%;
+  @media (pointer: coarse), (max-width: 900px) {
+    body.playing #controls-overlay { display:flex; }
+    #canvasWrap { max-height: calc(100% - 210px); }
+    #gameContainer { justify-content: flex-start; padding-top: 46px; }
   }
-  body::after {
-    content: "";
-    position: fixed; inset: 0; pointer-events: none; z-index: 300;
-    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 4px);
-  }
-  #gameContainer {
-    border: 2px solid rgba(0,255,255,0.18);
-    background: rgba(5,7,18,0.76);
-    box-shadow: inset 0 0 0 6px rgba(0,0,0,0.24), 0 18px 60px rgba(0,0,0,0.48);
-  }
-  #titleRow {
-    border-bottom: 2px solid rgba(0,255,255,0.12);
-  }
-  #title {
-    letter-spacing: 2px;
-    text-shadow: 3px 3px 0 #321054, 0 0 12px rgba(0,255,255,0.35);
-  }
-  #hud {
-    border: 2px solid #0ff;
-    border-radius: 4px;
-    background:
-      linear-gradient(135deg, rgba(0,255,255,0.08), transparent 44%),
-      rgba(8,12,28,0.92);
-    box-shadow: 5px 5px 0 rgba(0,255,255,0.10), inset 0 0 18px rgba(0,255,255,0.05);
-  }
-  #healthBar {
-    border-radius: 2px;
-  }
-  #healthFill {
-    background: linear-gradient(90deg, #a20024 0 25%, #f55 25% 50%, #ff8b57 50% 75%, #ffd166 75%);
-  }
-  #canvasWrap {
-    border: 3px solid #0ff;
-    border-radius: 4px;
-    box-shadow: 8px 8px 0 rgba(240,0,255,0.16), 0 0 28px rgba(0,255,255,0.20);
-  }
-  canvas {
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-  }
+  @media (pointer: coarse) { .desktop-hint { display:none; } }
+  #dpad, #fireBtn, #skillBtn, #pauseBtn { touch-action:none; }
   .screen {
+    position:fixed; inset:0; z-index:180; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding: max(18px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+    overflow-y:auto; touch-action:pan-y; overscroll-behavior:contain;
     background:
-      linear-gradient(rgba(5,5,21,0.92), rgba(5,5,21,0.96)),
-      repeating-linear-gradient(90deg, rgba(0,255,255,0.05) 0 2px, transparent 2px 16px);
+      linear-gradient(rgba(14,16,12,0.97), rgba(14,16,12,0.985)),
+      repeating-linear-gradient(90deg, rgba(168,176,150,0.045) 0 1px, transparent 1px 22px);
   }
+  #screen-title { justify-content:flex-start; padding-top:28px; background:#12140f; }
+  .hidden, .screen.hidden { display:none !important; }
   .o-title {
-    text-shadow: 4px 4px 0 #321054;
+    font-family: var(--font-ui); font-weight:700; letter-spacing:0.18em; text-align:center;
+    font-size: clamp(28px, 5vw, 52px); color: var(--amber); margin-bottom:6px;
   }
+  .o-title.en { font-size: clamp(13px, 1.8vw, 16px); letter-spacing:0.32em; color: var(--muted); margin-bottom:14px; }
+  .o-sub { color: var(--muted); font-size: clamp(11px, 1.35vw, 13px); line-height:1.8; margin-bottom:14px; text-align:center; }
+  .o-sub span, .o-sub .g, .o-sub .y { color: var(--olive); }
+  .o-sub .p { color: var(--danger); }
   .medal-bar {
-    border-radius: 4px;
+    display:flex; align-items:center; gap:10px; min-width:min(420px, 100%);
+    padding:8px 12px; margin-bottom:14px; border:1px solid var(--line-dim); background: rgba(0,0,0,0.28);
   }
-  .select-group {
-    gap: 10px;
-  }
+  .medal-icon { font-size:1.3rem; }
+  .medal-info { flex:1; }
+  .medal-name { color: var(--amber); font-family: var(--font-ui); letter-spacing:0.12em; }
+  .exp-bar-bg { height:4px; margin-top:4px; background:#2a2e26; }
+  .exp-bar-fill { height:100%; background: var(--olive); }
+  .exp-text { margin-top:3px; color: var(--quiet); font-size:11px; }
+  .select-group { display:flex; flex-direction:column; gap:12px; width:min(720px, 100%); margin:8px 0 12px; }
+  .select-row { display:flex; flex-direction:column; gap:6px; }
   .select-row-label {
-    border-left: 4px solid #0ff;
-    padding-left: 8px;
+    color: var(--amber); font-family: var(--font-ui); letter-spacing:0.16em; font-size:14px;
+    border-left:2px solid var(--amber); padding-left:8px;
   }
+  .select-row-label .sub { color: var(--quiet); letter-spacing:0; font-family: var(--font-mono); font-size:11px; margin-left:8px; }
+  .option-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); gap:8px; }
   .option-card {
-    border-radius: 4px;
-    border-width: 2px;
-    box-shadow: 3px 3px 0 rgba(255,255,255,0.05);
+    padding:10px 8px; text-align:left; cursor:pointer; color: var(--muted);
+    background: rgba(255,255,255,0.02); border:1px solid var(--line-dim);
   }
-  .option-card:hover {
-    transform: translate(-1px, -1px);
+  .option-card:hover { border-color: var(--line); color: var(--ink); }
+  .option-card.selected, .option-card.mode.selected, .option-card.difficulty.selected {
+    background: var(--amber); color:#1b160d; border-color: var(--amber); font-weight:700;
   }
-  .option-card.selected {
-    border-radius: 4px;
-    box-shadow: 5px 5px 0 rgba(255,255,255,0.18), 0 0 16px rgba(255,255,0,0.36);
-  }
+  .option-card .card-title { font-family: var(--font-ui); letter-spacing:0.06em; font-size:15px; }
+  .option-card .card-desc { margin-top:3px; font-size:11px; line-height:1.45; opacity:0.8; }
+  .option-card.selected .card-desc { color:#3d3422; opacity:1; }
   .btn {
-    border: 2px solid #baffff;
-    border-radius: 4px;
-    box-shadow: 6px 6px 0 rgba(0,160,255,0.22), 0 0 18px rgba(0,255,255,0.24);
+    padding:11px 28px; border:1px solid var(--amber); background: transparent; color: var(--amber);
+    letter-spacing:0.2em; cursor:pointer; font-size:16px;
   }
-  .btn.secondary {
-    border-color: #ff9af5;
+  .btn:hover { background: var(--amber); color:#1b160d; }
+  .btn.secondary { border-color: var(--danger); color:#e7b2a6; margin-top:10px; background:transparent; }
+  .btn.secondary:hover { background: var(--danger); color:#1b120f; }
+  .btn.small { padding:7px 16px; letter-spacing:0.12em; font-size:14px; }
+  .desktop-hint { margin-top:12px; color: var(--quiet); font-size:12px; text-align:center; line-height:1.6; }
+  .go-exp-box {
+    min-width:min(360px, 100%); margin:12px 0; padding:12px 16px;
+    border:1px solid var(--line-dim); background: rgba(0,0,0,0.28);
   }
-  .dpad-btn {
-    border-radius: 4px;
+  .go-exp-row { display:flex; justify-content:space-between; margin:4px 0; color: var(--muted); font-size:13px; }
+  .go-exp-total { display:flex; justify-content:space-between; margin-top:8px; padding-top:8px; border-top:1px solid var(--line-dim); color: var(--amber); }
+  .go-levelup { color: var(--olive); margin:8px 0; letter-spacing:0.12em; }
+  .go-medal-show { margin:8px 0; color: var(--ink); }
+  #powerupToast {
+    position:absolute; top:18%; left:50%; transform:translate(-50%, 8px);
+    padding:6px 12px; border:1px solid var(--line); background: rgba(16,18,14,0.9);
+    color: var(--amber); letter-spacing:0.08em; font-family: var(--font-ui);
+    opacity:0; pointer-events:none; z-index:6; white-space:nowrap;
   }
-  #fireBtn, #skillBtn {
-    border-radius: 6px;
+  #powerupToast.show { opacity:1; transform:translate(-50%, 0); }
+  .p2-hud {
+    position:absolute; top:10px; right:10px; z-index:8; min-width:120px;
+    padding:6px 8px; background: rgba(16,18,14,0.88); border:1px solid var(--line-dim);
+    pointer-events:none; color: var(--ink); font-size:12px;
+  }
+  .p2-hud .player-label { color: var(--steel); letter-spacing:0.12em; }
+  .p2-hp-bg { height:4px; margin-top:4px; background:#2a2e26; }
+  .p2-hp-fill { height:100%; background: var(--steel); }
+  @media (max-width: 680px) {
+    #title { letter-spacing:0.08em; }
+    .option-grid { grid-template-columns: 1fr 1fr; }
+    .medal-bar { min-width:0; width:100%; }
+  }
+  @media (max-height: 520px) {
+    body.playing #titleRow { display:none; }
+    body.playing #hud { margin-bottom:2px; padding:4px 8px; }
+    body.playing #canvasWrap { max-height: calc(100% - 150px); }
+    #canvasWrap::before { display:none; }
   }
 </style>
 </head>
 <body>
-<button id="audio-toggle">🔊</button>
+<button id="audio-toggle" type="button" aria-pressed="true" aria-label="关闭声音">🔊</button>
 
 <div id="gameContainer">
   <div id="titleRow">
-    <div id="title">⚡ CYBER TANK ⚡ CZR</div>
-    <div id="subtitle">浪尖儿大学社区 · CYBER EDITION</div>
+    <div id="title">TACTICAL TANK</div>
+    <div id="subtitle">LOCAL OPS · 浪尖儿</div>
   </div>
 
   <div id="hud">
@@ -401,14 +299,18 @@
       <div id="healthBar"><div id="healthFill"></div></div>
       <span class="hud-value danger" id="hpVal">100</span>
     </div>
+    <div class="hud-item"><span class="hud-label">剩余</span><span class="hud-value" id="enemyVal">0</span></div>
     <div class="hud-item"><span class="hud-label">击杀</span><span class="hud-value gold" id="killVal">0</span></div>
     <div class="hud-item"><span class="hud-label">分数</span><span class="hud-value" id="scoreVal">0</span></div>
     <div class="hud-item"><span class="hud-label">技能</span><span class="hud-value" id="skillVal">就绪</span></div>
+    <button id="pauseBtn" type="button" aria-label="暂停">暂停</button>
   </div>
 
   <div id="canvasWrap">
-    <div id="bgText">浪尖儿大学社区</div>
+    <div id="bgText">SECTOR</div>
     <canvas id="game"></canvas>
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
 
     <div id="kill-broadcast">
       <div class="kb-main" id="kb-main"></div>
@@ -417,16 +319,20 @@
 
     <div id="powerupToast"></div>
 
-    <div id="skill-icon-pc">
+    <div id="skill-icon-pc" role="button" aria-label="量子闪避">
       <div id="skill-icon-pc-mask"></div>
       <span id="skill-icon-pc-char">闪</span>
       <span id="skill-icon-pc-num"></span>
     </div>
+    <div id="p2hud" class="p2-hud" hidden>
+      <div class="player-label">P2 <span id="p2hpText">100</span></div>
+      <div class="p2-hp-bg"><div class="p2-hp-fill" id="p2hp"></div></div>
+    </div>
 
     <!-- 开始界面 -->
     <div id="screen-title" class="screen">
-      <div class="o-title">CYBER TANK</div>
-      <div class="o-title en">赛 博 坦 克 大 战</div>
+      <div class="o-title">战术坦克</div>
+      <div class="o-title en">FIELD OPERATIONS</div>
       <div class="medal-bar" id="medal-bar">
         <span class="medal-icon" id="medal-icon">🎖️</span>
         <div class="medal-info">
@@ -439,11 +345,15 @@
       <div class="select-group">
         <!-- 模式选择 -->
         <div class="select-row">
-          <div class="select-row-label">🎮 游戏模式 <span class="sub">纯单人体验</span></div>
+          <div class="select-row-label">🎮 游戏模式 <span class="sub">同一台设备，没有网络对战</span></div>
           <div class="option-grid" id="modeGrid">
-            <div class="option-card mode selected" data-mode="solo">
+            <div class="option-card mode selected" data-mode="solo" role="button" tabindex="0">
               <div class="card-title">🎯 单人</div>
               <div class="card-desc">1P：WASD 移动<br>空格发射</div>
+            </div>
+            <div class="option-card mode" data-mode="local2p" role="button" tabindex="0">
+              <div class="card-title">👥 同屏双人</div>
+              <div class="card-desc">1P 用 WASD<br>2P 用方向键</div>
             </div>
           </div>
           <div id="roomInfoBox" class="room-info hidden"></div>
@@ -454,20 +364,20 @@
           <div class="select-row-label">🗺️ 战场地形 <span class="sub">4张不同布局地图</span></div>
           <div class="option-grid" id="mapGrid">
             <div class="option-card map selected" data-map="0">
-              <div class="card-title">🏙️ 霓虹街道</div>
-              <div class="card-desc">经典对称布局<br>中央大道，攻守平衡</div>
+              <div class="card-title">01 主街阵地</div>
+              <div class="card-desc">对称街巷<br>中央大道，攻守平衡</div>
             </div>
             <div class="option-card map" data-map="1">
-              <div class="card-title">🏰 交叉堡垒</div>
-              <div class="card-desc">X型钢铁交叉墙<br>多拐角伏击战</div>
+              <div class="card-title">02 交叉堡垒</div>
+              <div class="card-desc">X 型交叉工事<br>多拐角伏击</div>
             </div>
             <div class="option-card map" data-map="2">
-              <div class="card-title">🌀 赛博迷宫</div>
-              <div class="card-desc">复杂多廊多分支<br>靠记忆制胜</div>
+              <div class="card-title">03 巷战迷宫</div>
+              <div class="card-desc">多廊多分支<br>靠记忆穿行</div>
             </div>
             <div class="option-card map" data-map="3">
-              <div class="card-title">⚔️ 火线要塞</div>
-              <div class="card-desc">敌火力最强地带<br>超多钢铁墙掩体</div>
+              <div class="card-title">04 火线要塞</div>
+              <div class="card-desc">钢墙最密<br>火力最强地带</div>
             </div>
           </div>
         </div>
@@ -497,7 +407,8 @@
       </div>
 
       <div class="o-sub" style="margin-top:0;">
-        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / LShift</span> 闪避 · <span>P / Esc</span> 暂停</div>
+        <div>🎮 <span>1P: WASD</span> 移动 · <span>空格</span> 发射 · <span>Q / 左 Shift</span> 闪避 · <span>P / Esc</span> 暂停</div>
+        <div>👥 <span>2P: 方向键</span> 移动 · <span>回车</span> 发射 · <span>右 Shift</span> 闪避</div>
         <div>💎 道具：
           <span class="y">♥</span>回血
           <span class="g">»</span>加速
@@ -506,11 +417,12 @@
           <span class="y">✦</span>强化弹
           <span class="p">☢</span>清场
         </div>
-        <div style="margin-top:6px;">🏆 摧毁带<span class="y">CZR</span>标记的障碍物可获得道具，保卫基地！</div>
+        <div style="margin-top:6px;">🏆 摧毁带<span class="y">CZR</span>标记的障碍物可获得道具。敌方炮弹打中基地会直接失败。</div>
+        <div>同屏双人共用这一台设备的键盘。没有网络对战。</div>
       </div>
-      <button class="btn" id="startBtn">▶ 开 始 游 戏</button>
+      <button class="btn" id="startBtn">进入战场</button>
       <div class="desktop-hint">
-        提示：Q 或 Shift 是量子闪避。当前版本仅支持单人战斗。
+        提示：Q 或左 Shift 是 1P 闪避，右 Shift 是 2P 闪避。切到别的窗口会自动暂停。
       </div>
     </div>
 
@@ -541,19 +453,20 @@
   </div>
 
   <div id="controls-overlay">
-    <div id="dpad">
-      <div class="dpad-btn up">▲</div>
-      <div class="dpad-btn left">◀</div>
-      <div class="dpad-btn right">▶</div>
-      <div class="dpad-btn down">▼</div>
+    <div id="dpad" role="group" aria-label="移动摇杆">
+      <div class="dpad-btn up" aria-hidden="true">▲</div>
+      <div class="dpad-btn left" aria-hidden="true">◀</div>
+      <div class="dpad-btn right" aria-hidden="true">▶</div>
+      <div class="dpad-btn down" aria-hidden="true">▼</div>
+      <div id="stick"></div>
     </div>
     <div class="btn-group-right">
-      <div id="skillBtn">
+      <div id="skillBtn" role="button" aria-label="量子闪避">
         <div id="skill-cd-mask"></div>
         <span id="skill-char">闪</span>
         <span id="skill-cd-num"></span>
       </div>
-      <div id="fireBtn">FIRE</div>
+      <div id="fireBtn" role="button" aria-label="开火">FIRE</div>
     </div>
   </div>
 </div>
@@ -599,7 +512,9 @@
   document.getElementById('audio-toggle').addEventListener('click', function() {
     audioOn = !audioOn;
     this.textContent = audioOn ? '🔊' : '🔇';
-    if (audioOn) initAudio();
+    this.setAttribute('aria-pressed', audioOn ? 'true' : 'false');
+    this.setAttribute('aria-label', audioOn ? '关闭声音' : '打开声音');
+    if (audioOn) initAudio(); else suspendAudio();
   });
 
   // ============ Setup ============
@@ -619,7 +534,7 @@
     { name: '精英战士', icon: '🥈', min: 300 },
     { name: '王牌坦克手', icon: '🥇', min: 700 },
     { name: '战场传奇', icon: '🏆', min: 1500 },
-    { name: '赛博元帅', icon: '👑', min: 3000 },
+    { name: '陆军元帅', icon: '👑', min: 3000 },
   ];
   function loadProfile() {
     try {
@@ -654,9 +569,9 @@
   // ============ Maps (4张不同地图) ============
   // 0 = 空, 1 = 砖墙(CZR), 2 = 钢铁墙
   const MAPS = [
-    // 地图0：霓虹街道 - 经典对称，中央大道
+    // 地图0：主街阵地
     {
-      name: '霓虹街道',
+      name: '主街阵地',
       layout: [
         '00000000000000000000',
         '00111000000000011100',
@@ -694,9 +609,9 @@
         '00200111111111100200',
       ]
     },
-    // 地图2：赛博迷宫
+    // 地图2：巷战迷宫
     {
-      name: '赛博迷宫',
+      name: '巷战迷宫',
       layout: [
         '00000000000000000000',
         '01111111011011111110',
@@ -747,14 +662,14 @@
   // ============ Game State ============
   const state = {
     running: false,
-    mode: 'solo',   // solo | local2p | host | join
+    mode: 'solo',   // solo | local2p
     mapIndex: 0,
     difficulty: 'normal',
     level: 1,
     score: 0,
     kills: 0,
     player: null,
-    player2: null,  // P2 (本地双人 / 联机客机)
+    player2: null,
     enemies: [],
     bullets: [],
     walls: [],
@@ -774,11 +689,9 @@
     baseX: 9, baseY: 13,
     killStreak: 0,
     lastKillTime: 0,
-    netChannel: null,
-    netRole: null,      // 'host' | 'client' | null
-    netFrameSync: 0,
     paused: false,
     transitioning: false,
+    fireLatch: false,
   };
 
   // ============ Input ============
@@ -788,7 +701,7 @@
     W:'up', S:'down', A:'left', D:'right',
     ' ':'fire', q:'skill', Q:'skill',
   };
-  // 2P按键 (local2p 或 join客机主视角)
+  // 2P keys for same-screen play
   const keyMapP2 = {
     ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
     Enter:'fire',
@@ -796,7 +709,10 @@
   function releaseInputs() {
     state.keys = {};
     state.keys2 = {};
+    state.fireLatch = false;
     document.querySelectorAll('#dpad .dpad-btn, #fireBtn').forEach(el => el.classList.remove('active'));
+    const stick = document.getElementById('stick');
+    if (stick) stick.style.transform = 'translate(0px, 0px)';
   }
   window.addEventListener('keydown', e => {
     if (e.repeat && (e.key === 'p' || e.key === 'P' || e.key === 'Escape')) return;
@@ -816,7 +732,11 @@
       if (e.location === 2) state.keys2.skill = true;                      // RShift -> P2
       e.preventDefault(); return;
     }
-    if (keyMapP1[e.key]) { state.keys[keyMapP1[e.key]] = true; e.preventDefault(); return; }
+    if (keyMapP1[e.key]) {
+      state.keys[keyMapP1[e.key]] = true;
+      if (keyMapP1[e.key] === 'fire') state.fireLatch = true;
+      e.preventDefault(); return;
+    }
     if (keyMapP2[e.key]) { state.keys2[keyMapP2[e.key]] = true; e.preventDefault(); return; }
   });
   window.addEventListener('keyup', e => {
@@ -848,13 +768,56 @@
     el.addEventListener('pointerup', up);
     el.addEventListener('pointercancel', up);
   }
-  document.querySelectorAll('#dpad .dpad-btn').forEach(el => {
-    const key = ['up','down','left','right'].find(name => el.classList.contains(name));
-    if (!key) return;
-    bindHold(el, v => { state.keys[key] = v; el.classList.toggle('active', v); });
+  const dpad = document.getElementById('dpad');
+  const stick = document.getElementById('stick');
+  const padPointers = new Set();
+  function setMoveDir(dir) {
+    ['up', 'down', 'left', 'right'].forEach(name => {
+      state.keys[name] = name === dir;
+      const btn = dpad.querySelector('.' + name);
+      if (btn) btn.classList.toggle('active', name === dir);
+    });
+    dpad.setAttribute('aria-label', dir ? ('移动：' + ({ up:'上', down:'下', left:'左', right:'右' })[dir]) : '移动摇杆');
+  }
+  function dirFromPad(e) {
+    const rect = dpad.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+    const max = Math.max(16, rect.width / 2);
+    const nx = Math.max(-1, Math.min(1, x / max));
+    const ny = Math.max(-1, Math.min(1, y / max));
+    if (stick) stick.style.transform = `translate(${nx * 22}px, ${ny * 22}px)`;
+    if (Math.hypot(x, y) < 14) return null;
+    return Math.abs(x) > Math.abs(y) ? (x > 0 ? 'right' : 'left') : (y > 0 ? 'down' : 'up');
+  }
+  dpad.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    initAudio();
+    try { dpad.setPointerCapture(e.pointerId); } catch (err) {}
+    padPointers.add(e.pointerId);
+    setMoveDir(dirFromPad(e));
   });
+  dpad.addEventListener('pointermove', e => {
+    if (!padPointers.has(e.pointerId)) return;
+    e.preventDefault();
+    setMoveDir(dirFromPad(e));
+  });
+  const endPad = e => {
+    padPointers.delete(e.pointerId);
+    if (padPointers.size === 0) {
+      setMoveDir(null);
+      if (stick) stick.style.transform = 'translate(0px, 0px)';
+    }
+  };
+  dpad.addEventListener('pointerup', endPad);
+  dpad.addEventListener('pointercancel', endPad);
   const fireBtn = document.getElementById('fireBtn');
-  bindHold(fireBtn, v => { state.keys.fire = v; fireBtn.classList.toggle('active', v); });
+  bindHold(fireBtn, v => {
+    state.keys.fire = v;
+    if (v) state.fireLatch = true;
+    fireBtn.classList.toggle('active', v);
+  });
   const skillBtn = document.getElementById('skillBtn');
   const skillPcBtn = document.getElementById('skill-icon-pc');
   function trySkill() {
@@ -878,7 +841,8 @@
       state.skillCD2 = state.skillMaxCD;
     }
     sfx.skill();
-    showToast(idx === 1 ? '⚡ P1 量子闪避！' : '💜 P2 量子闪避！');
+    const who = state.mode === 'local2p' ? (idx === 1 ? 'P1 ' : 'P2 ') : '';
+    showToast((idx === 1 ? '⚡ ' : '💜 ') + who + '量子闪避');
     updateSkillUI();
   }
   function updateSkillUI() {
@@ -923,8 +887,8 @@
       this.fireRate = isPlayer ? 18 : 60;
       this.bulletSpeed = isPlayer ? 6 : 4;
       this.bulletDmg = isPlayer ? 25 : 15;
-      this.color = isPlayer ? '#00ffff' : '#ff0066';
-      this.glow = isPlayer ? 'rgba(0,255,255,0.6)' : 'rgba(255,0,102,0.6)';
+      this.color = isPlayer ? '#b7c48a' : '#b5523a';
+      this.glow = isPlayer ? 'rgba(183,196,138,0.35)' : 'rgba(181,82,58,0.35)';
       this.moveTimer = 0;
       this.targetDir = this.dir;
       this.powerSpeed = 0;
@@ -960,9 +924,26 @@
     faceDir(dir) {
       if (this.dir !== dir) {
         this.dir = dir;
-        if (dir === 0 || dir === Math.PI) this.x = this.gx * TILE + TILE/2;
-        else this.y = this.gy * TILE + TILE/2;
+        const vertical = dir === 0 || dir === Math.PI;
+        const nx = vertical ? this.gx * TILE + TILE / 2 : this.x;
+        const ny = vertical ? this.y : this.gy * TILE + TILE / 2;
+        if (this.canMoveTo(nx, ny)) { this.x = nx; this.y = ny; }
       }
+    }
+    drive(dir, sp) {
+      const vertical = dir === 0 || dir === Math.PI;
+      const center = (vertical ? this.gx : this.gy) * TILE + TILE / 2;
+      const pos = vertical ? this.x : this.y;
+      const delta = center - pos;
+      this.dir = dir;
+      let budget = sp;
+      if (Math.abs(delta) > 0.8) {
+        const step = Math.sign(delta) * Math.min(Math.abs(delta), budget);
+        const before = vertical ? this.x : this.y;
+        const moved = vertical ? this.tryMove(step, 0) : this.tryMove(0, step);
+        if (moved) budget -= Math.abs((vertical ? this.x : this.y) - before);
+      }
+      if (budget > 0.2) this.tryMove(Math.sin(dir) * budget, -Math.cos(dir) * budget);
     }
     update(idx = 1) {
       if (this.cooldown > 0) this.cooldown--;
@@ -988,12 +969,17 @@
           }
           this.tryMove(Math.sin(dir)*sp, -Math.cos(dir)*sp);
         } else {
-          if (keys.up)         { this.faceDir(0);         this.tryMove(0, -sp); }
-          else if (keys.down)  { this.faceDir(Math.PI);   this.tryMove(0, sp); }
-          else if (keys.left)  { this.faceDir(-Math.PI/2);this.tryMove(-sp, 0); }
-          else if (keys.right) { this.faceDir(Math.PI/2); this.tryMove(sp, 0); }
+          let dir = null;
+          if (keys.up) dir = 0;
+          else if (keys.down) dir = Math.PI;
+          else if (keys.left) dir = -Math.PI / 2;
+          else if (keys.right) dir = Math.PI / 2;
+          if (dir !== null) this.drive(dir, sp);
         }
-        if (keys.fire && this.cooldown <= 0) this.shoot(rate);
+        if ((keys.fire || (idx === 1 && state.fireLatch)) && this.cooldown <= 0) {
+          this.shoot(rate);
+          if (idx === 1) state.fireLatch = false;
+        }
         if (keys.skill) {
           if (idx === 1 && state.skillCD <= 0) useSkill(this, 1);
           if (idx === 2 && state.skillCD2 <= 0) useSkill(this, 2);
@@ -1003,21 +989,26 @@
         this.moveTimer--;
         if (this.moveTimer <= 0) {
           const dirs = [0, Math.PI, -Math.PI/2, Math.PI/2];
-          // 选择最近的玩家作为追击目标
           const targets = [state.player, state.player2].filter(Boolean);
-          let nearest = state.player; let nd = Infinity;
+          let nearest = null; let nd = Infinity;
           for (const t of targets) {
             const dx = t.x - this.x, dy = t.y - this.y; const d = dx*dx+dy*dy;
             if (d < nd) { nd = d; nearest = t; }
           }
-          if (nearest && Math.random() < 0.45) {
-            const dx = nearest.x - this.x, dy = nearest.y - this.y;
-            if (Math.abs(dx) > Math.abs(dy)) this.targetDir = dx > 0 ? Math.PI/2 : -Math.PI/2;
-            else this.targetDir = dy > 0 ? Math.PI : 0;
-          } else {
-            this.targetDir = dirs[Math.floor(Math.random()*4)];
+          const gx = nearest ? nearest.x : state.baseX * TILE + TILE / 2;
+          const gy = nearest ? nearest.y : state.baseY * TILE + TILE / 2;
+          let best = dirs[0], bestScore = -Infinity;
+          for (const dir of dirs) {
+            const vx = Math.sin(dir), vy = -Math.cos(dir);
+            const open = this.canMoveTo(this.x + vx * 8, this.y + vy * 8);
+            const dist = (this.x + vx * TILE - gx) ** 2 + (this.y + vy * TILE - gy) ** 2;
+            let score = open ? (1400000 - dist) : (-dist);
+            if (dir === this.dir && open) score += 9000;
+            score += Math.random() * 160000;
+            if (score > bestScore) { bestScore = score; best = dir; }
           }
-          this.moveTimer = 30 + Math.floor(Math.random()*60);
+          this.targetDir = best;
+          this.moveTimer = 18 + Math.floor(Math.random() * 36);
         }
         this.faceDir(this.targetDir);
         const mv = this.tryMove(Math.sin(this.dir)*this.speed, -Math.cos(this.dir)*this.speed);
@@ -1065,7 +1056,7 @@
       if (this.isPlayer) sfx.shoot(); else beep(440,0.04,'square',0.06,-200);
     }
     damage(dmg) {
-      if (this.shield > 0) { spawnParticles(this.x, this.y, '#0ff', 6); sfx.hit(); return false; }
+      if (this.shield > 0) { spawnParticles(this.x, this.y, '#d6b15a', 6); sfx.hit(); return false; }
       this.hp -= dmg;
       spawnParticles(this.x, this.y, this.color, 8);
       sfx.hurt();
@@ -1078,7 +1069,7 @@
       // support tint for player2 or difficulty-boosted enemies
       const baseColor = this.colorTint || this.color;
       const baseGlow = this.colorTint ? this.colorTint : this.glow;
-      ctx.shadowBlur = 15; ctx.shadowColor = baseGlow;
+      ctx.shadowBlur = 4; ctx.shadowColor = baseGlow;
       const s = this.size;
       // body
       ctx.fillStyle = baseColor;
@@ -1095,8 +1086,8 @@
         ctx.stroke();
       }
       // turret
-      ctx.shadowBlur = 8;
-      ctx.fillStyle = this.isPlayer ? (this.colorTint ? '#330022' : '#003344') : '#44001a';
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = this.isPlayer ? '#2c3324' : '#3a241f';
       ctx.beginPath(); ctx.arc(0, 0, s*0.28, 0, Math.PI*2); ctx.fill();
       ctx.strokeStyle = baseColor; ctx.lineWidth = 2; ctx.stroke();
       // barrel
@@ -1106,11 +1097,11 @@
       // shield
       if (this.shield > 0) {
         ctx.save();
-        ctx.shadowBlur = 25;
-        ctx.strokeStyle = `rgba(124,77,255,${0.35 + 0.35*Math.sin(Date.now()/90)})`;
-        ctx.lineWidth = 3;
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = `rgba(214,177,90,${0.45 + 0.25*Math.sin(Date.now()/90)})`;
+        ctx.lineWidth = 2;
         ctx.beginPath(); ctx.arc(this.x, this.y, s*0.75, 0, Math.PI*2); ctx.stroke();
-        ctx.strokeStyle = `rgba(179,136,255,${0.2 + 0.2*Math.sin(Date.now()/70)})`;
+        ctx.strokeStyle = `rgba(154,175,114,${0.25 + 0.15*Math.sin(Date.now()/70)})`;
         ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.arc(this.x, this.y, s*0.88, 0, Math.PI*2); ctx.stroke();
         ctx.restore();
@@ -1120,7 +1111,7 @@
         const w = s, h = 4;
         ctx.fillStyle = 'rgba(0,0,0,0.6)';
         ctx.fillRect(this.x - w/2, this.y - s/2 - 8, w, h);
-        ctx.fillStyle = '#ff0066';
+        ctx.fillStyle = '#c4523a';
         ctx.fillRect(this.x - w/2, this.y - s/2 - 8, w * Math.max(0, this.hp/this.maxHp), h);
       }
     }
@@ -1204,15 +1195,20 @@
           updateHUD(); handled = true;
         }
         if (handled) {
-          // 两个玩家都死了才判定失败
-          if (!state.player && !state.player2) gameOver(false);
+          if (!state.player && !state.player2) gameOver(false, 'down');
+          return false;
+        }
+        const cellX = Math.floor(this.x / TILE), cellY = Math.floor(this.y / TILE);
+        if (cellX === state.baseX && cellY === state.baseY) {
+          spawnExplosion(state.baseX * TILE + TILE / 2, state.baseY * TILE + TILE / 2);
+          gameOver(false, 'base');
           return false;
         }
       }
       return true;
     }
     draw() {
-      const c = this.fromPlayer ? '#0ff' : '#ff3388';
+      const c = this.fromPlayer ? '#e6c36a' : '#d06a52';
       ctx.save();
       // trail
       for (let i = 0; i < this.trail.length; i++) {
@@ -1222,7 +1218,7 @@
         ctx.beginPath(); ctx.arc(t.x, t.y, this.size * (0.5 + i/this.trail.length*0.5), 0, Math.PI*2); ctx.fill();
       }
       ctx.globalAlpha = 1;
-      ctx.shadowBlur = 12; ctx.shadowColor = c;
+      ctx.shadowBlur = 3; ctx.shadowColor = c;
       ctx.fillStyle = c;
       ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
       ctx.restore();
@@ -1241,17 +1237,18 @@
     update() {
       this.bob += 0.1; this.life--;
       if (this.life <= 0) return false;
-      if (state.player) {
-        const dx = state.player.x - this.x, dy = state.player.y - this.y;
-        if (Math.sqrt(dx*dx+dy*dy) < this.size + state.player.size/2) {
-          this.apply();
+      const tanks = [state.player, state.player2].filter(Boolean);
+      for (const tank of tanks) {
+        const dx = tank.x - this.x, dy = tank.y - this.y;
+        if (Math.sqrt(dx * dx + dy * dy) < this.size + tank.size / 2) {
+          this.apply(tank);
           return false;
         }
       }
       return true;
     }
-    apply() {
-      const p = state.player;
+    apply(p) {
+      if (!p) return;
       const names = {
         hp:    ['♥ 生命恢复 +40',  () => { p.hp = Math.min(p.maxHp, p.hp + 40); }],
         speed: ['» 加速引擎',      () => { p.powerSpeed = 600; }],
@@ -1275,7 +1272,7 @@
     draw() {
       const y = this.y + Math.sin(this.bob) * 3;
       const icons = { hp:'♥', speed:'»', rapid:'⚡', shield:'◉', damage:'✦', bomb:'☢' };
-      const colors = { hp:'#ff3366', speed:'#33ff99', rapid:'#ffff33', shield:'#33ccff', damage:'#ff9933', bomb:'#ff00ff' };
+      const colors = { hp:'#c4523a', speed:'#9aaf72', rapid:'#d6b15a', shield:'#8d97a0', damage:'#c4894a', bomb:'#a33b32' };
       ctx.save();
       const fade = this.life < 150 ? (0.4 + 0.6*Math.abs(Math.sin(Date.now()/80))) : 1;
       ctx.globalAlpha = fade;
@@ -1321,7 +1318,7 @@
   function spawnExplosion(x, y) {
     spawnParticles(x, y, '#ff6600', 22);
     spawnParticles(x, y, '#ffff00', 14);
-    spawnParticles(x, y, '#ff0066', 10);
+    spawnParticles(x, y, '#c4523a', 8);
     spawnParticles(x, y, '#ffffff', 6);
   }
   let toastTimer;
@@ -1405,7 +1402,16 @@
       });
     };
     openSpawn(2, ROWS - 3);
-    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') openSpawn(COLS - 3, ROWS - 3);
+    if (state.mode === 'local2p') openSpawn(COLS - 3, ROWS - 3);
+    const clearPad = (tx, ty) => {
+      [[0, 0], [0, 1]].forEach(([dx, dy]) => {
+        const x = tx + dx, y = ty + dy;
+        if (x > 0 && x < COLS - 1 && y > 0 && y < ROWS - 1 && !(x === state.baseX && y === state.baseY)) {
+          state.walls[y][x] = null;
+        }
+      });
+    };
+    [[1, 1], [Math.floor(COLS / 2), 1], [COLS - 2, 1]].forEach(([x, y]) => clearPad(x, y));
 
     // Protective CZR walls around base
     const bx = state.baseX, by = state.baseY;
@@ -1413,6 +1419,7 @@
       const xx = bx+dx, yy = by+dy;
       if (xx > 0 && xx < COLS-1 && yy > 0 && yy < ROWS-1) state.walls[yy][xx] = makeWall(true, true);
     });
+    state.walls[by][bx] = null;
 
     // 难度参数影响
     const d = DIFFICULTY[state.difficulty] || DIFFICULTY.normal;
@@ -1435,12 +1442,11 @@
     state.player = new Tank(2, ROWS - 3, true);
     state.player.hp = Math.min(state.player.maxHp, hpKeep);
     state.player.bulletDmg = dmgKeep;
-    // P2 (local2p / host / join 模式)
-    if (state.mode === 'local2p' || state.mode === 'host' || state.mode === 'join') {
+    if (state.mode === 'local2p') {
       const hp2Keep = state.player2 ? state.player2.hp : 100;
       state.player2 = new Tank(COLS - 3, ROWS - 3, true);
       state.player2.hp = Math.min(state.player2.maxHp, hp2Keep);
-      state.player2.colorTint = '#ff00aa';
+      state.player2.colorTint = '#8aa0b0';
     } else {
       state.player2 = null;
     }
@@ -1463,6 +1469,8 @@
     for (const [sx,sy] of spots.sort(()=>Math.random()-0.5)) {
       const px = sx*TILE+TILE/2, py = sy*TILE+TILE/2;
       const s = TILE*0.75/2;
+      const blocked = wallAt(sx, sy);
+      if (blocked && blocked.solid) continue;
       let free = true;
       const r = { x:px-s, y:py-s, w:TILE*0.75, h:TILE*0.75 };
       for (const e of state.enemies) if (rectHit(r, e.rect())) { free = false; break; }
@@ -1476,10 +1484,10 @@
         t.fireRate = Math.max(20, Math.round((72 - state.level * 3) / d.spawnMul));
         t.bulletDmg = Math.round((12 + state.level * 2) * d.dmgMul);
         // 困难/地狱难度敌人子弹强化(快速)
-        if (d.strong) { t.bulletSpeed = 6.2; t.colorTint = '#ff4400'; }
+        if (d.strong) { t.bulletSpeed = 6.2; t.colorTint = '#8d3a2c'; }
         state.enemies.push(t);
         state.spawnQueue--;
-        spawnParticles(px, py, '#ff0066', 25);
+        spawnParticles(px, py, '#b5523a', 12);
         beep(200, 0.15, 'sawtooth', 0.1, 100);
         return;
       }
@@ -1488,7 +1496,7 @@
 
   // ============ Drawing ============
   function drawGrid() {
-    ctx.strokeStyle = 'rgba(0,255,255,0.05)';
+    ctx.strokeStyle = 'rgba(168,176,150,0.08)';
     ctx.lineWidth = 1;
     for (let x = 0; x <= COLS; x++) {
       ctx.beginPath(); ctx.moveTo(x*TILE, 0); ctx.lineTo(x*TILE, canvas.height); ctx.stroke();
@@ -1501,20 +1509,147 @@
     const x = state.baseX * TILE, y = state.baseY * TILE;
     const t = Date.now()/500;
     ctx.save();
-    ctx.shadowBlur = 22 + Math.sin(t)*10;
-    ctx.shadowColor = '#ff00ff';
-    ctx.strokeStyle = `hsl(${300 + Math.sin(t)*20}, 100%, 60%)`;
-    ctx.fillStyle = 'rgba(40,0,40,0.85)';
-    ctx.lineWidth = 2.5;
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#d6b15a';
+    ctx.fillStyle = 'rgba(28, 32, 22, 0.92)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.rect(x + 3, y + 3, TILE - 6, TILE - 6);
     ctx.fill(); ctx.stroke();
-    ctx.fillStyle = `hsl(${300 + Math.sin(t*1.3)*30}, 100%, 70%)`;
-    ctx.shadowBlur = 30;
+    ctx.fillStyle = '#d6b15a';
+    ctx.shadowBlur = 0;
     ctx.font = `bold ${TILE*0.45}px sans-serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('⚑', x + TILE/2, y + TILE/2);
     ctx.restore();
+  }
+  function tileSalt(x, y) { return (x * 3 + y * 7) % 3; }
+  function drawSandbags(px, py, dmg) {
+    const bags = dmg > 0.66 ? 4 : (dmg > 0.33 ? 3 : 2);
+    const tones = ['#8d784c', '#6e5e3c', '#a08a58', '#5c4c32'];
+    const inset = 4;
+    const gap = 2;
+    const h = (TILE - inset * 2 - gap * (bags - 1)) / bags;
+    for (let i = 0; i < bags; i++) {
+      const y = py + TILE - inset - (i + 1) * h - i * gap;
+      const shift = (i % 2) * 2;
+      ctx.fillStyle = tones[(i + px + py) % tones.length];
+      ctx.beginPath();
+      ctx.roundRect(px + inset + shift, y, TILE - inset * 2 - 2, h, 3);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(236, 214, 160, 0.22)';
+      ctx.fillRect(px + inset + shift + 2, y + 1, TILE - inset * 2 - 8, Math.max(1, h * 0.28));
+    }
+    if (dmg < 0.66) {
+      ctx.strokeStyle = 'rgba(28, 22, 12, 0.7)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(px + 9, py + 10);
+      ctx.lineTo(px + TILE - 12, py + TILE - 9);
+      ctx.stroke();
+    }
+  }
+  function drawConcrete(px, py, dmg) {
+    ctx.fillStyle = dmg > 0.5 ? '#6a6e68' : '#555952';
+    ctx.beginPath();
+    ctx.moveTo(px + 5, py + TILE - 4);
+    ctx.lineTo(px + 11, py + 7);
+    ctx.lineTo(px + TILE - 11, py + 7);
+    ctx.lineTo(px + TILE - 5, py + TILE - 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#a3a89f';
+    ctx.fillRect(px + 13, py + 9, TILE - 26, 3);
+    ctx.fillStyle = '#3c403c';
+    ctx.fillRect(px + 8, py + TILE - 8, TILE - 16, 3);
+    if (dmg < 0.75) {
+      ctx.strokeStyle = '#242824';
+      ctx.lineWidth = 1.25;
+      ctx.beginPath();
+      ctx.moveTo(px + 16, py + 14);
+      ctx.lineTo(px + 20, py + TILE - 10);
+      if (dmg < 0.4) {
+        ctx.moveTo(px + TILE - 14, py + 16);
+        ctx.lineTo(px + TILE - 20, py + TILE - 12);
+      }
+      ctx.stroke();
+    }
+  }
+  function drawSupplyCrate(px, py, dmg) {
+    const inset = 4;
+    ctx.fillStyle = dmg > 0.66 ? '#6d5832' : (dmg > 0.33 ? '#5a482a' : '#463820');
+    ctx.fillRect(px + inset, py + inset, TILE - inset * 2, TILE - inset * 2);
+    ctx.strokeStyle = '#d6b15a';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(px + inset + 0.5, py + inset + 0.5, TILE - inset * 2 - 1, TILE - inset * 2 - 1);
+    ctx.strokeStyle = 'rgba(32, 24, 12, 0.55)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(px + inset, py + TILE * 0.4);
+    ctx.lineTo(px + TILE - inset, py + TILE * 0.4);
+    ctx.moveTo(px + TILE * 0.5, py + inset);
+    ctx.lineTo(px + TILE * 0.5, py + TILE - inset);
+    ctx.stroke();
+    ctx.fillStyle = '#1c1810';
+    ctx.fillRect(px + TILE / 2 - 11, py + TILE / 2 - 5, 22, 10);
+    ctx.fillStyle = dmg > 0.33 ? '#e6d7a8' : '#8d7344';
+    ctx.font = `700 ${Math.max(7, Math.round(TILE * 0.2))}px "Share Tech Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('CZR', px + TILE / 2, py + TILE / 2);
+    if (dmg < 0.45) {
+      ctx.fillStyle = 'rgba(12, 10, 8, 0.55)';
+      ctx.beginPath();
+      ctx.moveTo(px + 12, py + 12);
+      ctx.lineTo(px + 20, py + 11);
+      ctx.lineTo(px + 16, py + 20);
+      ctx.closePath();
+      ctx.fill();
+    }
+  }
+  function drawArmorPlate(px, py) {
+    const grd = ctx.createLinearGradient(px, py, px + TILE, py + TILE);
+    grd.addColorStop(0, '#b7c0c4');
+    grd.addColorStop(0.42, '#6d767b');
+    grd.addColorStop(1, '#343a3e');
+    ctx.fillStyle = grd;
+    ctx.fillRect(px + 2, py + 2, TILE - 4, TILE - 4);
+    ctx.strokeStyle = '#d5dcde';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(px + 2.5, py + 2.5, TILE - 5, TILE - 5);
+    ctx.strokeStyle = '#1e2428';
+    ctx.beginPath();
+    ctx.moveTo(px + 3, py + TILE - 3);
+    ctx.lineTo(px + TILE - 3, py + TILE - 3);
+    ctx.lineTo(px + TILE - 3, py + 3);
+    ctx.stroke();
+    ctx.fillStyle = '#1c2226';
+    [[9, 9], [TILE - 9, 9], [9, TILE - 9], [TILE - 9, TILE - 9]].forEach(([rx, ry]) => {
+      ctx.beginPath();
+      ctx.arc(px + rx, py + ry, 2.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#8d97a0';
+      ctx.fillRect(px + rx - 0.6, py + ry - 0.6, 1.2, 1.2);
+      ctx.fillStyle = '#1c2226';
+    });
+  }
+  function drawHedgehog(px, py) {
+    ctx.fillStyle = '#2e3438';
+    ctx.fillRect(px + 2, py + 2, TILE - 4, TILE - 4);
+    ctx.strokeStyle = '#8d97a0';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'square';
+    ctx.beginPath();
+    ctx.moveTo(px + 7, py + 7);
+    ctx.lineTo(px + TILE - 7, py + TILE - 7);
+    ctx.moveTo(px + TILE - 7, py + 7);
+    ctx.lineTo(px + 7, py + TILE - 7);
+    ctx.stroke();
+    ctx.fillStyle = '#5c656c';
+    ctx.fillRect(px + TILE / 2 - 5, py + TILE / 2 - 5, 10, 10);
+    ctx.strokeStyle = '#d5dcde';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(px + TILE / 2 - 4.5, py + TILE / 2 - 4.5, 9, 9);
   }
   function drawWalls() {
     if (!state.walls || !state.walls.length) return;
@@ -1525,51 +1660,18 @@
         const w = row[x];
         if (!w) continue;
         const px = x * TILE, py = y * TILE;
+        ctx.save();
         if (w.breakable) {
-          const hpRatio = Math.max(0, w.hp / 40);
-          ctx.save();
-          ctx.shadowBlur = w.czr ? 14 : 6;
-          ctx.shadowColor = w.czr ? '#ff6600' : '#884400';
-          ctx.fillStyle = w.czr ? `rgba(80,30,0,${0.5 + hpRatio*0.5})` : `rgba(42,24,16,${0.5 + hpRatio*0.5})`;
-          ctx.fillRect(px + 2, py + 2, TILE - 4, TILE - 4);
-          ctx.strokeStyle = w.czr ? '#ff8800' : '#664400';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(px + 2, py + 2, TILE - 4, TILE - 4);
-          ctx.strokeStyle = w.czr ? 'rgba(255,136,0,0.45)' : 'rgba(102,68,0,0.4)';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(px + 2, py + TILE/2); ctx.lineTo(px + TILE - 2, py + TILE/2);
-          ctx.moveTo(px + TILE/2, py + 2); ctx.lineTo(px + TILE/2, py + TILE/2);
-          ctx.moveTo(px + TILE/4, py + TILE/2); ctx.lineTo(px + TILE/4, py + TILE - 2);
-          ctx.moveTo(px + 3*TILE/4, py + TILE/2); ctx.lineTo(px + 3*TILE/4, py + TILE - 2);
-          ctx.stroke();
-          if (w.czr) {
-            ctx.shadowBlur = 18; ctx.shadowColor = '#ffaa00';
-            ctx.fillStyle = hpRatio > 0.5 ? '#ffee00' : (hpRatio > 0.25 ? '#ffaa00' : '#ff5500');
-            const fs = Math.min(TILE * 0.32, 15);
-            ctx.font = `bold ${fs}px 'Courier New', monospace`;
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText('CZR', px + TILE/2, py + TILE/2);
-          }
-          ctx.restore();
+          const dmg = Math.max(0, w.hp / 40);
+          if (w.czr) drawSupplyCrate(px, py, dmg);
+          else if (tileSalt(x, y) === 2) drawConcrete(px, py, dmg);
+          else drawSandbags(px, py, dmg);
+        } else if (x === 0 || y === 0 || x === COLS - 1 || y === ROWS - 1 || tileSalt(x, y) !== 1) {
+          drawArmorPlate(px, py);
         } else {
-          ctx.save();
-          ctx.shadowBlur = 10; ctx.shadowColor = '#00aaff';
-          const grd = ctx.createLinearGradient(px, py, px+TILE, py+TILE);
-          grd.addColorStop(0, '#1a2a3a');
-          grd.addColorStop(0.5, '#3a5a7a');
-          grd.addColorStop(1, '#1a2a3a');
-          ctx.fillStyle = grd;
-          ctx.fillRect(px + 1, py + 1, TILE - 2, TILE - 2);
-          ctx.strokeStyle = '#00ccff'; ctx.lineWidth = 2;
-          ctx.strokeRect(px + 1, py + 1, TILE - 2, TILE - 2);
-          ctx.strokeStyle = 'rgba(0,200,255,0.55)'; ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(px+4, py+4); ctx.lineTo(px+TILE-4, py+TILE-4);
-          ctx.moveTo(px+TILE-4, py+4); ctx.lineTo(px+4, py+TILE-4);
-          ctx.stroke();
-          ctx.restore();
+          drawHedgehog(px, py);
         }
+        ctx.restore();
       }
     }
   }
@@ -1595,6 +1697,8 @@
     document.getElementById('levelVal').textContent = `${state.level} ${mapName}·${diffLabel}`;
     document.getElementById('scoreVal').textContent = state.score;
     document.getElementById('killVal').textContent = state.kills;
+    const enemyEl = document.getElementById('enemyVal');
+    if (enemyEl) enemyEl.textContent = (state.spawnQueue || 0) + state.enemies.length;
     if (state.player) {
       const hp = Math.max(0, state.player.hp);
       document.getElementById('hpVal').textContent = hp;
@@ -1602,6 +1706,16 @@
     } else {
       document.getElementById('hpVal').textContent = 'KIA';
       document.getElementById('healthFill').style.width = '0%';
+    }
+    const p2 = document.getElementById('p2hud');
+    if (p2) {
+      const showP2 = state.mode === 'local2p' && state.running;
+      p2.hidden = !showP2;
+      if (showP2) {
+        const hp = state.player2 ? Math.max(0, Math.round(state.player2.hp)) : 0;
+        document.getElementById('p2hpText').textContent = state.player2 ? hp : 'KIA';
+        document.getElementById('p2hp').style.width = (state.player2 ? (hp / state.player2.maxHp * 100) : 0) + '%';
+      }
     }
     updateSkillUI();
   }
@@ -1648,14 +1762,8 @@
       if (state.afterimages2[i].life <= 0) state.afterimages2.splice(i, 1);
     }
     if (state.keys.skill) { trySkill(); state.keys.skill = false; }
-    if (state.mode === 'join') {
-      // 客机：玩家操作player2（但映射使用index=1=state.keys/WASD/空格手机按钮）
-      if (state.player2) state.player2.update(1);
-    } else {
-      if (state.player) state.player.update(1);
-      if (state.mode === 'local2p' && state.player2) state.player2.update(2);
-      // host: player2 更新由客机发来的同步netChannel处理（不本地update）
-    }
+    if (state.player) state.player.update(1);
+    if (state.mode === 'local2p' && state.player2) state.player2.update(2);
     for (const e of state.enemies) e.update();
     for (let i = state.bullets.length - 1; i >= 0; i--) {
       if (!state.bullets[i].update()) state.bullets.splice(i, 1);
@@ -1675,7 +1783,7 @@
       const dx = e.x - bx, dy = e.y - by;
       if (Math.sqrt(dx*dx+dy*dy) < TILE*0.85) {
         spawnExplosion(bx, by);
-        gameOver(false);
+        gameOver(false, 'touch');
         return;
       }
     }
@@ -1683,55 +1791,10 @@
     if (state.spawnQueue <= 0 && state.enemies.length === 0) {
       nextLevel();
     }
-    // 联机同步(每2帧广播一次，避免太高频)
-    state.netFrameSync++;
-    if (state.netChannel && state.netFrameSync % 2 === 0) {
-      try {
-        if (state.netRole === 'host') {
-          state.netChannel.postMessage({
-            type: 'sync',
-            p1: state.player ? packTank(state.player) : null,
-            p2: state.player2 ? packTank(state.player2) : null,
-            enemies: state.enemies.map(packTank),
-            bullets: state.bullets.map(b => ({x:b.x, y:b.y, vx:b.vx, vy:b.vy, fromPlayer:b.fromPlayer, dmg:b.dmg})),
-            walls: packWalls(),
-            baseHp: 1,
-          });
-        } else if (state.netRole === 'client') {
-          // 客机只发自己P2的操作快照
-          state.netChannel.postMessage({
-            type: 'input',
-            p2: state.player2 ? packTank(state.player2) : null,
-            keys: { ...state.keys },
-          });
-        }
-      } catch(err) {}
-    }
     updateHUD();
   }
-  function packTank(t) { return { x:t.x, y:t.y, dir:t.dir, hp:t.hp, maxHp:t.maxHp, cooldown:t.cooldown, shield:t.shield, bulletDmg:t.bulletDmg, powerSpeed:t.powerSpeed, powerRapid:t.powerRapid, colorTint:t.colorTint }; }
-  function packWalls() {
-    // 只同步砖墙的血量变化（差异）
-    const arr = [];
-    for (let y=0; y<ROWS; y++) for (let x=0; x<COLS; x++) {
-      const w = state.walls[y] && state.walls[y][x];
-      if (w && w.breakable && w.hp < 40) arr.push([x,y,w.hp]);
-      else if (!w && isBrokenRecord(x,y)) arr.push([x,y,0]);
-    }
-    return arr;
-  }
-  function isBrokenRecord(x,y) { return false; /* simplified */ }
-  function applyPackedTank(t, packed) {
-    if (!t || !packed) return;
-    t.x = packed.x; t.y = packed.y; t.dir = packed.dir;
-    t.hp = packed.hp; t.maxHp = packed.maxHp;
-    t.cooldown = packed.cooldown; t.shield = packed.shield;
-    t.bulletDmg = packed.bulletDmg;
-    t.powerSpeed = packed.powerSpeed; t.powerRapid = packed.powerRapid;
-    if (packed.colorTint) t.colorTint = packed.colorTint;
-  }
   function render() {
-    ctx.fillStyle = '#050515';
+    ctx.fillStyle = '#12160f';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     drawBase();
@@ -1745,14 +1808,14 @@
       ctx.translate(a.x, a.y);
       ctx.rotate(a.dir);
       ctx.shadowBlur = 12;
-      ctx.shadowColor = '#7c4dff';
+      ctx.shadowColor = '#9aaf72';
       const s = state.player ? state.player.size : TILE*0.75;
-      ctx.fillStyle = '#7c4dff';
+      ctx.fillStyle = '#6d7c52';
       ctx.fillRect(-s/2, -s/2 + 4, s, s - 8);
       ctx.fillStyle = '#000';
       ctx.fillRect(-s/2 - 2, -s/2, 6, s);
       ctx.fillRect(s/2 - 4, -s/2, 6, s);
-      ctx.fillStyle = '#b388ff';
+      ctx.fillStyle = '#c4d2a4';
       ctx.beginPath(); ctx.arc(0, 0, s*0.28, 0, Math.PI*2); ctx.fill();
       ctx.fillRect(-3, -s*0.55, 6, s*0.45);
       ctx.restore();
@@ -1764,14 +1827,14 @@
       ctx.translate(a.x, a.y);
       ctx.rotate(a.dir);
       ctx.shadowBlur = 12;
-      ctx.shadowColor = '#ff00aa';
+      ctx.shadowColor = '#8aa0b0';
       const s = state.player2 ? state.player2.size : TILE*0.75;
-      ctx.fillStyle = '#ff0088';
+      ctx.fillStyle = '#6e8494';
       ctx.fillRect(-s/2, -s/2 + 4, s, s - 8);
       ctx.fillStyle = '#000';
       ctx.fillRect(-s/2 - 2, -s/2, 6, s);
       ctx.fillRect(s/2 - 4, -s/2, 6, s);
-      ctx.fillStyle = '#ffaacc';
+      ctx.fillStyle = '#c5d2dc';
       ctx.beginPath(); ctx.arc(0, 0, s*0.28, 0, Math.PI*2); ctx.fill();
       ctx.fillRect(-3, -s*0.55, 6, s*0.45);
       ctx.restore();
@@ -1782,8 +1845,8 @@
     drawParticles();
     // scanlines
     ctx.save();
-    ctx.globalAlpha = 0.035;
-    ctx.fillStyle = '#0ff';
+    ctx.globalAlpha = 0.025;
+    ctx.fillStyle = '#e4dcc8';
     for (let y = 0; y < canvas.height; y += 3) ctx.fillRect(0, y, canvas.width, 1);
     ctx.restore();
     // vignette
@@ -1798,6 +1861,7 @@
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
     if (id) document.getElementById(id).classList.remove('hidden');
+    document.body.classList.toggle('playing', !!(state.running && !state.paused && !id));
   }
   function clearFlow() {
     clearTimeout(flowTimer);
@@ -1853,14 +1917,16 @@
       updateHUD();
     }, 900);
   }
-  function gameOver(win) {
+  function gameOver(win, reason) {
     if (!state.running) return;
     state.running = false;
     state.paused = false;
     clearFlow();
     releaseInputs();
+    showScreen(null);
     skillPcBtn.classList.remove('show');
     if (win) sfx.win(); else sfx.lose();
+    const endReason = reason || '';
     clearTimeout(flowTimer);
     flowTimer = setTimeout(() => {
       // Calc exp
@@ -1874,10 +1940,9 @@
       saveProfile();
       // Populate
       document.getElementById('go-title-en').textContent = win ? 'VICTORY' : 'GAME OVER';
-      document.getElementById('go-title').textContent = win ? '胜 利' : '失 败';
-      document.getElementById('go-title-en').style.backgroundImage = win
-        ? 'linear-gradient(90deg,#0f0,#0ff,#ff0,#0f0)'
-        : 'linear-gradient(90deg,#f00,#f0f,#f55,#f00)';
+      const failTitle = endReason === 'base' ? '基地被毁' : (endReason === 'touch' ? '基地失守' : '失 败');
+      document.getElementById('go-title').textContent = win ? '胜 利' : failTitle;
+      document.getElementById('go-title-en').style.color = win ? '#d6b15a' : '#c4523a';
       document.getElementById('go-level').textContent = state.level;
       document.getElementById('go-kills').textContent = state.kills;
       document.getElementById('go-score').textContent = state.score;
@@ -1897,172 +1962,33 @@
     const grid = document.getElementById(containerId);
     if (!grid) return;
     grid.querySelectorAll('.option-card').forEach(card => {
-      card.addEventListener('click', () => {
+      if (!card.hasAttribute('role')) card.setAttribute('role', 'button');
+      if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
+      const choose = () => {
         if (card.classList.contains('unavailable')) return;
         grid.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
-        const val = card.getAttribute(attr);
-        onChange(val);
+        onChange(card.getAttribute(attr));
+      };
+      card.addEventListener('click', choose);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); choose(); }
       });
     });
   }
   state.mode = 'solo';
+  bindOptionCards('modeGrid', 'data-mode', v => {
+    if (v === 'solo' || v === 'local2p') state.mode = v;
+  });
   bindOptionCards('mapGrid', 'data-map', v => { state.mapIndex = parseInt(v) || 0; });
   bindOptionCards('diffGrid', 'data-diff', v => { state.difficulty = v; });
 
-  function updateRoomInfo() {
-    const box = document.getElementById('roomInfoBox');
-    if (!box) return;
-    if (state.mode === 'host') {
-      box.classList.remove('hidden');
-      box.classList.add('wait');
-      box.innerHTML = '🌐 主机房间已创建 · 等待客机加入...<br><span style="font-size:0.7rem;opacity:0.8;">同浏览器新建标签页打开此页面，选择「联机·客机」即可加入</span>';
-    } else if (state.mode === 'join') {
-      box.classList.remove('hidden');
-      box.classList.remove('wait');
-      box.innerHTML = '🔗 客机模式 · 正在连接主机...<br><span style="font-size:0.7rem;opacity:0.8;">请确保主机已在另一标签页选择「联机·主机」并点击开始</span>';
-    } else {
-      box.classList.add('hidden');
-      box.classList.remove('wait');
-    }
-  }
-
-  // ============ BroadcastChannel 本地联机 ============
-  function setupNetChannel() {
-    if (state.netChannel) { try { state.netChannel.close(); } catch(e) {} state.netChannel = null; }
-    state.netRole = null;
-    if (state.mode === 'host') {
-      state.netRole = 'host';
-      try {
-        state.netChannel = new BroadcastChannel('cybertank_coop_v1');
-        state.netChannel.onmessage = (ev) => {
-          const msg = ev.data || {};
-          if (msg.type === 'input' && state.player2 && state.running) {
-            applyPackedTank(state.player2, msg.p2);
-          } else if (msg.type === 'join_ping') {
-            state.netChannel.postMessage({ type: 'host_ack', mode: state.mode, map: state.mapIndex, diff: state.difficulty });
-            const box = document.getElementById('roomInfoBox');
-            if (box) { box.classList.remove('wait'); box.innerHTML = '✅ 客机已连接！准备战斗！'; }
-          }
-        };
-      } catch(e) { console.warn('BroadcastChannel not available', e); }
-    } else if (state.mode === 'join') {
-      state.netRole = 'client';
-      try {
-        state.netChannel = new BroadcastChannel('cybertank_coop_v1');
-        state.netChannel.onmessage = (ev) => {
-          const msg = ev.data || {};
-          if (msg.type === 'sync' && state.running) {
-            if (msg.p1 && state.player) applyPackedTank(state.player, msg.p1);
-            // host的P2就是客机自己，客机本地更新P2即可，不覆盖
-            // 同步敌人
-            if (msg.enemies && msg.enemies.length > 0 && state.enemies.length === msg.enemies.length) {
-              msg.enemies.forEach((p, i) => applyPackedTank(state.enemies[i], p));
-            }
-            // 同步子弹（轻量）
-            if (msg.bullets) {
-              state.bullets = [];
-              for (const b of msg.bullets) {
-                state.bullets.push(new Bullet(b.x, b.y, b.vx, b.vy, b.fromPlayer, b.dmg || 15));
-              }
-            }
-            // 同步墙体血量
-            if (Array.isArray(msg.walls)) {
-              for (const [x,y,hp] of msg.walls) {
-                if (state.walls[y] && state.walls[y][x]) {
-                  if (hp <= 0) state.walls[y][x] = null;
-                  else state.walls[y][x].hp = hp;
-                }
-              }
-            }
-          } else if (msg.type === 'host_ack') {
-            const box = document.getElementById('roomInfoBox');
-            if (box) { box.classList.remove('wait'); box.innerHTML = '✅ 已连接主机！双方点击【开始游戏】即可开战'; }
-          }
-        };
-        setTimeout(() => { try { state.netChannel.postMessage({ type: 'join_ping' }); } catch(e) {} }, 300);
-      } catch(e) { console.warn('BroadcastChannel not available', e); }
-    }
-  }
-
-  // ============ WebSocket 真实互联网联机（预留接口） ============
-  // 取消下方注释即可启用真实WebSocket联机（需要同时部署 Node.js 服务端）
-  // --------------------------------------------------------------------
-  // const WS_URL = 'ws://your-server.com:8787';   // 替换为你的服务器地址
-  // let wsSocket = null;
-  // function connectWebSocket(role, roomId) {
-  //   try {
-  //     wsSocket = new WebSocket(WS_URL);
-  //     wsSocket.onopen = () => {
-  //       console.log('[WS] 已连接');
-  //       wsSocket.send(JSON.stringify({ type: role === 'host' ? 'create_room' : 'join_room', roomId }));
-  //       state.netRole = role;
-  //     };
-  //     wsSocket.onmessage = (ev) => {
-  //       const msg = JSON.parse(ev.data);
-  //       // 数据格式与 BroadcastChannel 保持一致 (sync/input/host_ack/join_ping)
-  //       if (msg.type === 'sync' && state.running) {
-  //         if (msg.p1 && state.player) applyPackedTank(state.player, msg.p1);
-  //         if (msg.enemies) msg.enemies.forEach((p, i) => state.enemies[i] && applyPackedTank(state.enemies[i], p));
-  //         if (msg.bullets) state.bullets = msg.bullets.map(b => new Bullet(b.x, b.y, b.vx, b.vy, b.fromPlayer));
-  //       } else if (msg.type === 'input' && state.player2 && state.running) {
-  //         applyPackedTank(state.player2, msg.p2);
-  //       }
-  //     };
-  //     wsSocket.onerror = (err) => console.warn('[WS] 错误', err);
-  //     wsSocket.onclose = () => console.warn('[WS] 断开');
-  //   } catch(e) { console.warn('[WS] 连接失败', e); }
-  // }
-  // function wsSend(obj) {
-  //   if (wsSocket && wsSocket.readyState === 1) wsSocket.send(JSON.stringify(obj));
-  // }
-  // // 在 step() 函数中，将 state.netChannel.postMessage 替换为 wsSend 即可
-  // --------------------------------------------------------------------
-  // Node.js WebSocket 服务端示例 (保存为 server.js 后执行 `npm i ws && node server.js`)：
-  // --------------------------------------------------------------------
-  // const WebSocket = require('ws');
-  // const wss = new WebSocket.Server({ port: 8787 });
-  // const rooms = {};
-  // wss.on('connection', (ws) => {
-  //   let currentRoom = null, myRole = null;
-  //   ws.on('message', (raw) => {
-  //     try {
-  //       const msg = JSON.parse(raw);
-  //       if (msg.type === 'create_room') {
-  //         const id = msg.roomId || ('ROOM_' + Math.random().toString(36).slice(2,8));
-  //         rooms[id] = { host: ws, client: null };
-  //         currentRoom = id; myRole = 'host';
-  //         ws.send(JSON.stringify({ type: 'room_created', roomId: id }));
-  //       } else if (msg.type === 'join_room') {
-  //         const room = rooms[msg.roomId];
-  //         if (room && !room.client) {
-  //           room.client = ws; currentRoom = msg.roomId; myRole = 'client';
-  //           ws.send(JSON.stringify({ type: 'joined', roomId: msg.roomId }));
-  //           room.host.send(JSON.stringify({ type: 'client_joined' }));
-  //           room.host.send(JSON.stringify({ type: 'join_ping' }));
-  //         } else {
-  //           ws.send(JSON.stringify({ type: 'error', reason: '房间不存在或已满' }));
-  //         }
-  //       } else {
-  //         // 转发游戏内同步消息
-  //         const room = rooms[currentRoom];
-  //         if (!room) return;
-  //         const target = myRole === 'host' ? room.client : room.host;
-  //         if (target && target.readyState === 1) target.send(JSON.stringify(msg));
-  //       }
-  //     } catch(e) {}
-  //   });
-  //   ws.on('close', () => {
-  //     if (currentRoom && rooms[currentRoom]) {
-  //       if (myRole === 'host') { delete rooms[currentRoom]; }
-  //       else { rooms[currentRoom].client = null; rooms[currentRoom].host && rooms[currentRoom].host.send(JSON.stringify({ type: 'client_left' })); }
-  //     }
-  //   });
-  // });
-  // console.log('[WS Server] 监听 :8787');
-  // --------------------------------------------------------------------
+  // Same-screen two-player only. Internet play is not implemented.
 
   // Bind
+  document.getElementById('pauseBtn').addEventListener('click', () => {
+    if (state.running && !state.transitioning) setPaused(!state.paused);
+  });
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('restartBtn').addEventListener('click', startGame);
   document.getElementById('resumeBtn').addEventListener('click', () => setPaused(false));
@@ -2106,8 +2032,16 @@
   if (location.hash === '#debug') {
     window.__tank = {
       get state() { return state; },
-      startGame,
-      setPaused,
+      startGame, setPaused, step, genLevel, nextLevel, wallAt,
+      TILE, COLS, ROWS,
+      fireBullet(fromPlayer, x, y, vx, vy) {
+        state.bullets.push(new Bullet(x, y, vx, vy, fromPlayer, 20));
+      },
+      dropPowerup(x, y, type) {
+        const powerup = new Powerup(x, y);
+        if (type) powerup.type = type;
+        state.powerups.push(powerup);
+      },
       get raf() { return rafId; },
       get ticks() { return ticks; }
     };
