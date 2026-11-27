@@ -282,6 +282,40 @@ try {
   })()`);
   for (const message of tankReport.errors) check(false, "tank: " + message);
 
+  async function controlLayout(width, height) {
+    await send("Emulation.setDeviceMetricsOverride", {
+      width, height, deviceScaleFactor: 1, mobile: width < 500
+    }, tank.sessionId);
+    return evaluate(send, tank.sessionId, `(() => {
+      const api = window.__tank;
+      api.setPaused(false);
+      api.startGame();
+      const field = document.getElementById("canvasWrap").getBoundingClientRect();
+      const shown = (el) => {
+        if (!el) return false;
+        const style = getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") return false;
+        const box = el.getBoundingClientRect();
+        return box.width > 1 && box.height > 1;
+      };
+      const overlaps = (el) => {
+        const box = el.getBoundingClientRect();
+        return box.left < field.right - 1 && box.right > field.left + 1 && box.top < field.bottom - 1 && box.bottom > field.top + 1;
+      };
+      const controls = ["#skill-icon-pc", "#skillBtn", "#fireBtn", "#dpad", "#pauseBtn", "#audio-toggle"];
+      const overlapping = controls.filter(sel => shown(document.querySelector(sel)) && overlaps(document.querySelector(sel)));
+      const flashes = ["#skillBtn", "#skill-icon-pc"].filter(sel => shown(document.querySelector(sel)));
+      return { overlapping, flashes, titleTop: document.getElementById("titleRow").getBoundingClientRect().top };
+    })()`);
+  }
+  const desktopControls = await controlLayout(1280, 800);
+  check(desktopControls.overlapping.length === 0, "desktop control overlaps the field: " + desktopControls.overlapping.join(","));
+  check(!desktopControls.flashes.includes("#skill-icon-pc"), "desktop still shows the in-field dodge button");
+  const phoneControls = await controlLayout(390, 844);
+  check(phoneControls.overlapping.length === 0, "phone control overlaps the field: " + phoneControls.overlapping.join(","));
+  check(phoneControls.flashes.length === 1 && phoneControls.flashes[0] === "#skillBtn", "phone dodge buttons: " + phoneControls.flashes.join(","));
+  check(phoneControls.titleTop < 80, "phone title still sits too low: " + phoneControls.titleTop);
+
   const site = await openPage("/index.html");
   const siteReport = await evaluate(send, site.sessionId, `new Promise(resolve => {
     const wait = () => {
