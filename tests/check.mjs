@@ -137,6 +137,8 @@ try {
     const title = document.getElementById("screen-title").innerText;
     if (!title.includes("同屏双人")) fail("menu missing local two-player");
     if (!title.includes("没有网络对战")) fail("menu does not say there is no online play");
+    if (!title.includes("主街阵地") || !title.includes("巷战迷宫") || !title.includes("火线要塞")) fail("military map names missing");
+    if (title.includes("霓虹") || title.includes("赛博") || title.includes("CYBER")) fail("cyber labels still on the menu");
     if (title.includes("等待客机") || title.includes("联机·")) fail("menu still advertises a network room");
     const modes = [...document.querySelectorAll("#modeGrid .option-card")].map(card => card.dataset.mode);
     if (modes.join(",") !== "solo,local2p") fail("modes should be solo and local2p, got " + modes.join(","));
