@@ -126,42 +126,64 @@
   .kb-sub { font-size: clamp(12px, 1.5vw, 16px); color: var(--olive); margin-top:4px; }
   #controls-overlay {
     width:100%; margin-top:10px; display:none; justify-content:space-between; align-items:flex-end;
-    padding:0 4px; position:relative; z-index:5; padding-bottom: env(safe-area-inset-bottom);
+    padding:0 8px; position:relative; z-index:5; padding-bottom: max(12px, env(safe-area-inset-bottom));
   }
-  #dpad { width: clamp(112px, 18vw, 148px); height: clamp(112px, 18vw, 148px); position:relative; }
+  #dpad { width: clamp(128px, 20vw, 164px); height: clamp(128px, 20vw, 164px); position:relative; }
+  .dpad-btn, #fireBtn, #skillBtn, #pauseBtn, #audio-toggle, #stick {
+    border-radius: 50%;
+    aspect-ratio: 1;
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    box-shadow:
+      0 10px 22px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -12px 16px rgba(0, 0, 0, 0.22);
+  }
   .dpad-btn {
-    position:absolute; width: clamp(36px, 5.4vw, 46px); height: clamp(36px, 5.4vw, 46px);
-    background: rgba(28,33,24,0.9); border:1px solid var(--line); color: var(--amber);
+    position:absolute; width: clamp(44px, 6vw, 52px); height: clamp(44px, 6vw, 52px);
+    background: rgba(228, 214, 176, 0.16);
+    border: 1px solid rgba(214, 177, 90, 0.55);
+    color: var(--amber);
     display:flex; align-items:center; justify-content:center;
     font-family: var(--font-ui); font-size:16px;
   }
-  .dpad-btn.active { background: rgba(214,177,90,0.28); color: #1a160d; }
+  .dpad-btn.active, .dpad-btn:active { color:#1a160d; background: rgba(214,177,90,0.42); }
   #dpad .up { top:0; left:50%; transform:translateX(-50%); }
   #dpad .down { bottom:0; left:50%; transform:translateX(-50%); }
   #dpad .left { top:50%; left:0; transform:translateY(-50%); }
   #dpad .right { top:50%; right:0; transform:translateY(-50%); }
-  #dpad .up.active { transform:translateX(-50%); }
-  #dpad .down.active { transform:translateX(-50%); }
-  #dpad .left.active { transform:translateY(-50%); }
-  #dpad .right.active { transform:translateY(-50%); }
-  .btn-group-right { display:flex; gap:10px; align-items:flex-end; }
+  #dpad .up.active, #dpad .up:active { transform:translateX(-50%) scale(0.92); }
+  #dpad .down.active, #dpad .down:active { transform:translateX(-50%) scale(0.92); }
+  #dpad .left.active, #dpad .left:active { transform:translateY(-50%) scale(0.92); }
+  #dpad .right.active, #dpad .right:active { transform:translateY(-50%) scale(0.92); }
+  .dpad-btn.active, .dpad-btn:active, #fireBtn.active, #fireBtn:active, #skillBtn:active, #pauseBtn:active, #audio-toggle:active {
+    box-shadow:
+      inset 0 5px 12px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  .btn-group-right { display:flex; gap:12px; align-items:flex-end; }
   #fireBtn, #skillBtn, #skill-icon-pc {
-    border-radius:2px; color: var(--ink); font-family: var(--font-ui); font-weight:700; letter-spacing:0.08em;
+    color: var(--ink); font-family: var(--font-ui); font-weight:700; letter-spacing:0.06em;
     display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
   }
   #fireBtn {
-    width: clamp(72px, 12vw, 92px); height: clamp(72px, 12vw, 92px);
-    background: #3a241f; border:1px solid var(--danger); color:#f2d2c8;
+    width: clamp(76px, 13vw, 96px); height: clamp(76px, 13vw, 96px);
+    background: rgba(196, 82, 58, 0.28);
+    border: 1px solid rgba(232, 140, 116, 0.7);
+    color:#f6ddd6;
   }
-  #fireBtn.active { background:#6a3328; }
+  #fireBtn.active, #fireBtn:active { transform: scale(0.92); background: rgba(196, 82, 58, 0.48); }
   #skillBtn, #skill-icon-pc {
-    width: clamp(56px, 9vw, 72px); height: clamp(56px, 9vw, 72px);
-    background:#243024; border:1px solid var(--olive); color: var(--olive);
+    width: clamp(60px, 10vw, 76px); height: clamp(60px, 10vw, 76px);
+    background: rgba(154, 175, 114, 0.22);
+    border: 1px solid rgba(184, 206, 142, 0.65);
+    color: #e4efd4;
   }
+  #skillBtn:active { transform: scale(0.92); }
   #skill-icon-pc { display:none !important; }
   #skillBtn.disabled, #skill-icon-pc.disabled { opacity:0.45; }
   #skill-cd-mask, #skill-icon-pc-mask {
-    position:absolute; left:0; bottom:0; width:100%; height:0; background: rgba(0,0,0,0.55);
+    position:absolute; left:0; bottom:0; width:100%; height:0; background: rgba(0,0,0,0.45);
   }
   #skill-cd-num, #skill-icon-pc-num {
     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
@@ -169,24 +191,41 @@
   }
   #skill-char, #skill-icon-pc-char { position:relative; z-index:2; }
   #stick {
-    position:absolute; left:50%; top:50%; width:22px; height:22px; margin:-11px 0 0 -11px;
-    background: var(--amber); pointer-events:none;
+    position:absolute; left:50%; top:50%; width:28px; height:28px; margin:-14px 0 0 -14px;
+    background: rgba(214, 177, 90, 0.55);
+    border: 1px solid rgba(255, 236, 196, 0.7);
+    pointer-events:none;
   }
   #pauseBtn {
-    display:none; margin-left:4px; padding:4px 10px; cursor:pointer;
-    border:1px solid var(--line); background:transparent; color: var(--amber);
-    font: inherit; font-family: var(--font-ui); letter-spacing:0.14em;
+    display:none; margin-left:4px; width:46px; height:46px; padding:0; cursor:pointer;
+    border: 1px solid rgba(214, 177, 90, 0.55);
+    background: rgba(228, 214, 176, 0.14);
+    color: var(--amber);
+    font: 600 12px/1 var(--font-ui); letter-spacing:0;
   }
-  body.playing #pauseBtn { display:inline-flex; align-items:center; }
+  body.playing #pauseBtn { display:inline-flex; align-items:center; justify-content:center; }
+  #pauseBtn:active { transform: scale(0.92); }
   #audio-toggle {
     position:absolute; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right));
-    z-index:200; width:40px; height:36px; cursor:pointer;
-    background: var(--bg-2); border:1px solid var(--line); color: var(--amber); border-radius:0;
+    z-index:200; width:44px; height:44px; padding:0; cursor:pointer;
+    background: rgba(228, 214, 176, 0.16);
+    border: 1px solid rgba(214, 177, 90, 0.55);
+    color: var(--amber);
+  }
+  #audio-toggle:active { transform: scale(0.92); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .dpad-btn, #pauseBtn, #audio-toggle { background: rgba(42, 38, 28, 0.94); }
+    #stick { background: rgba(214, 177, 90, 0.92); }
+    #fireBtn { background: rgba(92, 36, 28, 0.94); }
+    #skillBtn { background: rgba(36, 48, 30, 0.94); }
   }
   @media (pointer: coarse), (max-width: 900px) {
     body.playing #controls-overlay { display:flex; }
-    #canvasWrap { max-height: calc(100% - 210px); }
+    #canvasWrap { max-height: calc(100% - 250px); }
     #gameContainer { justify-content: flex-start; padding-top: 46px; }
+  }
+  @media (max-width: 900px) and (min-height: 640px) {
+    body.playing #controls-overlay { margin-top: auto; }
   }
   @media (pointer: coarse) { .desktop-hint { display:none; } }
   #dpad, #fireBtn, #skillBtn, #pauseBtn { touch-action:none; }
