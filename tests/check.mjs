@@ -224,6 +224,20 @@ try {
     api.step();
     if (api.state.running) fail("enemy bullet did not destroy the base");
 
+    api.state.mode = "local2p";
+    api.startGame();
+    api.state.player2.hp = 30;
+    api.state.player.hp = 100;
+    api.dropPowerup(api.state.player2.x, api.state.player2.y, "hp");
+    api.step();
+    if (Math.round(api.state.player2.hp) !== 70) fail("P2 did not collect the heal, hp " + api.state.player2.hp);
+    if (api.state.player.hp !== 100) fail("P2 pickup changed P1 hp");
+    api.state.player.hp = 50;
+    api.dropPowerup(api.state.player.x, api.state.player.y, "hp");
+    api.step();
+    if (Math.round(api.state.player.hp) !== 90) fail("P1 did not collect the heal, hp " + api.state.player.hp);
+    api.state.mode = "solo";
+
     api.startGame();
     api.state.keys.right = true;
     api.step();
@@ -284,7 +298,13 @@ try {
         certs,
         fitnessSrcset: fitness ? fitness.getAttribute("srcset") : "",
         game: document.querySelector(".game-copy p")?.textContent || "",
-        pill: document.querySelector(".certificate-body .tag")?.textContent || "",
+        pill: document.querySelector(".certificate-card .tag")?.textContent || "",
+        firstTitle: document.querySelector(".certificate-card h3")?.textContent || "",
+        firstIssuer: document.querySelector(".certificate-card .certificate-body p")?.textContent || "",
+        firstNote: document.querySelector(".cert-note")?.textContent || "",
+        firstSrc: document.querySelector(".certificate-image img")?.getAttribute("src") || "",
+        firstFit: getComputedStyle(document.querySelector(".certificate-image img")).objectFit,
+        honorTitles: [...document.querySelectorAll(".honor span")].map(node => node.textContent),
         expPill: document.querySelector(".experience-card .tag")?.textContent || "",
         menuBg: getComputedStyle(document.querySelector(".nav-links")).backgroundColor,
         portrait: document.querySelector(".portrait-meta span")?.textContent || ""
@@ -301,7 +321,16 @@ try {
   check(siteReport.links.some(link => link.includes("vesper-dragon-player")), "vesper link missing");
   check(siteReport.links.some(link => link.includes("AIGuardianPro-windows-x64.zip")), "guardian download missing");
   check(siteReport.icons === 4, "skill icons " + siteReport.icons);
-  check(siteReport.honors === 8, "honor icons " + siteReport.honors);
+  check(siteReport.honors === 9, "honor icons " + siteReport.honors);
+  check(siteReport.honorTitles.includes("RST北京赛区二等奖"), "honor title missing: " + siteReport.honorTitles.join(" | "));
+  check(siteReport.firstTitle.includes("第十九届先进机器人及仿真技术大赛（RST）") && siteReport.firstTitle.includes("北京赛区二等奖"), "award title: " + siteReport.firstTitle);
+  check(siteReport.pill === "二等奖", "award pill: " + siteReport.pill);
+  check(siteReport.firstIssuer.includes("中国仿真学会") && siteReport.firstIssuer.includes("2026年11月10日"), "issuer: " + siteReport.firstIssuer);
+  check(siteReport.firstNote.includes("个人赛·水中机器鱼仿真组·障碍竞速"), "subject missing: " + siteReport.firstNote);
+  check(siteReport.firstNote.includes("20261901F050502236"), "certificate number missing");
+  check(siteReport.firstNote.includes("王雪豪") && siteReport.firstNote.includes("陈芷锐") && siteReport.firstNote.includes("对外经济贸易大学"), "note facts: " + siteReport.firstNote);
+  check(siteReport.firstSrc === "assets/thumbs/cert-rst-19-beijing.jpg", "thumb src " + siteReport.firstSrc);
+  check(siteReport.firstFit === "contain", "certificate fit " + siteReport.firstFit);
   check(siteReport.certs.every(src => src.includes("/thumbs/")), "certificate cards are not using thumbs: " + siteReport.certs.join(", "));
   check(!siteReport.certs.some(src => src.endsWith("cert-aliyun-bigdata.jpg") && !src.includes("/thumbs/")), "aliyun full image used in the card");
   check((siteReport.fitnessSrcset || "").includes("fitness-dorm-720.jpg"), "fitness srcset missing");
@@ -341,7 +370,66 @@ try {
     };
   })()`);
   check(opened.open, "certificate keyboard open failed");
-  check(opened.src === "assets/cert-ai-senior.jpg", "lightbox src " + opened.src);
+  check(opened.src === "assets/cert-rst-19-beijing.jpg", "lightbox src " + opened.src);
+  check(!/^https?:/i.test(opened.src), "lightbox should use the repo file");
+  const ratios = await evaluate(send, site.sessionId, `Promise.all(["assets/cert-rst-19-beijing.jpg", "assets/thumbs/cert-rst-19-beijing.jpg"].map(src => new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve({ src, w: img.naturalWidth, h: img.naturalHeight });
+    img.onerror = () => reject(new Error(src));
+    img.src = src;
+  }))).then(async images => {
+    const full = images[0].w / images[0].h;
+    const thumb = images[1].w / images[1].h;
+    const shown = document.querySelector(".certificate-image img");
+    shown.loading = "eager";
+    shown.scrollIntoView({ block: "center" });
+    if (shown.decode) await shown.decode();
+    return {
+      full, thumb, delta: Math.abs(full - thumb),
+      shownW: shown.clientWidth, shownH: shown.clientHeight,
+      frameW: shown.parentElement.clientWidth, frameH: shown.parentElement.clientHeight,
+      naturalW: shown.naturalWidth, naturalH: shown.naturalHeight
+    };
+  })`);
+  check(ratios.delta < 0.02, "thumbnail aspect differs from the original: " + JSON.stringify(ratios));
+  check(ratios.naturalW === 800 && ratios.naturalH > 1000, "preview is not the full-frame thumbnail: " + JSON.stringify(ratios));
+  check(ratios.shownH <= ratios.frameH + 1 && ratios.shownW <= ratios.frameW + 1, "certificate image spills out of its frame: " + JSON.stringify(ratios));
+  check(ratios.frameH >= 300 && ratios.shownH >= 300, "certificate frame collapsed: " + JSON.stringify(ratios));
+
+  const admin = await openPage("/admin.html");
+  await evaluate(send, admin.sessionId, `new Promise((resolve, reject) => {
+    const start = Date.now();
+    const wait = () => {
+      if (typeof renderMarquee === "function" && typeof collectForm === "function") resolve(true);
+      else if (Date.now() - start > 4000) reject(new Error("admin helpers missing"));
+      else setTimeout(wait, 30);
+    };
+    wait();
+  })`);
+  const adminReport = await evaluate(send, admin.sessionId, `(() => {
+    CONFIG = {
+      marquee: [{ text: "AI Trainer", outline: false }, { text: "达摩院认证", outline: true }],
+      projects: [{ title: "元一AI短剧" }],
+      certificates: { cards: [{ title: "第十九届先进机器人及仿真技术大赛（RST）北京赛区二等奖", img: "assets/cert-rst-19-beijing.jpg" }], gallery: [] },
+      stats: [{ value: "8", suffix: "+", label: "荣誉奖项" }],
+      education: [], skills: [], experience: [], honors: [{ icon: "award", title: "RST北京赛区二等奖" }],
+      skillTags: ["数据标注"]
+    };
+    renderMarquee();
+    collectForm();
+    return {
+      texts: CONFIG.marquee.map(item => item.text),
+      outlines: CONFIG.marquee.map(item => item.outline),
+      project: CONFIG.projects[0] && CONFIG.projects[0].title,
+      cert: CONFIG.certificates.cards[0] && CONFIG.certificates.cards[0].title,
+      img: CONFIG.certificates.cards[0] && CONFIG.certificates.cards[0].img
+    };
+  })()`);
+  check(adminReport.texts[0] === "AI Trainer" && adminReport.texts[1] === "达摩院认证", "admin wiped marquee: " + JSON.stringify(adminReport.texts));
+  check(adminReport.outlines[0] === false && adminReport.outlines[1] === true, "admin outline flags: " + JSON.stringify(adminReport.outlines));
+  check(adminReport.project === "元一AI短剧", "admin wiped projects");
+  check(adminReport.cert.includes("北京赛区二等奖") && adminReport.img === "assets/cert-rst-19-beijing.jpg", "admin wiped certificate");
+  await send("Target.closeTarget", { targetId: admin.targetId });
 
   await send("Target.closeTarget", { targetId: tank.targetId });
   await send("Target.closeTarget", { targetId: site.targetId });

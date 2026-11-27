@@ -2,7 +2,7 @@
   "site": {
     "title": "陈芷锐 · Portfolio",
     "description": "陈芷锐 · AI训练师 · 达摩院人工智能高级训练师",
-    "version": "3.1"
+    "version": "3.2"
   },
   "theme": {
     "bg": "#f5f5f7",
@@ -153,6 +153,26 @@
   "certificates": {
     "cards": [
       {
+        "title": "第十九届先进机器人及仿真技术大赛（RST）北京赛区二等奖",
+        "issuer": "中国仿真学会 · 2026年11月10日颁发",
+        "note": "个人赛·水中机器鱼仿真组·障碍竞速。证书编号 20261901F050502236。指导教师王雪豪，队长陈芷锐，参赛单位对外经济贸易大学。",
+        "icon": "award",
+        "pill": { "label": "二等奖", "color": "#234237" },
+        "img": "assets/cert-rst-19-beijing.jpg",
+        "thumb": "assets/thumbs/cert-rst-19-beijing.jpg",
+        "details": [
+          { "label": "证书编号", "value": "20261901F050502236", "mono": true },
+          { "label": "颁发日期", "value": "2026-11-10", "mono": true },
+          { "label": "颁证机构", "value": "中国仿真学会", "span": 2 },
+          { "label": "赛事", "value": "第十九届先进机器人及仿真技术大赛（RST）", "span": 2 },
+          { "label": "奖项", "value": "北京赛区二等奖", "span": 2 },
+          { "label": "参赛科目", "value": "个人赛 · 水中机器鱼仿真组 · 障碍竞速", "span": 2 },
+          { "label": "参赛单位", "value": "对外经济贸易大学" },
+          { "label": "指导教师", "value": "王雪豪" },
+          { "label": "队长", "value": "陈芷锐" }
+        ]
+      },
+      {
         "title": "达摩院人工智能高级训练师",
         "issuer": "DAMO Academy · 2026年8月10日颁发",
         "icon": "bot",
@@ -242,6 +262,7 @@
     ]
   },
   "honors": [
+    { "icon": "award", "title": "RST北京赛区二等奖" },
     { "icon": "star", "title": "优秀志愿者" },
     { "icon": "medal", "title": "高中三好学生" },
     { "icon": "shield-check", "title": "优秀学生会干部" },
@@ -295,6 +316,6 @@
   },
   "footer": {
     "copyright": "© 2026 陈芷锐 · All Rights Reserved",
-    "note": "Portfolio v3.1 · Built with vibe"
+    "note": "Portfolio v3.2 · Built with vibe"
   }
 }

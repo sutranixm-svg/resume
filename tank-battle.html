@@ -784,14 +784,14 @@
   // ============ Game State ============
   const state = {
     running: false,
-    mode: 'solo',   // solo | local2p | host | join
+    mode: 'solo',   // solo | local2p
     mapIndex: 0,
     difficulty: 'normal',
     level: 1,
     score: 0,
     kills: 0,
     player: null,
-    player2: null,  // P2 (本地双人 / 联机客机)
+    player2: null,
     enemies: [],
     bullets: [],
     walls: [],
@@ -811,9 +811,6 @@
     baseX: 9, baseY: 13,
     killStreak: 0,
     lastKillTime: 0,
-    netChannel: null,
-    netRole: null,      // 'host' | 'client' | null
-    netFrameSync: 0,
     paused: false,
     transitioning: false,
     fireLatch: false,
@@ -826,7 +823,7 @@
     W:'up', S:'down', A:'left', D:'right',
     ' ':'fire', q:'skill', Q:'skill',
   };
-  // 2P按键 (local2p 或 join客机主视角)
+  // 2P keys for same-screen play
   const keyMapP2 = {
     ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
     Enter:'fire',
@@ -1362,17 +1359,18 @@
     update() {
       this.bob += 0.1; this.life--;
       if (this.life <= 0) return false;
-      if (state.player) {
-        const dx = state.player.x - this.x, dy = state.player.y - this.y;
-        if (Math.sqrt(dx*dx+dy*dy) < this.size + state.player.size/2) {
-          this.apply();
+      const tanks = [state.player, state.player2].filter(Boolean);
+      for (const tank of tanks) {
+        const dx = tank.x - this.x, dy = tank.y - this.y;
+        if (Math.sqrt(dx * dx + dy * dy) < this.size + tank.size / 2) {
+          this.apply(tank);
           return false;
         }
       }
       return true;
     }
-    apply() {
-      const p = state.player;
+    apply(p) {
+      if (!p) return;
       const names = {
         hp:    ['♥ 生命恢复 +40',  () => { p.hp = Math.min(p.maxHp, p.hp + 40); }],
         speed: ['» 加速引擎',      () => { p.powerSpeed = 600; }],
@@ -1790,14 +1788,8 @@
       if (state.afterimages2[i].life <= 0) state.afterimages2.splice(i, 1);
     }
     if (state.keys.skill) { trySkill(); state.keys.skill = false; }
-    if (state.mode === 'join') {
-      // 客机：玩家操作player2（但映射使用index=1=state.keys/WASD/空格手机按钮）
-      if (state.player2) state.player2.update(1);
-    } else {
-      if (state.player) state.player.update(1);
-      if (state.mode === 'local2p' && state.player2) state.player2.update(2);
-      // host: player2 更新由客机发来的同步netChannel处理（不本地update）
-    }
+    if (state.player) state.player.update(1);
+    if (state.mode === 'local2p' && state.player2) state.player2.update(2);
     for (const e of state.enemies) e.update();
     for (let i = state.bullets.length - 1; i >= 0; i--) {
       if (!state.bullets[i].update()) state.bullets.splice(i, 1);
@@ -1825,52 +1817,7 @@
     if (state.spawnQueue <= 0 && state.enemies.length === 0) {
       nextLevel();
     }
-    // 联机同步(每2帧广播一次，避免太高频)
-    state.netFrameSync++;
-    if (state.netChannel && state.netFrameSync % 2 === 0) {
-      try {
-        if (state.netRole === 'host') {
-          state.netChannel.postMessage({
-            type: 'sync',
-            p1: state.player ? packTank(state.player) : null,
-            p2: state.player2 ? packTank(state.player2) : null,
-            enemies: state.enemies.map(packTank),
-            bullets: state.bullets.map(b => ({x:b.x, y:b.y, vx:b.vx, vy:b.vy, fromPlayer:b.fromPlayer, dmg:b.dmg})),
-            walls: packWalls(),
-            baseHp: 1,
-          });
-        } else if (state.netRole === 'client') {
-          // 客机只发自己P2的操作快照
-          state.netChannel.postMessage({
-            type: 'input',
-            p2: state.player2 ? packTank(state.player2) : null,
-            keys: { ...state.keys },
-          });
-        }
-      } catch(err) {}
-    }
     updateHUD();
-  }
-  function packTank(t) { return { x:t.x, y:t.y, dir:t.dir, hp:t.hp, maxHp:t.maxHp, cooldown:t.cooldown, shield:t.shield, bulletDmg:t.bulletDmg, powerSpeed:t.powerSpeed, powerRapid:t.powerRapid, colorTint:t.colorTint }; }
-  function packWalls() {
-    // 只同步砖墙的血量变化（差异）
-    const arr = [];
-    for (let y=0; y<ROWS; y++) for (let x=0; x<COLS; x++) {
-      const w = state.walls[y] && state.walls[y][x];
-      if (w && w.breakable && w.hp < 40) arr.push([x,y,w.hp]);
-      else if (!w && isBrokenRecord(x,y)) arr.push([x,y,0]);
-    }
-    return arr;
-  }
-  function isBrokenRecord(x,y) { return false; /* simplified */ }
-  function applyPackedTank(t, packed) {
-    if (!t || !packed) return;
-    t.x = packed.x; t.y = packed.y; t.dir = packed.dir;
-    t.hp = packed.hp; t.maxHp = packed.maxHp;
-    t.cooldown = packed.cooldown; t.shield = packed.shield;
-    t.bulletDmg = packed.bulletDmg;
-    t.powerSpeed = packed.powerSpeed; t.powerRapid = packed.powerRapid;
-    if (packed.colorTint) t.colorTint = packed.colorTint;
   }
   function render() {
     ctx.fillStyle = '#050515';
@@ -2064,82 +2011,7 @@
   bindOptionCards('mapGrid', 'data-map', v => { state.mapIndex = parseInt(v) || 0; });
   bindOptionCards('diffGrid', 'data-diff', v => { state.difficulty = v; });
 
-  function updateRoomInfo() {
-    const box = document.getElementById('roomInfoBox');
-    if (!box) return;
-    if (state.mode === 'host') {
-      box.classList.remove('hidden');
-      box.classList.add('wait');
-      box.innerHTML = '🌐 主机房间已创建 · 等待客机加入...<br><span style="font-size:0.7rem;opacity:0.8;">同浏览器新建标签页打开此页面，选择「联机·客机」即可加入</span>';
-    } else if (state.mode === 'join') {
-      box.classList.remove('hidden');
-      box.classList.remove('wait');
-      box.innerHTML = '🔗 客机模式 · 正在连接主机...<br><span style="font-size:0.7rem;opacity:0.8;">请确保主机已在另一标签页选择「联机·主机」并点击开始</span>';
-    } else {
-      box.classList.add('hidden');
-      box.classList.remove('wait');
-    }
-  }
-
-  // ============ BroadcastChannel 本地联机 ============
-  function setupNetChannel() {
-    if (state.netChannel) { try { state.netChannel.close(); } catch(e) {} state.netChannel = null; }
-    state.netRole = null;
-    if (state.mode === 'host') {
-      state.netRole = 'host';
-      try {
-        state.netChannel = new BroadcastChannel('cybertank_coop_v1');
-        state.netChannel.onmessage = (ev) => {
-          const msg = ev.data || {};
-          if (msg.type === 'input' && state.player2 && state.running) {
-            applyPackedTank(state.player2, msg.p2);
-          } else if (msg.type === 'join_ping') {
-            state.netChannel.postMessage({ type: 'host_ack', mode: state.mode, map: state.mapIndex, diff: state.difficulty });
-            const box = document.getElementById('roomInfoBox');
-            if (box) { box.classList.remove('wait'); box.innerHTML = '✅ 客机已连接！准备战斗！'; }
-          }
-        };
-      } catch(e) { console.warn('BroadcastChannel not available', e); }
-    } else if (state.mode === 'join') {
-      state.netRole = 'client';
-      try {
-        state.netChannel = new BroadcastChannel('cybertank_coop_v1');
-        state.netChannel.onmessage = (ev) => {
-          const msg = ev.data || {};
-          if (msg.type === 'sync' && state.running) {
-            if (msg.p1 && state.player) applyPackedTank(state.player, msg.p1);
-            // host的P2就是客机自己，客机本地更新P2即可，不覆盖
-            // 同步敌人
-            if (msg.enemies && msg.enemies.length > 0 && state.enemies.length === msg.enemies.length) {
-              msg.enemies.forEach((p, i) => applyPackedTank(state.enemies[i], p));
-            }
-            // 同步子弹（轻量）
-            if (msg.bullets) {
-              state.bullets = [];
-              for (const b of msg.bullets) {
-                state.bullets.push(new Bullet(b.x, b.y, b.vx, b.vy, b.fromPlayer, b.dmg || 15));
-              }
-            }
-            // 同步墙体血量
-            if (Array.isArray(msg.walls)) {
-              for (const [x,y,hp] of msg.walls) {
-                if (state.walls[y] && state.walls[y][x]) {
-                  if (hp <= 0) state.walls[y][x] = null;
-                  else state.walls[y][x].hp = hp;
-                }
-              }
-            }
-          } else if (msg.type === 'host_ack') {
-            const box = document.getElementById('roomInfoBox');
-            if (box) { box.classList.remove('wait'); box.innerHTML = '✅ 已连接主机！双方点击【开始游戏】即可开战'; }
-          }
-        };
-        setTimeout(() => { try { state.netChannel.postMessage({ type: 'join_ping' }); } catch(e) {} }, 300);
-      } catch(e) { console.warn('BroadcastChannel not available', e); }
-    }
-  }
-
-  // Internet play is not implemented.
+  // Same-screen two-player only. Internet play is not implemented.
 
   // Bind
   document.getElementById('pauseBtn').addEventListener('click', () => {
@@ -2192,6 +2064,11 @@
       TILE, COLS, ROWS,
       fireBullet(fromPlayer, x, y, vx, vy) {
         state.bullets.push(new Bullet(x, y, vx, vy, fromPlayer, 20));
+      },
+      dropPowerup(x, y, type) {
+        const powerup = new Powerup(x, y);
+        if (type) powerup.type = type;
+        state.powerups.push(powerup);
       },
       get raf() { return rafId; },
       get ticks() { return ticks; }

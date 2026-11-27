@@ -243,11 +243,19 @@
     .experience-card p { margin: 12px 0 0; color: var(--muted); line-height: 1.75; }
     .experience-card .tags { margin-top: 14px; }
 
-    .certificate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .certificate-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
     .certificate-card { overflow: hidden; cursor: pointer; transition: .25s ease; }
     .certificate-card:hover { transform: translateY(-5px); border-color: rgba(180,255,57,.25); }
-    .certificate-image { height: 250px; overflow: hidden; border-bottom: 1px solid var(--line); background: #f4f1ea; display: grid; place-items: center; }
-    .certificate-image img { width: 100%; height: 100%; object-fit: contain; background: #f4f1ea; }
+    .certificate-image {
+      position: relative; height: 340px; overflow: hidden;
+      border-bottom: 1px solid var(--line); background: #f4f1ea;
+    }
+    .certificate-image img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: contain; object-position: center; background: #f4f1ea;
+    }
+    .certificate-body h3 { text-wrap: balance; }
+    .cert-note { margin: 8px 0 0; color: var(--quiet); font-size: 12px; line-height: 1.65; }
     .certificate-card, .gallery-card, .fitness-grid button { font: inherit; color: inherit; text-align: left; }
     .certificate-body { padding: 18px; }
     .certificate-body .tag { display: inline-flex; margin-bottom: 8px; }
@@ -256,7 +264,7 @@
     .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 14px; }
     .gallery-card { height: 280px; padding: 0; overflow: hidden; cursor: zoom-in; background: #f4f1ea; }
     .gallery-card img { width: 100%; height: 100%; object-fit: contain; background: #f4f1ea; }
-    .honors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+    .honors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
     .honor { min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 12px; color: var(--muted); font-size: 12px; }
     .stat.highlight { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
     .stat.highlight .stat-value { color: var(--accent); }
@@ -370,8 +378,8 @@
     .modal-panel { width: min(960px, 100%); max-height: 92vh; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--card-strong); box-shadow: var(--shadow); }
     .modal-head { height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px 0 18px; border-bottom: 1px solid var(--line); }
     .modal-head strong { font-size: 14px; }
-    .modal-body { height: calc(92vh - 58px); display: grid; place-items: center; padding: 18px; }
-    .modal-body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .modal-body { height: calc(92vh - 58px); display: flex; align-items: center; justify-content: center; padding: 18px; overflow: auto; }
+    .modal-body img { min-width: 0; min-height: 0; width: auto; height: auto; max-width: 100%; max-height: calc(92vh - 120px); object-fit: contain; }
     .game-modal .modal-panel { width: min(1180px, 100%); }
     .game-modal iframe { width: 100%; height: calc(92vh - 58px); border: 0; background: #000; }
 
@@ -426,13 +434,13 @@
       .stat-value { font-size: 24px; }
       .portrait-wrap { max-width: 360px; margin-inline: auto; }
       .about-grid, .contact-panel, .game-card { grid-template-columns: 1fr; }
-      .education-grid, .skill-grid, .certificate-grid, .honors-grid { grid-template-columns: 1fr; }
+      .education-grid, .skill-grid, .certificate-grid { grid-template-columns: 1fr; }
       .project-grid { grid-template-columns: 1fr; }
       .game-modal { padding: 0; }
       .game-modal .modal-panel { width: 100%; height: 100dvh; max-height: none; border-radius: 0; }
       .game-modal iframe { height: calc(100dvh - 58px); }
       .experience-card { grid-template-columns: 1fr; gap: 8px; }
-      .certificate-image { height: 220px; }
+      .honors-grid { grid-template-columns: repeat(2, 1fr); }
       .gallery-grid { grid-template-columns: 1fr; }
       .gallery-card { height: 220px; }
       .game-preview { border-left: 0; border-top: 1px solid var(--line); }
@@ -798,7 +806,7 @@
         const card = el("article", "card certificate-card");
         card.innerHTML = `
           <div class="certificate-image"><img src="${escapeHtml(cert.thumb || cert.img)}" alt="${escapeHtml(cert.title)}" loading="lazy" decoding="async"></div>
-          <div class="certificate-body">${cert.pill ? `<span class="tag">${escapeHtml(cert.pill.label)}</span>` : ""}<h3>${escapeHtml(cert.title)}</h3><p>${escapeHtml(cert.issuer)}</p></div>`;
+          <div class="certificate-body">${cert.pill ? `<span class="tag">${escapeHtml(cert.pill.label)}</span>` : ""}<h3>${escapeHtml(cert.title)}</h3><p>${escapeHtml(cert.issuer)}</p>${cert.note ? `<p class="cert-note">${escapeHtml(cert.note)}</p>` : ""}</div>`;
         armCard(card, () => openCertificate(cert.img, cert.title));
         grid.appendChild(card);
       });
