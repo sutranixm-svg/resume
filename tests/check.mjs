@@ -305,7 +305,26 @@ try {
       const controls = ["#skill-icon-pc", "#skillBtn", "#fireBtn", "#dpad", "#pauseBtn", "#audio-toggle"];
       const overlapping = controls.filter(sel => shown(document.querySelector(sel)) && overlaps(document.querySelector(sel)));
       const flashes = ["#skillBtn", "#skill-icon-pc"].filter(sel => shown(document.querySelector(sel)));
-      return { overlapping, flashes, titleTop: document.getElementById("titleRow").getBoundingClientRect().top };
+      const roundOf = (el) => {
+        const box = el.getBoundingClientRect();
+        const radius = parseFloat(getComputedStyle(el).borderRadius);
+        return Math.abs(box.width - box.height) <= 2 && radius >= Math.min(box.width, box.height) / 2 - 1;
+      };
+      const roundTargets = [
+        ...document.querySelectorAll("#dpad .dpad-btn"),
+        document.getElementById("fireBtn"),
+        document.getElementById("skillBtn"),
+        document.getElementById("pauseBtn"),
+        document.getElementById("audio-toggle"),
+        document.getElementById("stick")
+      ].filter(shown);
+      const square = roundTargets.filter(el => !roundOf(el)).map(el => el.id || el.className);
+      return {
+        overlapping, flashes,
+        titleTop: document.getElementById("titleRow").getBoundingClientRect().top,
+        square,
+        rounds: roundTargets.length
+      };
     })()`);
   }
   const desktopControls = await controlLayout(1280, 800);
@@ -315,6 +334,8 @@ try {
   check(phoneControls.overlapping.length === 0, "phone control overlaps the field: " + phoneControls.overlapping.join(","));
   check(phoneControls.flashes.length === 1 && phoneControls.flashes[0] === "#skillBtn", "phone dodge buttons: " + phoneControls.flashes.join(","));
   check(phoneControls.titleTop < 80, "phone title still sits too low: " + phoneControls.titleTop);
+  check(desktopControls.square.length === 0 && desktopControls.rounds >= 2, "desktop controls are not circular: " + desktopControls.square.join(","));
+  check(phoneControls.square.length === 0 && phoneControls.rounds >= 6, "phone controls are not circular: " + phoneControls.square.join(",") + " n=" + phoneControls.rounds);
 
   const site = await openPage("/index.html");
   const siteReport = await evaluate(send, site.sessionId, `new Promise(resolve => {
